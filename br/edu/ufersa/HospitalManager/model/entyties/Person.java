@@ -1,3 +1,5 @@
+package br.edu.ufersa.HospitalManager.model.entyties;
+
 public class Person {
     private String name;
     private String cpf;
