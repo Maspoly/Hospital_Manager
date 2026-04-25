@@ -1,7 +1,7 @@
 package br.edu.ufersa.HospitalManager.model.entyties;
 import java.time.LocalDate;
 
-public class Doctor extends Person {
+public class Doctor extends Manager {
     public float consultationValue;
     private String councilCode;
     private Patient patient;
