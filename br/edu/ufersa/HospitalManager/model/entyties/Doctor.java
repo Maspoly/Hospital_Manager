@@ -1,9 +1,9 @@
 package br.edu.ufersa.HospitalManager.model.entyties;
 import java.time.LocalDate;
 
-public class Doctor {
+public class Doctor extends Person {
     public float consultationValue;
-    private int councilCode;
+    private String councilCode;
     private Patient patient;
     private Consultation consultations[];
     private MedicalRecord medicalRecords[];
@@ -23,7 +23,7 @@ public class Doctor {
     }
 
     // Getters and Setters for council code
-    public int getCouncilCode() {
+    public String getCouncilCode() {
         return this.councilCode;
     }
 
@@ -31,7 +31,7 @@ public class Doctor {
         if (!councilCode.matches("\\d{6}")) {
             throw new IllegalArgumentException("Must contain exactly 6 numeric digits.");
         } else {
-            this.councilCode = Integer.parseInt(councilCode);
+            this.councilCode = councilCode;
         }
     }
 
