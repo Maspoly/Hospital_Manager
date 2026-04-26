@@ -20,7 +20,7 @@ public class Hospital {
     void registerDoctor(String name, String cpf, String address, int counsil_code, Manager manager) {
 
         //new doctor to be added
-        Doctor doctor = new Doctor(name, cpf, address, 0.0f, String.valueOf(counsil_code));
+        Doctor doctor = new Doctor(name, cpf, address, String.valueOf(counsil_code));
 
         //check if the manager is registered in the hospital
         boolean managerFound = false;
