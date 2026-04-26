@@ -24,6 +24,19 @@ public class Doctor extends Person {
         setReports(new String[100]); // fixed-size array for reports
     }
 
+    // Constructor: initializes the doctor with default consultation value
+    public Doctor(String name, String cpf, String address, String councilCode) {
+        super(name, cpf, address);
+        setConsultationValue(100.0f); // set default consultation value
+        setCouncilCode(councilCode); // validate and set council code
+
+        // Initialize attributes
+        this.patient = null;
+        setConsultations(new Consultation[100]); // fixed-size array for consultations
+        setMedicalRecords(new MedicalRecord[100]); // fixed-size array for medical records
+        setReports(new String[100]); // fixed-size array for reports
+    }
+
     // Getter for consultation value
     public float getConsultationValue() {
         return this.consultationValue;
