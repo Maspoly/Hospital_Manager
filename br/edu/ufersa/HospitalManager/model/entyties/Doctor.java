@@ -1,7 +1,7 @@
 package br.edu.ufersa.HospitalManager.model.entyties;
 import java.time.LocalDate;
-// Doctor class inherits from Manager
-public class Doctor extends Manager {
+// Doctor class inherits from Person
+public class Doctor extends Person {
     // Public attribute for consultation value
     public float consultationValue;
     // Private attributes
@@ -13,9 +13,7 @@ public class Doctor extends Manager {
 
     // Constructor: initializes the doctor with basic data
     public Doctor(String name, String cpf, String address, float consultationValue, String councilCode) {
-        setName(name); // set name
-        setCPF(cpf); // set CPF
-        setAddress(address); // set address
+        super(name, cpf, address);
         setConsultationValue(consultationValue); // set consultation value
         setCouncilCode(councilCode); // validate and set council code
 

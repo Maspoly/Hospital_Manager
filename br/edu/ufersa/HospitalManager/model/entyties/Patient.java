@@ -2,52 +2,14 @@ package br.edu.ufersa.HospitalManager.model.entyties;
 
 import java.time.LocalDate;
 
-public class Patient {
-    private String name;
-    private String cpf;
-    private String address;
+public class Patient extends Person {
     private MedicalRecord medicalRecord;
     private Consultation[] consultations;
 
     public Patient(String name, String cpf, String address, MedicalRecord medicalRecord) {
-        setName(name);
-        setCpf(cpf);
-        setAddress(address);
+        super(name, cpf, address);
         setMedicalRecord(medicalRecord);
         this.consultations = new Consultation[0];
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
-        }
-        this.name = name;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        if (cpf == null || !cpf.matches("\\d{11}")) {
-            throw new IllegalArgumentException("CPF must contain exactly 11 numeric digits.");
-        }
-        this.cpf = cpf;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        if (address == null || address.trim().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty.");
-        }
-        this.address = address;
     }
 
     public MedicalRecord getMedicalRecord() {
@@ -74,21 +36,21 @@ public class Patient {
 
     public void cadastrarDados(String name, String cpf, String address, MedicalRecord medicalRecord) {
         setName(name);
-        setCpf(cpf);
+        setCPF(cpf);
         setAddress(address);
         setMedicalRecord(medicalRecord);
     }
 
     public void editorDados(String name, String cpf, String address) {
         setName(name);
-        setCpf(cpf);
+        setCPF(cpf);
         setAddress(address);
     }
 
     public void excluirDados() {
-        this.name = null;
-        this.cpf = null;
-        this.address = null;
+        setName(null);
+        setCPF(null);
+        setAddress(null);
         this.medicalRecord = null;
         this.consultations = new Consultation[0];
     }
@@ -150,7 +112,7 @@ public class Patient {
 
     // Método auxiliar: define quando duas consultas são consideradas a mesma
     private boolean mesmaConsulta(Consultation a, Consultation b) {
-        return a.getPatient().getCpf().equals(b.getPatient().getCpf()) &&
+        return a.getPatient().getCPF().equals(b.getPatient().getCPF()) &&
                a.getDoctor().getCPF().equals(b.getDoctor().getCPF()) &&
                a.getDate().equals(b.getDate()) &&
                a.getStatus().equals(b.getStatus());
