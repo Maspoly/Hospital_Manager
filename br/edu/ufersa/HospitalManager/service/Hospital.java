@@ -20,12 +20,12 @@ public class Hospital {
     void registerDoctor(String name, String cpf, String address, int counsil_code, Manager manager) {
 
         //new doctor to be added
-        Doctor doctor = new Doctor();
+        Doctor doctor = new Doctor(name, cpf, address, 0.0f, String.valueOf(counsil_code));
 
         //check if the manager is registered in the hospital
         boolean managerFound = false;
         for (Manager m : managers) {
-            if (m.getCpf().equals(manager.getCpf())) {
+            if (m.getCPF().equals(manager.getCPF())) {
                 managerFound = true;
                 //register the doctor in the hospital
                 doctors.add(doctor);
@@ -35,7 +35,7 @@ public class Hospital {
         }
         //if the manager is not found, print an error message
         if (!managerFound) {
-            System.out.println("Manager not found. Doctor registration failed.");
+            throw new IllegalArgumentException("Manager not found. Doctor registration failed.");
         }
     }
 
@@ -44,7 +44,7 @@ public class Hospital {
         //check if the manager is registered in the hospital
         boolean managerFound = false;
         for (Manager m : managers) {
-            if (m.getCpf().equals(manager.getCpf())) {
+            if (m.getCPF().equals(manager.getCPF())) {
                 managerFound = true;
                 //edit the doctor information
                 doctor.setName(name);
@@ -57,7 +57,7 @@ public class Hospital {
         }
         //if the manager is not found, print an error message
         if (!managerFound) {
-            System.out.println("Manager not found. Doctor editing failed.");
+            throw new IllegalArgumentException("Manager not found. Doctor editing failed.");
         }
     }
 
@@ -66,7 +66,7 @@ public class Hospital {
         //check if the manager is registered in the hospital
         boolean managerFound = false;
         for (Manager m : managers) {
-            if (m.getCpf().equals(manager.getCpf())) {
+            if (m.getCPF().equals(manager.getCPF())) {
                 managerFound = true;
                 //remove the doctor from the hospital
                 doctors.remove(doctor);
@@ -76,7 +76,7 @@ public class Hospital {
         }
         //if the manager is not found, print an error message
         if (!managerFound) {
-            System.out.println("Manager not found. Doctor removal failed.");
+            throw new IllegalArgumentException("Manager not found. Doctor removal failed.");
         }
     }
 
@@ -140,7 +140,7 @@ public class Hospital {
     //search for a manager by cpf
     Manager searchManagerByCPF(String cpf) {
         for (Manager m : managers) {
-            if (m.getCpf().equals(cpf)) {
+            if (m.getCPF().equals(cpf)) {
                 //manager found
                 System.out.println("Manager found.");
                 return m;
