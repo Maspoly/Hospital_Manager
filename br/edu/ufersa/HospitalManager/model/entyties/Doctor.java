@@ -1,20 +1,38 @@
 package br.edu.ufersa.HospitalManager.model.entyties;
 import java.time.LocalDate;
-
+// Doctor class inherits from Manager
 public class Doctor extends Manager {
+    // Public attribute for consultation value
     public float consultationValue;
-    private String councilCode;
+    // Private attributes
+    private int councilCode;
     private Patient patient;
     private Consultation consultations[];
     private MedicalRecord medicalRecords[];
     private String reports[];
 
-    // Getters and Setters for consultation value
+    // Constructor: initializes the doctor with basic data
+    public Doctor(String name, String cpf, String address, float consultationValue, String councilCode) {
+        setName(name); // set name
+        setCPF(cpf); // set CPF
+        setAddress(address); // set address
+        setConsultationValue(consultationValue); // set consultation value
+        setCouncilCode(councilCode); // validate and set council code
+
+        // Initialize attributes
+        this.patient = null;
+        setConsultations(new Consultation[100]); // fixed-size array for consultations
+        setMedicalRecords(new MedicalRecord[100]); // fixed-size array for medical records
+        setReports(new String[100]); // fixed-size array for reports
+    }
+
+    // Getter for consultation value
     public float getConsultationValue() {
         return this.consultationValue;
     }
 
-    public void setConsultationValue(float consultationValue) {
+    // Setter with validation (cannot be negative)
+    public void setConsultationValue(float consultationValue){
         if (consultationValue < 0) {
             throw new IllegalArgumentException("Consultation value cannot be negative.");
         } else {
@@ -22,25 +40,27 @@ public class Doctor extends Manager {
         }
     }
 
-    // Getters and Setters for council code
-    public String getCouncilCode() {
+    // Getter for council code
+    public int getCouncilCode() {
         return this.councilCode;
     }
 
-    public void setCouncilCode(String councilCode) {
+    // Setter with validation (must have 6 digits)
+    public void setCouncilCode(String councilCode){
         if (!councilCode.matches("\\d{6}")) {
             throw new IllegalArgumentException("Must contain exactly 6 numeric digits.");
         } else {
-            this.councilCode = councilCode;
+            this.councilCode = Integer.parseInt(councilCode);
         }
     }
 
-    // Getters and Setters for associated patient
+    // Getter for patient
     public Patient getPatient() {
         return this.patient;
     }
 
-    public void setPatient(Patient patient) {
+    // Setter with validation (cannot be null)
+    public void setPatient(Patient patient){
         if (patient == null) {
             throw new IllegalArgumentException("Patient cannot be null.");
         } else {
@@ -48,12 +68,13 @@ public class Doctor extends Manager {
         }
     }
 
-    // Getters and Setters for consultations
+    // Getter for consultations array
     public Consultation[] getConsultations() {
         return this.consultations;
     }
 
-    public void setConsultations(Consultation[] consultations) {
+    // Setter with validation (cannot be null)
+    public void setConsultations(Consultation[] consultations){
         if (consultations == null) {
             throw new IllegalArgumentException("Consultations cannot be null.");
         } else {
@@ -61,70 +82,82 @@ public class Doctor extends Manager {
         }
     }
 
-    // Getters and Setters for medical records
-    public MedicalRecord getMedicalRecord() {
+    // Getter for medical records array
+    public MedicalRecord[] getMedicalRecords() {
         return this.medicalRecords;
     }
 
-    public void setMedicalRecord(MedicalRecord medicalRecord) {
-        if (medicalRecord == null) {
-            throw new IllegalArgumentException("Medical record cannot be null.");
+    // Setter with validation
+    public void setMedicalRecords(MedicalRecord[] medicalRecords){
+        if (medicalRecords == null) {
+            throw new IllegalArgumentException("Medical records cannot be null.");
         } else {
-            this.medicalRecords.add(medicalRecord);
+            this.medicalRecords = medicalRecords;
         }
     }
 
-    // Getters and Setters for reports
+    // Getter for reports
     public String[] getReports() {
         return this.reports;
     }
 
-    public void setReports(String[] reports) {
+    // Setter with validation (cannot be empty)
+    public void setReports(String[] reports){
         if (reports == null || reports.length == 0) {
-            throw new IllegalArgumentException("Report cannot be empty.");
+            throw new IllegalArgumentException("Reports cannot be empty.");
         } else {
             this.reports = reports;
         }
     }
 
+    // Method to register a medical record for a patient
     public void registerMedicalRecord(Patient patient, MedicalRecord medicalRecord) {
         if (patient == null || medicalRecord == null) {
             throw new IllegalArgumentException("Patient and medical record cannot be null.");
+        } else {
+            patient.setMedicalRecord(medicalRecord); // associates record to patient
         }
     }
 
+    // Method to edit an existing medical record
     public MedicalRecord editMedicalRecord(MedicalRecord medicalRecord, String newObs) {
         if (medicalRecord == null || newObs == null || newObs.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid data.");
         }
 
-        medicalRecord.setObservation(newObs);
-
+        medicalRecord.setObservation(newObs); // update observation
         return medicalRecord;
     }
 
-    public void editPersonalData(String name, String CPF, String address, int consultationValue, String councilCode) {
+    // Method to edit doctor's personal data
+    public void editPersonalData(String name, String cpf, String address, int consultationValue, String councilCode) {
+
+        // Validations
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty.");
         }
-        if (CPF == null || !CPF.matches("\\d{11}")) {
-            throw new IllegalArgumentException("CPF must contain exactly 11 numeric digits.");
+        if (cpf == null || !cpf.matches("\\d{11}")) {
+            throw new IllegalArgumentException("CPF must contain exactly 11 numeric digits");
         }
         if (address == null || address.trim().isEmpty()) {
             throw new IllegalArgumentException("Address cannot be empty.");
         }
+
+        // Update data
         setName(name);
-        setCPF(CPF);
+        setCPF(cpf);
         setAddress(address);
         setConsultationValue(consultationValue);
         setCouncilCode(councilCode);
     }
 
+    // Method to delete a medical record from the array
     public void deleteMedicalRecord(MedicalRecord medicalRecord) {
         if (medicalRecord == null) {
             throw new IllegalArgumentException("Medical record cannot be null.");
         }
 
+        // Search and remove
         for (int i = 0; i < this.medicalRecords.length; i++) {
             if (this.medicalRecords[i] == medicalRecord) {
                 this.medicalRecords[i] = null;
@@ -133,6 +166,7 @@ public class Doctor extends Manager {
         }
     }
 
+    // Method to generate report based on date range
     public void generateReport(LocalDate start, LocalDate end) {
 
         int total = 0;
@@ -140,31 +174,34 @@ public class Doctor extends Manager {
         int completed = 0;
         int canceled = 0;
 
+        // Iterate over consultations
         for (Consultation c : consultations) {
-
             if (c != null &&
                 (c.getDate().isEqual(start) || c.getDate().isAfter(start)) &&
                 (c.getDate().isEqual(end) || c.getDate().isBefore(end))) {
 
                 total++;
 
+                // Count by status
                 switch (c.getStatus()) {
-                    case "SCHEDULED":
+                    case "scheduled":
                         scheduled++;
                         break;
-                    case "COMPLETED":
+                    case "completed":
                         completed++;
                         break;
-                    case "CANCELED":
+                    case "canceled":
                         canceled++;
                         break;
                 }
             }
         }
 
+        // Print results
         System.out.println("Total: " + total);
         System.out.println("Scheduled: " + scheduled);
         System.out.println("Completed: " + completed);
         System.out.println("Canceled: " + canceled);
     }
 }
+
