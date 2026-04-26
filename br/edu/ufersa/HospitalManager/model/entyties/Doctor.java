@@ -5,7 +5,7 @@ public class Doctor extends Manager {
     // Public attribute for consultation value
     public float consultationValue;
     // Private attributes
-    private int councilCode;
+    private String councilCode;
     private Patient patient;
     private Consultation consultations[];
     private MedicalRecord medicalRecords[];
@@ -41,7 +41,7 @@ public class Doctor extends Manager {
     }
 
     // Getter for council code
-    public int getCouncilCode() {
+    public String getCouncilCode() {
         return this.councilCode;
     }
 
@@ -50,7 +50,7 @@ public class Doctor extends Manager {
         if (!councilCode.matches("\\d{6}")) {
             throw new IllegalArgumentException("Must contain exactly 6 numeric digits.");
         } else {
-            this.councilCode = Integer.parseInt(councilCode);
+            this.councilCode = councilCode;
         }
     }
 
