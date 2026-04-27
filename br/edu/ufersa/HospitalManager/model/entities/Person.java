@@ -15,21 +15,24 @@ public class Person {
     // setters with validation
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
+            System.out.println("Name cannot be empty.");
+            return;
         }
         this.name = name;
     }
 
     public void setCPF(String cpf) {
         if (cpf == null || !cpf.matches("\\d{11}")) {
-            throw new IllegalArgumentException("CPF must contain exactly 11 numeric digits.");
+            System.out.println("CPF must contain exactly 11 numeric digits.");
+            return;
         }
         this.cpf = cpf;
     }
 
     public void setAddress(String address) {
         if (address == null || address.trim().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty.");
+            System.out.println("Address cannot be empty.");
+            return;
         }
         this.address = address;
     }

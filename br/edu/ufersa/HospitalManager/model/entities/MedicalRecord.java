@@ -27,7 +27,8 @@ public class MedicalRecord {
 
     public void setObservation(String observation) {
         if (observation == null || observation.trim().isEmpty()) {
-            throw new IllegalArgumentException("Medical record observation cannot be empty.");
+            System.out.println("Medical record observation cannot be empty.");
+            return;
         } else {
             this.observation = observation;
         }

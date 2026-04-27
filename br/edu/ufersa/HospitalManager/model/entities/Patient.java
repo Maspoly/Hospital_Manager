@@ -18,7 +18,8 @@ public class Patient extends Person {
 
     public void setMedicalRecord(MedicalRecord medicalRecord) {
         if (medicalRecord == null) {
-            throw new IllegalArgumentException("Medical record cannot be null.");
+            System.out.println("Medical record cannot be null.");
+            return;
         }
         this.medicalRecord = medicalRecord;
     }
@@ -29,7 +30,8 @@ public class Patient extends Person {
 
     public void setConsultations(Consultation[] consultations) {
         if (consultations == null) {
-            throw new IllegalArgumentException("Consultations array cannot be null.");
+            System.out.println("Consultations array cannot be null.");
+            return;
         }
         this.consultations = consultations;
     }
@@ -68,7 +70,8 @@ public class Patient extends Person {
 
     public Consultation editorConsulta(Consultation consulta, LocalDate newDate, String newStatus) {
         if (consulta == null) {
-            throw new IllegalArgumentException("Consultation cannot be null.");
+            System.out.println("Consultation cannot be null.");
+            return null;
         }
         consulta.setDate(newDate);
         consulta.setStatus(newStatus);
@@ -77,6 +80,7 @@ public class Patient extends Person {
 
     public void excluirConsulta(Consultation[] consultasParaExcluir) {
         if (consultasParaExcluir == null || consultasParaExcluir.length == 0) {
+            System.out.println("No consultations to exclude.");
             return;
         }
 

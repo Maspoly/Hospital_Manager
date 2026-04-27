@@ -21,7 +21,8 @@ public class Consultation {
 
     public void setPatient(Patient patient) {
         if (patient == null) {
-            throw new IllegalArgumentException("Patient cannot be null.");
+            System.out.println("Patient cannot be null.");
+            return;
         }
         this.patient = patient;
     }
@@ -32,7 +33,8 @@ public class Consultation {
 
     public void setDoctor(Doctor doctor) {
         if (doctor == null) {
-            throw new IllegalArgumentException("Doctor cannot be null.");
+            System.out.println("Doctor cannot be null.");
+            return;
         }
         this.doctor = doctor;
     }
@@ -43,7 +45,8 @@ public class Consultation {
 
     public void setDate(LocalDate date) {
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null.");
+            System.out.println("Date cannot be null.");
+            return;
         }
         this.date = date;
     }
@@ -64,7 +67,8 @@ public class Consultation {
             }
         }
         if (!ok) {
-            throw new IllegalArgumentException("Status must be SCHEDULED, COMPLETED or CANCELED.");
+            System.out.println("Status must be SCHEDULED, COMPLETED or CANCELED.");
+            return;
         }
         this.status = status.toUpperCase();
     }

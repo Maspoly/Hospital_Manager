@@ -45,7 +45,8 @@ public class Doctor extends Person {
     // Setter with validation (cannot be negative)
     public void setConsultationValue(float consultationValue){
         if (consultationValue < 0) {
-            throw new IllegalArgumentException("Consultation value cannot be negative.");
+            System.out.println("Consultation value cannot be negative.");
+            return;
         } else {
             this.consultationValue = consultationValue;
         }
@@ -59,7 +60,8 @@ public class Doctor extends Person {
     // Setter with validation (must have 6 digits)
     public void setCouncilCode(String councilCode){
         if (!councilCode.matches("\\d{6}")) {
-            throw new IllegalArgumentException("Must contain exactly 6 numeric digits.");
+            System.out.println("Council code must contain exactly 6 numeric digits.");
+            return;
         } else {
             this.councilCode = councilCode;
         }
@@ -73,7 +75,8 @@ public class Doctor extends Person {
     // Setter with validation (cannot be null)
     public void setPatient(Patient patient){
         if (patient == null) {
-            throw new IllegalArgumentException("Patient cannot be null.");
+            System.out.println("Patient cannot be null.");
+            return;
         } else {
             this.patient = patient;
         }
@@ -87,7 +90,8 @@ public class Doctor extends Person {
     // Setter with validation (cannot be null)
     public void setConsultations(Consultation[] consultations){
         if (consultations == null) {
-            throw new IllegalArgumentException("Consultations cannot be null.");
+            System.out.println("Consultations cannot be null.");
+            return;
         } else {
             this.consultations = consultations;
         }
@@ -101,7 +105,8 @@ public class Doctor extends Person {
     // Setter with validation
     public void setMedicalRecords(MedicalRecord[] medicalRecords){
         if (medicalRecords == null) {
-            throw new IllegalArgumentException("Medical records cannot be null.");
+            System.out.println("Medical records cannot be null.");
+            return;
         } else {
             this.medicalRecords = medicalRecords;
         }
@@ -115,7 +120,8 @@ public class Doctor extends Person {
     // Setter with validation (cannot be empty)
     public void setReports(String[] reports){
         if (reports == null || reports.length == 0) {
-            throw new IllegalArgumentException("Reports cannot be empty.");
+            System.out.println("Reports cannot be empty.");
+            return;
         } else {
             this.reports = reports;
         }
@@ -124,7 +130,8 @@ public class Doctor extends Person {
     // Method to register a medical record for a patient
     public void registerMedicalRecord(Patient patient, MedicalRecord medicalRecord) {
         if (patient == null || medicalRecord == null) {
-            throw new IllegalArgumentException("Patient and medical record cannot be null.");
+            System.out.println("Patient and medical record cannot be null.");
+            return;
         } else {
             patient.setMedicalRecord(medicalRecord); // associates record to patient
         }
@@ -133,7 +140,8 @@ public class Doctor extends Person {
     // Method to edit an existing medical record
     public MedicalRecord editMedicalRecord(MedicalRecord medicalRecord, String newObs) {
         if (medicalRecord == null || newObs == null || newObs.trim().isEmpty()) {
-            throw new IllegalArgumentException("Invalid data.");
+            System.out.println("Invalid data.");
+            return null;
         }
 
         medicalRecord.setObservation(newObs); // update observation
@@ -145,13 +153,16 @@ public class Doctor extends Person {
 
         // Validations
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
+            System.out.println("Name cannot be empty.");
+            return;
         }
         if (cpf == null || !cpf.matches("\\d{11}")) {
-            throw new IllegalArgumentException("CPF must contain exactly 11 numeric digits");
+            System.out.println("CPF must contain exactly 11 numeric digits");
+            return;
         }
         if (address == null || address.trim().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty.");
+            System.out.println("Address cannot be empty.");
+            return;
         }
 
         // Update data
@@ -165,7 +176,8 @@ public class Doctor extends Person {
     // Method to delete a medical record from the array
     public void deleteMedicalRecord(MedicalRecord medicalRecord) {
         if (medicalRecord == null) {
-            throw new IllegalArgumentException("Medical record cannot be null.");
+            System.out.println("Medical record cannot be null.");
+            return;
         }
 
         // Search and remove
