@@ -1,4 +1,4 @@
-package br.edu.ufersa.HospitalManager.model.entyties;
+package br.edu.ufersa.HospitalManager.model.entities;
 import java.time.LocalDate;
 // Doctor class inherits from Person
 public class Doctor extends Person {

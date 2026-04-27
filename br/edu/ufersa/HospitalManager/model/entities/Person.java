@@ -1,4 +1,4 @@
-package br.edu.ufersa.HospitalManager.model.entyties;
+package br.edu.ufersa.HospitalManager.model.entities;
 
 public class Person {
     private String name;

@@ -2,10 +2,10 @@ package br.edu.ufersa.HospitalManager.service;
 
 import java.util.ArrayList;
 
-import br.edu.ufersa.HospitalManager.model.entyties.Consultation;
-import br.edu.ufersa.HospitalManager.model.entyties.Doctor;
-import br.edu.ufersa.HospitalManager.model.entyties.Manager;
-import br.edu.ufersa.HospitalManager.model.entyties.Patient;
+import br.edu.ufersa.HospitalManager.model.entities.Consultation;
+import br.edu.ufersa.HospitalManager.model.entities.Doctor;
+import br.edu.ufersa.HospitalManager.model.entities.Manager;
+import br.edu.ufersa.HospitalManager.model.entities.Patient;
 
 public class Hospital {
 
