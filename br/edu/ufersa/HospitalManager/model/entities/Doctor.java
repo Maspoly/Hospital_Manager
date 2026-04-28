@@ -1,5 +1,7 @@
 package br.edu.ufersa.HospitalManager.model.entities;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 // Doctor class inherits from Person
 public class Doctor extends Person {
     // Public attribute for consultation value
@@ -7,9 +9,9 @@ public class Doctor extends Person {
     // Private attributes
     private String councilCode;
     private Patient patient;
-    private Consultation consultations[];
-    private MedicalRecord medicalRecords[];
-    private String reports[];
+    private ArrayList<Consultation> consultations = new ArrayList<>();
+    private ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
+    private ArrayList<String> reports = new ArrayList<>();
 
     // Constructor: initializes the doctor with basic data
     public Doctor(String name, String cpf, String address, float consultationValue, String councilCode) {
@@ -83,8 +85,12 @@ public class Doctor extends Person {
     }
 
     // Getter for consultations array
-    public Consultation[] getConsultations() {
-        return this.consultations;
+    public void getConsultations() {
+        for (Consultation c : consultations) {
+            if (c != null) {
+                System.out.println("Consultation: " + c.getDate() + " - " + c.getStatus());
+            }
+        }
     }
 
     // Setter with validation (cannot be null)
@@ -92,14 +98,17 @@ public class Doctor extends Person {
         if (consultations == null) {
             System.out.println("Consultations cannot be null.");
             return;
-        } else {
-            this.consultations = consultations;
-        }
+        } 
+        this.consultations.addAll(Arrays.asList(consultations)); // Take all the queries from the array and put them into the ArrayList.
     }
 
     // Getter for medical records array
-    public MedicalRecord[] getMedicalRecords() {
-        return this.medicalRecords;
+    public void getMedicalRecords() {
+        for (MedicalRecord c : medicalRecords) {
+            if (c != null) {
+                System.out.println("Medical Record: " + c.getDate() + " - " + c.getObservation());
+            }
+        }
     }
 
     // Setter with validation
@@ -107,25 +116,28 @@ public class Doctor extends Person {
         if (medicalRecords == null) {
             System.out.println("Medical records cannot be null.");
             return;
-        } else {
-            this.medicalRecords = medicalRecords;
+        } 
+        this.medicalRecords.addAll(Arrays.asList(medicalRecords)); // Take all the queries from the array and put them into the ArrayList.
         }
-    }
+    
 
     // Getter for reports
-    public String[] getReports() {
-        return this.reports;
+    public void getReports() {
+        for (String c : reports) {
+            if (c != null) {
+                System.out.println("Report: " + c);
+            }
+        }
     }
 
     // Setter with validation (cannot be empty)
     public void setReports(String[] reports){
-        if (reports == null || reports.length == 0) {
-            System.out.println("Reports cannot be empty.");
+        if (reports == null) {
+            System.out.println("Reports cannot be null.");
             return;
-        } else {
-            this.reports = reports;
+        } 
+        this.reports.addAll(Arrays.asList(reports)); // Take all the queries from the array and put them into the ArrayList.
         }
-    }
 
     // Method to register a medical record for a patient
     public void registerMedicalRecord(Patient patient, MedicalRecord medicalRecord) {
@@ -181,10 +193,13 @@ public class Doctor extends Person {
         }
 
         // Search and remove
-        for (int i = 0; i < this.medicalRecords.length; i++) {
-            if (this.medicalRecords[i] == medicalRecord) {
-                this.medicalRecords[i] = null;
-                break;
+        for (MedicalRecord c : medicalRecords) {
+            if (c != null && c.equals(medicalRecord)) {
+                medicalRecords.remove(c); // remove the record from the list
+                System.out.println("Medical record deleted successfully.");
+                return;
+        } else{
+                System.out.println("Medical record not found.");
             }
         }
     }
@@ -209,13 +224,13 @@ public class Doctor extends Person {
                 switch (c.getStatus()) {
                     case "scheduled":
                         scheduled++;
-                        break;
+                        return;
                     case "completed":
                         completed++;
-                        break;
+                        return;
                     case "canceled":
                         canceled++;
-                        break;
+                        return;
                 }
             }
         }
