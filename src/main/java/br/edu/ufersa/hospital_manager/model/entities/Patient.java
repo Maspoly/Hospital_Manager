@@ -1,4 +1,4 @@
-package br.edu.ufersa.HospitalManager.model.entities;
+package br.edu.ufersa.hospital_manager.model.entities;
 
 import java.time.LocalDate;
 
