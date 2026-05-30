@@ -1,12 +1,12 @@
-package br.edu.ufersa.HospitalManager.model.entities;
+package br.edu.ufersa.hospital_manager.model.entities;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 // Doctor class inherits from Person
 public class Doctor extends Person {
-    // Public attribute for consultation value
-    public float consultationValue;
-    // Private attributes
+    private float consultationValue;
     private String councilCode;
     private Patient patient;
     private ArrayList<Consultation> consultations = new ArrayList<>();
@@ -45,10 +45,10 @@ public class Doctor extends Person {
     }
 
     // Setter with validation (cannot be negative)
-    public void setConsultationValue(float consultationValue){
+    public void setConsultationValue(float consultationValue) throws RuntimeException {
         if (consultationValue < 0) {
             System.out.println("Consultation value cannot be negative.");
-            return;
+            throw new RuntimeException("Consultation value cannot be negative.");
         } else {
             this.consultationValue = consultationValue;
         }
@@ -60,10 +60,10 @@ public class Doctor extends Person {
     }
 
     // Setter with validation (must have 6 digits)
-    public void setCouncilCode(String councilCode){
+    public void setCouncilCode(String councilCode) throws RuntimeException {
         if (!councilCode.matches("\\d{6}")) {
             System.out.println("Council code must contain exactly 6 numeric digits.");
-            return;
+            throw new RuntimeException("Council code must contain exactly 6 numeric digits.");
         } else {
             this.councilCode = councilCode;
         }
@@ -75,10 +75,10 @@ public class Doctor extends Person {
     }
 
     // Setter with validation (cannot be null)
-    public void setPatient(Patient patient){
+    public void setPatient(Patient patient) throws RuntimeException {
         if (patient == null) {
             System.out.println("Patient cannot be null.");
-            return;
+            throw new RuntimeException("Patient cannot be null.");
         } else {
             this.patient = patient;
         }
@@ -97,7 +97,7 @@ public class Doctor extends Person {
     public void setConsultations(Consultation[] consultations){
         if (consultations == null) {
             System.out.println("Consultations cannot be null.");
-            return;
+            throw new RuntimeException("Consultations cannot be null.");
         } 
         this.consultations.addAll(Arrays.asList(consultations)); // Take all the queries from the array and put them into the ArrayList.
     }
@@ -112,10 +112,10 @@ public class Doctor extends Person {
     }
 
     // Setter with validation
-    public void setMedicalRecords(MedicalRecord[] medicalRecords){
+    public void setMedicalRecords(MedicalRecord[] medicalRecords) throws RuntimeException {
         if (medicalRecords == null) {
             System.out.println("Medical records cannot be null.");
-            return;
+            throw new RuntimeException("Medical records cannot be null.");
         } 
         this.medicalRecords.addAll(Arrays.asList(medicalRecords)); // Take all the queries from the array and put them into the ArrayList.
         }
@@ -131,29 +131,29 @@ public class Doctor extends Person {
     }
 
     // Setter with validation (cannot be empty)
-    public void setReports(String[] reports){
+    public void setReports(String[] reports) throws RuntimeException{
         if (reports == null) {
             System.out.println("Reports cannot be null.");
-            return;
+            throw new RuntimeException("Reports cannot be null.");
         } 
         this.reports.addAll(Arrays.asList(reports)); // Take all the queries from the array and put them into the ArrayList.
         }
 
     // Method to register a medical record for a patient
-    public void registerMedicalRecord(Patient patient, MedicalRecord medicalRecord) {
+    public void registerMedicalRecord(Patient patient, MedicalRecord medicalRecord) throws RuntimeException {
         if (patient == null || medicalRecord == null) {
             System.out.println("Patient and medical record cannot be null.");
-            return;
+            throw new RuntimeException("Patient and medical record cannot be null.");
         } else {
             patient.setMedicalRecord(medicalRecord); // associates record to patient
         }
     }
 
     // Method to edit an existing medical record
-    public MedicalRecord editMedicalRecord(MedicalRecord medicalRecord, String newObs) {
+    public MedicalRecord editMedicalRecord(MedicalRecord medicalRecord, String newObs) throws RuntimeException {
         if (medicalRecord == null || newObs == null || newObs.trim().isEmpty()) {
             System.out.println("Invalid data.");
-            return null;
+            throw new RuntimeException("Invalid data.");
         }
 
         medicalRecord.setObservation(newObs); // update observation
@@ -161,20 +161,24 @@ public class Doctor extends Person {
     }
 
     // Method to edit doctor's personal data
-    public void editPersonalData(String name, String cpf, String address, int consultationValue, String councilCode) {
+    public void editPersonalData(String name, String cpf, String address, int consultationValue, String councilCode) throws RuntimeException {
 
         // Validations
         if (name == null || name.trim().isEmpty()) {
             System.out.println("Name cannot be empty.");
-            return;
+            throw new RuntimeException("Name cannot be empty.");
         }
         if (cpf == null || !cpf.matches("\\d{11}")) {
             System.out.println("CPF must contain exactly 11 numeric digits");
-            return;
+            throw new RuntimeException("CPF must contain exactly 11 numeric digits");
         }
         if (address == null || address.trim().isEmpty()) {
             System.out.println("Address cannot be empty.");
-            return;
+            throw new RuntimeException("Address cannot be empty.");
+        }
+        if (councilCode == null || councilCode.trim().isEmpty()) {
+            System.out.println("Council code cannot be empty.");
+            throw new RuntimeException("Council code cannot be empty.");
         }
 
         // Update data
@@ -186,10 +190,10 @@ public class Doctor extends Person {
     }
 
     // Method to delete a medical record from the array
-    public void deleteMedicalRecord(MedicalRecord medicalRecord) {
+    public void deleteMedicalRecord(MedicalRecord medicalRecord) throws RuntimeException {
         if (medicalRecord == null) {
             System.out.println("Medical record cannot be null.");
-            return;
+            throw new RuntimeException("Medical record cannot be null.");
         }
 
         // Search and remove
@@ -205,7 +209,14 @@ public class Doctor extends Person {
     }
 
     // Method to generate report based on date range
-    public void generateReport(LocalDate start, LocalDate end) {
+    public void generateReport(LocalDate start, LocalDate end) throws RuntimeException {
+
+        if (start == null || end == null) {
+            throw new RuntimeException("Start and end dates cannot be null.");
+        }
+        if (end.isBefore(start)) {
+            throw new RuntimeException("End date cannot be before start date.");
+        }
 
         int total = 0;
         int scheduled = 0;
