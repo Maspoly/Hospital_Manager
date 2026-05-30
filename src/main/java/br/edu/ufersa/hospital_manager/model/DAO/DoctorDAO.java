@@ -90,25 +90,6 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         }
         
     }
-    
-    @Override
-    public Doctor readByCPF(String cpf) throws SQLException {
-        try{
-            PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
-            ps.setString(1, cpf);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), rs.getString("adress"), rs.getFloat("consultation_value"), rs.getString("council_code"));
-                doctor.setId(rs.getLong("id"));
-                return doctor;
-            }
-            return null; // not found
-        }catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
     @Override
     public Doctor readById(long id) throws SQLException {
         try{
@@ -127,7 +108,24 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         }
     }
     
-    @Override
+    public Doctor readByCPF(String cpf) throws SQLException {
+        try{
+            PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
+            ps.setString(1, cpf);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), rs.getString("adress"), rs.getFloat("consultation_value"), rs.getString("council_code"));
+                doctor.setId(rs.getLong("id"));
+                return doctor;
+            }
+            return null; // not found
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
     public Doctor readByName(String name) throws SQLException {
         try{
             PreparedStatement ps = connection.prepareStatement(SELECT_BY_NAME_SQL);
