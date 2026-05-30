@@ -87,24 +87,6 @@ public class ManagerDAO implements BaseDAO<Manager> {
     }
     
     @Override
-    public Manager readByCPF(String cpf) throws SQLException {
-        try{
-            PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
-            ps.setString(1, cpf);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), rs.getString("adress"));
-                manager.setId(rs.getLong("id"));
-                return manager;
-            }
-            return null; // not found
-        }catch (SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    @Override
     public Manager readById(long id) throws SQLException {
         try{
             PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
@@ -122,7 +104,24 @@ public class ManagerDAO implements BaseDAO<Manager> {
         }
     }
     
-    @Override
+    public Manager readByCPF(String cpf) throws SQLException {
+        try{
+            PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
+            ps.setString(1, cpf);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), rs.getString("adress"));
+                manager.setId(rs.getLong("id"));
+                return manager;
+            }
+            return null; // not found
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    
     public Manager readByName(String name) throws SQLException {
         try{
             PreparedStatement ps = connection.prepareStatement(SELECT_BY_NAME_SQL);
