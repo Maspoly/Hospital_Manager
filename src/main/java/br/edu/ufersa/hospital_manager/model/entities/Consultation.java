@@ -3,6 +3,7 @@ package br.edu.ufersa.hospital_manager.model.entities;
 import java.time.LocalDate;
 
 public class Consultation {
+    private long id;
     private Patient patient;
     private Doctor doctor;
     private LocalDate date;
@@ -17,6 +18,12 @@ public class Consultation {
         this.medicalRecord = null; // medical record will be created after consultation is completed
     }
 
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
     public Patient getPatient() {
         return patient;
     }

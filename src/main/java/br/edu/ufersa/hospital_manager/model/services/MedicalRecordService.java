@@ -1,7 +1,6 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
@@ -60,7 +59,7 @@ public class MedicalRecordService {
 
     }
 
-    public MedicalRecord findByPatient(Patient patient) throws SQLException {
+    public ArrayList<MedicalRecord> findByPatient(Patient patient) throws SQLException {
         if (patient == null) {
             throw new RuntimeException("Patient cannot be null.");
         }
@@ -81,12 +80,5 @@ public class MedicalRecordService {
             throw new RuntimeException("Doctor not found.");
         }
         return medicalRecordDAO.readByDoctor(doctor);
-    }
-
-    public MedicalRecord findByDate(LocalDate date) throws SQLException {
-        if (date == null) {
-            throw new RuntimeException("Date cannot be null.");
-        }
-        return medicalRecordDAO.readByDate(date); 
     }
 }
