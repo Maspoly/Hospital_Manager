@@ -7,12 +7,14 @@ public class Consultation {
     private Doctor doctor;
     private LocalDate date;
     private String status; // "SCHEDULED", "COMPLETED" ou "CANCELED"
+    private MedicalRecord medicalRecord; // reference to the medical record created from this consultation
 
     public Consultation(Patient patient, Doctor doctor, LocalDate date, String status) {
         setPatient(patient);
         setDoctor(doctor);
         setDate(date);
         setStatus(status);
+        this.medicalRecord = null; // medical record will be created after consultation is completed
     }
 
     public Patient getPatient() {
@@ -25,6 +27,17 @@ public class Consultation {
             return;
         }
         this.patient = patient;
+    }
+
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
+    }
+
+    public void setMedicalRecord(MedicalRecord medicalRecord) throws RuntimeException {
+        if (medicalRecord == null) {
+            throw new RuntimeException("Medical record cannot be null.");
+        }
+        this.medicalRecord = medicalRecord;
     }
 
     public Doctor getDoctor() {
