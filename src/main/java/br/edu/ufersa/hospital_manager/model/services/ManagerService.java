@@ -14,8 +14,17 @@ public class ManagerService implements FindServices<Manager> {
         this.managerDAO = new ManagerDAO();
     }
 
+    // ─── Doctor Management ────────────────────────────────────────────────────
+
+    // Only managers can register doctors.
+    // CPF and council code must be unique.
     public void registerDoctor(Doctor doctor) throws SQLException {
         DoctorDAO doctorDAO = new DoctorDAO();
+
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
+        }
+
         if (doctorDAO.readByCPF(doctor.getCPF()) != null) {
             throw new RuntimeException("A doctor with this CPF already exists.");
         }
@@ -27,13 +36,25 @@ public class ManagerService implements FindServices<Manager> {
         doctorDAO.create(doctor);
     }
 
+    // Removes a doctor from the system.
     public void removeDoctor(Doctor doctor) throws SQLException {
         DoctorDAO doctorDAO = new DoctorDAO();
-        if (doctor != null) {
-            doctorDAO.delete(doctor);
+
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
         }
+
+        if (doctorDAO.readById(doctor.getId()) == null) {
+            throw new RuntimeException("Doctor not found.");
+        }
+
+        doctorDAO.delete(doctor);
     }
 
+    // ─── Manager Management ───────────────────────────────────────────────────
+
+    // Registers a new manager.
+    // CPF must be unique.
     public void registerManager(Manager manager) throws SQLException {
         if (managerDAO.readByCPF(manager.getCPF()) != null) {
             throw new RuntimeException("A manager with this CPF already exists.");
@@ -42,25 +63,37 @@ public class ManagerService implements FindServices<Manager> {
         managerDAO.create(manager);
     }
 
+    // Removes a manager from the system.
     public void removeManager(Manager manager) throws SQLException {
-        if (manager != null) {
-            managerDAO.delete(manager);
+        if (manager == null) {
+            throw new RuntimeException("Manager cannot be null.");
         }
-    }
 
-    public void updateManager(Manager manager) throws SQLException {
         if (managerDAO.readById(manager.getId()) == null) {
             throw new RuntimeException("Manager not found.");
         }
 
-        if (manager != null) {
-            managerDAO.update(manager);
-        }
+        managerDAO.delete(manager);
     }
+
+    // Updates manager information.
+    public void updateManager(Manager manager) throws SQLException {
+        if (manager == null) {
+            throw new RuntimeException("Manager cannot be null.");
+        }
+
+        if (managerDAO.readById(manager.getId()) == null) {
+            throw new RuntimeException("Manager not found.");
+        }
+
+        managerDAO.update(manager);
+    }
+
+    // ─── Searches ─────────────────────────────────────────────────────────────
 
     @Override
     public Manager findByCPF(String cpf) throws SQLException {
-        if (cpf == null || cpf.isEmpty()) {
+        if (cpf == null || cpf.isBlank()) {
             throw new RuntimeException("CPF cannot be null or empty.");
         }
         return managerDAO.readByCPF(cpf);
@@ -76,10 +109,9 @@ public class ManagerService implements FindServices<Manager> {
 
     @Override
     public Manager findByName(String name) throws SQLException {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             throw new RuntimeException("Name cannot be null or empty.");
         }
         return managerDAO.readByName(name);
     }
-
 }

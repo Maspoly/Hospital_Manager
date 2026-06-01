@@ -16,26 +16,9 @@ public class MedicalRecordService {
         this.medicalRecordDAO = new MedicalRecordDAO();
     }
 
-    // Update medical record
-    public void updateMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
-        if (medicalRecordDAO.readById(medicalRecord.getId()) == null) {
-            throw new RuntimeException("Medical record not found.");
-        }
+    // ─── Registration ─────────────────────────────────────────────────────────
 
-        if (medicalRecord != null) {
-            medicalRecordDAO.update(medicalRecord);
-        }
-    }
-
-    // Find medical record by ID
-    public MedicalRecord findById(long id) throws SQLException {
-        if (id <= 0) {
-            throw new RuntimeException("ID must be a positive number.");
-        }
-        return medicalRecordDAO.readById(id);
-    }
-
-    // Register new medical record
+    // Creates a new medical record.
     public void registerMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
         if (medicalRecord == null) {
             throw new RuntimeException("Medical record cannot be null.");
@@ -46,8 +29,22 @@ public class MedicalRecordService {
         }
         medicalRecordDAO.create(medicalRecord);
     }
-    
-    // Remove medical record
+
+    // ─── Update And Removal ───────────────────────────────────────────────────
+
+    // Updates an existing medical record.
+    public void updateMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
+        if (medicalRecord == null) {
+            throw new RuntimeException("Medical record cannot be null.");
+        }
+        if (medicalRecordDAO.readById(medicalRecord.getId()) == null) {
+            throw new RuntimeException("Medical record not found.");
+        }
+
+        medicalRecordDAO.update(medicalRecord);
+    }
+
+    // Permanently removes a medical record from the database.
     public void removeMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
         if (medicalRecord == null) {
             throw new RuntimeException("Medical record cannot be null.");
@@ -60,11 +57,20 @@ public class MedicalRecordService {
 
     }
 
+    // ─── Searches ─────────────────────────────────────────────────────────────
+
+    public MedicalRecord findById(long id) throws SQLException {
+        if (id <= 0) {
+            throw new RuntimeException("ID must be a positive number.");
+        }
+        return medicalRecordDAO.readById(id);
+    }
+
     public MedicalRecord findByPatient(Patient patient) throws SQLException {
         if (patient == null) {
             throw new RuntimeException("Patient cannot be null.");
         }
-        // Verify if the patient has a valid ID before querying the database
+
         if (patient.getId() <= 0) {
             throw new RuntimeException("Patient not found.");
         }
@@ -76,14 +82,14 @@ public class MedicalRecordService {
         if (doctor == null) {
             throw new RuntimeException("Doctor cannot be null.");
         }
-        // Verify if the doctor has a valid ID before querying the database
+
         if (doctor.getId() <= 0) {
             throw new RuntimeException("Doctor not found.");
         }
         return medicalRecordDAO.readByDoctor(doctor);
     }
 
-    public MedicalRecord findByDate(LocalDate date) throws SQLException {
+    public ArrayList<MedicalRecord> findByDate(LocalDate date) throws SQLException {
         if (date == null) {
             throw new RuntimeException("Date cannot be null.");
         }

@@ -4,10 +4,10 @@ public abstract class Person {
     private long id; // unique identifier for database purposes
     private String name;
     private String cpf;
-    private String address;
+    private Address address;
 
     // basic constructor
-    public Person(String name, String cpf, String address) throws RuntimeException {
+    public Person(String name, String cpf, Address address) throws RuntimeException {
         id = 0; // default value, should be set by database or service layer
         setName(name);
         setCPF(cpf);
@@ -36,9 +36,9 @@ public abstract class Person {
         this.cpf = cpf;
     }
 
-    public void setAddress(String address) throws RuntimeException {
-        if (address == null || address.trim().isEmpty()) {
-            throw new RuntimeException("Address cannot be empty.");
+    public void setAddress(Address address) throws RuntimeException {
+        if (address == null) {
+            throw new RuntimeException("Address cannot be null.");
         }
         this.address = address;
     }
@@ -52,7 +52,7 @@ public abstract class Person {
         return cpf;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 

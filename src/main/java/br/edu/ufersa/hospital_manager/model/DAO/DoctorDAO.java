@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.util.Connector;
 
@@ -19,9 +20,9 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         this.connection = Connector.getConnection();
     }
     
-    public static final String INSERT_SQL = "INSERT INTO doctor (name, cpf, adress, consultation_value, council_code) VALUES (?, ?, ?, ?, ?);";
+    public static final String INSERT_SQL = "INSERT INTO doctor (name, cpf, address_id, consultation_value, council_code) VALUES (?, ?, ?, ?, ?);";
     public static final String  DELETE_SQL = "DELETE FROM doctor WHERE id = ?;";
-    public static final String  UPDATE_SQL = "UPDATE doctor SET name = ?, cpf = ?, adress = ?, consultation_value = ?, council_code = ? WHERE id = ?;";
+    public static final String  UPDATE_SQL = "UPDATE doctor SET name = ?, cpf = ?, address_id = ?, consultation_value = ?, council_code = ? WHERE id = ?;";
     public static final String  SELECT_ALL_SQL = "SELECT * FROM doctor;";
     public static final String  SELECT_BY_CPF_SQL = "SELECT * FROM doctor WHERE cpf = ?;";
     public static final String  SELECT_BY_ID_SQL = "SELECT * FROM doctor WHERE id = ?;";
@@ -31,18 +32,30 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     
     @Override
     public void create(Doctor entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+
+        AddressDAO addressDAO = new AddressDAO();
+
+        if (entity.getAddress().getId() <= 0) {
+            addressDAO.create(entity.getAddress());
+        }
+
+        PreparedStatement ps = connection.prepareStatement(
+                INSERT_SQL,
+                PreparedStatement.RETURN_GENERATED_KEYS
+        );
+
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
-        ps.setString(3, entity.getAddress());
+        ps.setLong(3, entity.getAddress().getId());
         ps.setFloat(4, entity.getConsultationValue());
         ps.setString(5, entity.getCouncilCode());
+
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
 
         if (rs.next()) {
-            entity.setId(rs.getLong(1)); // set the generated ID back to the entity
+            entity.setId(rs.getLong(1));
         }
     }
 
@@ -60,11 +73,17 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
         ArrayList<Doctor> doctors = new ArrayList<>();
 
+        AddressDAO addressDAO = new AddressDAO();
+
         while (rs.next()) {
+
+            Address address =
+                    addressDAO.readById(rs.getLong("address_id"));
+
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
-                    rs.getString("adress"),
+                    address,
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );
@@ -82,7 +101,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
-        ps.setString(3, entity.getAddress());
+        ps.setLong(3, entity.getAddress().getId());
         ps.setFloat(4, entity.getConsultationValue());
         ps.setString(5, entity.getCouncilCode());
         ps.setLong(6, entity.getId());
@@ -99,19 +118,16 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            Doctor doctor = new Doctor(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("adress"),
-                    rs.getFloat("consultation_value"),
-                    rs.getString("council_code")
-            );
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), address, rs.getFloat("consultation_value"), rs.getString("council_code"));
 
             doctor.setId(rs.getLong("id"));
             return doctor;
         }
 
-        throw new SQLException("Doctor with ID " + id + " not found.");
+        return null;
     }
 
     public Doctor readByCPF(String cpf) throws SQLException {
@@ -122,19 +138,16 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            Doctor doctor = new Doctor(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("adress"),
-                    rs.getFloat("consultation_value"),
-                    rs.getString("council_code")
-            );
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), address, rs.getFloat("consultation_value"), rs.getString("council_code"));
 
             doctor.setId(rs.getLong("id"));
             return doctor;
         }
 
-        throw new SQLException("Doctor with CPF " + cpf + " not found.");
+        return null;
     }
 
     public Doctor readByName(String name) throws SQLException {
@@ -145,19 +158,16 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            Doctor doctor = new Doctor(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("adress"),
-                    rs.getFloat("consultation_value"),
-                    rs.getString("council_code")
-            );
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), address, rs.getFloat("consultation_value"), rs.getString("council_code"));
 
             doctor.setId(rs.getLong("id"));
             return doctor;
         }
 
-        throw new SQLException("Doctor with name " + name + " not found.");
+        return null;
     }
 
     public Doctor readByCouncilCode(String councilCode) throws SQLException {
@@ -168,18 +178,15 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            Doctor doctor = new Doctor(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    rs.getString("adress"),
-                    rs.getFloat("consultation_value"),
-                    rs.getString("council_code")
-            );
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(rs.getString("name"), rs.getString("cpf"), address, rs.getFloat("consultation_value"), rs.getString("council_code"));
 
             doctor.setId(rs.getLong("id"));
             return doctor;
         }
 
-        throw new SQLException("Doctor with council code " + councilCode + " not found.");
+        return null;
     }
 }

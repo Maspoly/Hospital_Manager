@@ -6,14 +6,14 @@ public class Doctor extends Person {
     private String councilCode;
 
     // Constructor: initializes the doctor with basic data
-    public Doctor(String name, String cpf, String address, float consultationValue, String councilCode) throws RuntimeException {
+    public Doctor(String name, String cpf, Address address, float consultationValue, String councilCode) throws RuntimeException {
         super(name, cpf, address);
         setConsultationValue(consultationValue); // set consultation value
         setCouncilCode(councilCode); // validate and set council code
     }
 
     // Constructor: initializes the doctor with default consultation value
-    public Doctor(String name, String cpf, String address, String councilCode) throws RuntimeException{
+    public Doctor(String name, String cpf, Address address, String councilCode) throws RuntimeException{
         super(name, cpf, address);
         setConsultationValue(100.0f); // set default consultation value
         setCouncilCode(councilCode); // validate and set council code

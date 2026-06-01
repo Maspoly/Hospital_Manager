@@ -13,18 +13,23 @@ public class DoctorService implements FindServices<Doctor> {
         this.doctorDAO = new DoctorDAO();
     }
 
+    // ─── Update ───────────────────────────────────────────────────────────────
+
+    // Updates doctor's information only if the doctor already exists.
     public void updateDoctor(Doctor doctor) throws SQLException {
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
+        }
         if (doctorDAO.readById(doctor.getId()) == null) {
             throw new RuntimeException("Doctor not found.");
         }
-
-        if (doctor != null) {
-            doctorDAO.update(doctor);
-        }
+        doctorDAO.update(doctor);
     }
 
+    // ─── Searches ─────────────────────────────────────────────────────────────
+
     @Override
-    public Doctor findById(long id) throws Exception {
+    public Doctor findById(long id) throws SQLException {
         if (id <= 0) {
             throw new RuntimeException("ID must be a positive number.");
         }
@@ -32,31 +37,36 @@ public class DoctorService implements FindServices<Doctor> {
     }
 
     @Override
-    public Doctor findByName(String name) throws Exception {
-        if (name == null || name.isEmpty()) {
+    public Doctor findByName(String name) throws SQLException {
+        if (name == null || name.isBlank()) {
             throw new RuntimeException("Name cannot be null or empty.");
         }
         return doctorDAO.readByName(name);
     }
 
     @Override
-    public Doctor findByCPF(String cpf) throws Exception {
-        if (cpf == null || cpf.isEmpty()) {
+    public Doctor findByCPF(String cpf) throws SQLException {
+        if (cpf == null || cpf.isBlank()) {
             throw new RuntimeException("CPF cannot be null or empty.");
         }
         return doctorDAO.readByCPF(cpf);
     }
 
+    // ─── Medical Records ──────────────────────────────────────────────────────
+
+    // Doctor writes a new medical record through MedicalRecordService.
     public void registerMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
         MedicalRecordService medicalRecordService = new MedicalRecordService();
         medicalRecordService.registerMedicalRecord(medicalRecord);
     }
 
+    // Doctor updates an existing medical record through MedicalRecordService.
     public void updateMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
         MedicalRecordService medicalRecordService = new MedicalRecordService();
         medicalRecordService.updateMedicalRecord(medicalRecord);
     }
 
+    // Doctor removes a medical record through MedicalRecordService.
     public void deleteMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
         MedicalRecordService medicalRecordService = new MedicalRecordService();
         medicalRecordService.removeMedicalRecord(medicalRecord);
