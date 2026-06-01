@@ -1,81 +1,71 @@
 package br.edu.ufersa.hospital_manager.model.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Consultation {
     private long id;
+    
     private Patient patient;
     private Doctor doctor;
-    private LocalDate date;
+    private LocalDateTime dateTime;
     private String status; // "SCHEDULED", "COMPLETED" ou "CANCELED"
-    private MedicalRecord medicalRecord; // reference to the medical record created from this consultation
-
-    public Consultation(Patient patient, Doctor doctor, LocalDate date, String status) {
+    
+    public Consultation(Patient patient, Doctor doctor, LocalDateTime dateTime, String status) {
+        id = 0; // ID will be set by the database when the consultation is registered
         setPatient(patient);
         setDoctor(doctor);
-        setDate(date);
+        setDateTime(dateTime);
         setStatus(status);
-        this.medicalRecord = null; // medical record will be created after consultation is completed
     }
-
     public long getId() {
         return id;
     }
-    public void setId(long id) {
+
+    public void setId(long id) throws RuntimeException {
+        if (id <= 0) {
+            throw new RuntimeException("ID must be a positive number.");
+        }
         this.id = id;
     }
+    
     public Patient getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(Patient patient) throws RuntimeException {
         if (patient == null) {
-            System.out.println("Patient cannot be null.");
-            return;
+            throw new RuntimeException("Patient cannot be null.");
         }
         this.patient = patient;
-    }
-
-    public MedicalRecord getMedicalRecord() {
-        return medicalRecord;
-    }
-
-    public void setMedicalRecord(MedicalRecord medicalRecord) throws RuntimeException {
-        if (medicalRecord == null) {
-            throw new RuntimeException("Medical record cannot be null.");
-        }
-        this.medicalRecord = medicalRecord;
     }
 
     public Doctor getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(Doctor doctor) {
+    public void setDoctor(Doctor doctor) throws RuntimeException {
         if (doctor == null) {
-            System.out.println("Doctor cannot be null.");
-            return;
+            throw new RuntimeException("Doctor cannot be null.");
         }
         this.doctor = doctor;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDate date) {
-        if (date == null) {
-            System.out.println("Date cannot be null.");
-            return;
+    public void setDateTime(LocalDateTime dateTime) throws RuntimeException {
+        if (dateTime == null) {
+            throw new RuntimeException("Date and time cannot be null.");
         }
-        this.date = date;
+        this.dateTime = dateTime;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String status) throws RuntimeException {
         String[] valid = {"SCHEDULED", "COMPLETED", "CANCELED"};
         boolean ok = false;
         if (status != null) {
@@ -87,8 +77,7 @@ public class Consultation {
             }
         }
         if (!ok) {
-            System.out.println("Status must be SCHEDULED, COMPLETED or CANCELED.");
-            return;
+            throw new RuntimeException("Status must be SCHEDULED, COMPLETED or CANCELED.");
         }
         this.status = status.toUpperCase();
     }
