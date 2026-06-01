@@ -17,10 +17,6 @@ public class Patient extends Person {
     }
 
     public void setMedicalRecord(MedicalRecord medicalRecord) {
-        if (medicalRecord == null) {
-            System.out.println("Medical record cannot be null.");
-            return;
-        }
         this.medicalRecord = medicalRecord;
     }
 

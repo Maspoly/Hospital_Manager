@@ -16,70 +16,70 @@ public class ManagerService implements FindServices<Manager> {
 
     public void registerDoctor(Doctor doctor) throws SQLException {
         DoctorDAO doctorDAO = new DoctorDAO();
-        if (doctorDAO.readByCPF(doctor.getCPF()) != null) {
-            throw new RuntimeException("A doctor with this CPF already exists.");
-        }
 
-        if (doctorDAO.readByCouncilCode(doctor.getCouncilCode()) != null) {
+        // DAO lança SQLException quando NÃO encontra.
+        // Se NÃO lançou = já existe = bloqueamos.
+        try {
+            doctorDAO.readByCPF(doctor.getCPF());
+            throw new RuntimeException("A doctor with this CPF already exists.");
+        } catch (SQLException ignored) { /* não encontrou = pode continuar */ }
+
+        try {
+            doctorDAO.readByCouncilCode(doctor.getCouncilCode());
             throw new RuntimeException("A doctor with this council code already exists.");
-        }
+        } catch (SQLException ignored) { /* não encontrou = pode continuar */ }
 
         doctorDAO.create(doctor);
     }
 
     public void removeDoctor(Doctor doctor) throws SQLException {
+        if (doctor == null) throw new RuntimeException("Doctor cannot be null.");
         DoctorDAO doctorDAO = new DoctorDAO();
-        if (doctor != null) {
-            doctorDAO.delete(doctor);
-        }
+        doctorDAO.delete(doctor);
     }
 
     public void registerManager(Manager manager) throws SQLException {
-        if (managerDAO.readByCPF(manager.getCPF()) != null) {
+        try {
+            managerDAO.readByCPF(manager.getCPF());
             throw new RuntimeException("A manager with this CPF already exists.");
-        }
+        } catch (SQLException ignored) { /* não encontrou = pode continuar */ }
 
         managerDAO.create(manager);
     }
 
     public void removeManager(Manager manager) throws SQLException {
-        if (manager != null) {
-            managerDAO.delete(manager);
-        }
+        if (manager == null) throw new RuntimeException("Manager cannot be null.");
+        managerDAO.delete(manager);
     }
 
     public void updateManager(Manager manager) throws SQLException {
-        if (managerDAO.readById(manager.getId()) == null) {
+        if (manager == null) throw new RuntimeException("Manager cannot be null.");
+        // readById lança SQLException se não encontrar
+        try {
+            managerDAO.readById(manager.getId());
+        } catch (SQLException e) {
             throw new RuntimeException("Manager not found.");
         }
-
-        if (manager != null) {
-            managerDAO.update(manager);
-        }
+        managerDAO.update(manager);
     }
 
     @Override
     public Manager findByCPF(String cpf) throws SQLException {
-        if (cpf == null || cpf.isEmpty()) {
+        if (cpf == null || cpf.isEmpty())
             throw new RuntimeException("CPF cannot be null or empty.");
-        }
-        return managerDAO.readByCPF(cpf);
+        return managerDAO.readByCPF(cpf); // lança SQLException se não encontrar
     }
 
     @Override
     public Manager findById(long id) throws SQLException {
-        if (id <= 0) {
-            throw new RuntimeException("ID must be a positive number.");
-        }
+        if (id <= 0) throw new RuntimeException("ID must be a positive number.");
         return managerDAO.readById(id);
     }
 
     @Override
     public Manager findByName(String name) throws SQLException {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty())
             throw new RuntimeException("Name cannot be null or empty.");
-        }
         return managerDAO.readByName(name);
     }
-
 }

@@ -15,7 +15,10 @@ public class Connector {
         if (connection == null){
             try{
                 connection = DriverManager.getConnection(URL, USER, PASS);
-            } catch (SQLException e){e.printStackTrace();}
+                
+            } catch (SQLException e){
+                System.out.println("CONNECTION FAILED: " + e.getMessage());
+                e.printStackTrace();}
         }
         return connection;
     }
