@@ -53,7 +53,7 @@ public abstract class Person {
     }
 
     public Address getAddress() {
-        return address;
+        return this.address;
     }
 
     public long getId() {

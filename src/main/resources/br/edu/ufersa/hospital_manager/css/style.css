@@ -1,0 +1,118 @@
+/* ===================== ROOT ===================== */
+.root-background {
+    -fx-background-color: #eef2f8;
+}
+
+/* ===================== CARD ===================== */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 20, 0, 0, 6);
+}
+
+/* ===================== LOGO ===================== */
+.logo-circle {
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+    -fx-min-width: 60;
+    -fx-min-height: 60;
+    -fx-max-width: 60;
+    -fx-max-height: 60;
+}
+
+.logo-circle-inner {
+    -fx-fill: #dbeafe;
+}
+
+.logo-icon {
+    -fx-font-size: 22px;
+    -fx-text-fill: #2563eb;
+    -fx-font-weight: bold;
+}
+
+/* ===================== TITLES ===================== */
+.login-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.login-subtitle {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+    -fx-padding: 0 0 8 0;
+}
+
+/* ===================== FORM FIELDS ===================== */
+.field-group {
+    -fx-pref-width: 320.0;
+}
+
+.field-label {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.text-input {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    -fx-pref-height: 38px;
+}
+
+.text-input:focused {
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 6, 0, 0, 0);
+}
+
+/* ===================== BUTTONS ===================== */
+.btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1e40af;
+}
+
+/* ===================== INFO BOX ===================== */
+.info-box {
+    -fx-background-color: #eff6ff;
+    -fx-background-radius: 8;
+}
+
+.info-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.info-text {
+    -fx-text-fill: #4b5563;
+    -fx-font-size: 12px;
+}
+
+/* ===================== LINK ===================== */
+.link-label {
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.link-label:hover {
+    -fx-underline: true;
+}
