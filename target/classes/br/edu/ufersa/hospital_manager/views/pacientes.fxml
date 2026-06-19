@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane styleClass="app-root" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.PacientesController">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="sidebar" BorderPane.alignment="CENTER">
+
+            <!-- Cabeçalho -->
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" styleClass="nav-item" onAction="#goDashboard" maxWidth="Infinity" />
+                <Button text="Médicos" styleClass="nav-item" onAction="#goMedicos" maxWidth="Infinity" />
+                <Button text="Pacientes" styleClass="nav-item-active" onAction="#goPacientes" maxWidth="Infinity" />
+                <Button text="Consultas" styleClass="nav-item" onAction="#goConsultas" maxWidth="Infinity" />
+                <Button text="Busca" styleClass="nav-item" onAction="#goBusca" maxWidth="Infinity" />
+                <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Rodapé -->
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <VBox styleClass="content-area" spacing="22">
+
+            <HBox alignment="CENTER_LEFT">
+                <VBox spacing="4">
+                    <Label text="Gerenciamento de Pacientes" styleClass="page-title" />
+                    <Label text="Cadastre e gerencie os pacientes da clínica" styleClass="page-subtitle" />
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="+ Novo Paciente" styleClass="btn-accent" onAction="#onNovoPaciente" />
+            </HBox>
+
+            <VBox styleClass="surface-card" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tablePacientes" styleClass="data-table" VBox.vgrow="ALWAYS">
+                    <columnResizePolicy>
+                        <javafx.scene.control.TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                    <columns>
+                        <TableColumn fx:id="colNome" text="NOME" prefWidth="180" />
+                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="140" />
+                        <TableColumn fx:id="colEndereco" text="ENDEREÇO" prefWidth="220" />
+                        <TableColumn fx:id="colProntuarios" text="PRONTUÁRIOS" prefWidth="120" />
+                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="100" />
+                    </columns>
+                    <placeholder>
+                        <Label text="Nenhum paciente cadastrado. Clique em &quot;+ Novo Paciente&quot; para começar." />
+                    </placeholder>
+                </TableView>
+            </VBox>
+
+        </VBox>
+    </center>
+</BorderPane>

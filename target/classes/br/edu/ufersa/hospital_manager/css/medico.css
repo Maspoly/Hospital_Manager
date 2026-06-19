@@ -1,0 +1,457 @@
+/* =========================================================
+   PORTAL DO MÉDICO — STYLESHEET
+   ========================================================= */
+
+.medico-root-background {
+    -fx-background-color: #eef2f8;
+}
+
+/* ===================== LOGIN MÉDICO ===================== */
+
+.medico-login-logo-circle {
+    -fx-fill: #dbeafe;
+}
+
+.medico-login-logo-icon {
+    -fx-font-size: 24px;
+    -fx-text-fill: #2563eb;
+    -fx-font-weight: bold;
+}
+
+.medico-login-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.medico-login-subtitle {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13px;
+}
+
+.medico-login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 18, 0, 0, 6);
+}
+
+.medico-login-card-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.medico-field-label {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.medico-text-input {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    -fx-pref-height: 38px;
+}
+
+.medico-text-input:focused {
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 6, 0, 0, 0);
+}
+
+.medico-btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+}
+
+.medico-btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.medico-btn-primary:pressed {
+    -fx-background-color: #1e40af;
+}
+
+.medico-info-box {
+    -fx-background-color: #eff6ff;
+    -fx-background-radius: 8;
+}
+
+.medico-info-title {
+    -fx-text-fill: #1d4ed8;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.medico-info-text {
+    -fx-text-fill: #1d4ed8;
+    -fx-font-size: 12px;
+}
+
+.medico-link-back {
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 12.5px;
+    -fx-cursor: hand;
+}
+
+.medico-link-back:hover {
+    -fx-underline: true;
+}
+
+/* =========================================================
+   APP SHELL (sidebar médico + conteúdo)
+   ========================================================= */
+
+.medico-app-root {
+    -fx-background-color: #f3f4f9;
+}
+
+/* ---------- Sidebar (clara, diferente do admin) ---------- */
+.medico-sidebar {
+    -fx-background-color: white;
+    -fx-pref-width: 244px;
+    -fx-min-width: 244px;
+    -fx-border-color: transparent #e5e7eb transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.medico-sidebar-header {
+    -fx-padding: 20 20 16 20;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.medico-sidebar-logo-badge {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 9;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
+    -fx-alignment: CENTER;
+}
+
+.medico-sidebar-logo-glyph {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+}
+
+.medico-sidebar-brand {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.medico-sidebar-brand-sub {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 10.5px;
+}
+
+/* ---------- Profile block (avatar + nome + CRM) ---------- */
+.medico-profile-box {
+    -fx-padding: 14 20 14 20;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.medico-avatar-circle {
+    -fx-fill: #2563eb;
+}
+
+.medico-avatar-initial {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.medico-profile-name {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+}
+
+.medico-profile-crm {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11px;
+}
+
+/* ---------- Nav ---------- */
+.medico-nav-list {
+    -fx-padding: 12 12 12 12;
+    -fx-spacing: 3;
+}
+
+.medico-nav-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 9;
+    -fx-text-fill: #4b5563;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 10 14 10 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 10;
+}
+
+.medico-nav-item:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.medico-nav-item-active {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 9;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 14 10 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 10;
+}
+
+/* ---------- Sair (logout) ---------- */
+.medico-logout-box {
+    -fx-padding: 16 20 18 20;
+}
+
+.medico-btn-logout {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 8;
+}
+
+.medico-btn-logout:hover {
+    -fx-underline: true;
+}
+
+/* ---------- Content area ---------- */
+.medico-content-area {
+    -fx-background-color: #f3f4f9;
+    -fx-padding: 30 34 30 34;
+}
+
+.medico-page-title {
+    -fx-text-fill: #111827;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+
+.medico-page-subtitle {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13.5px;
+}
+
+/* ---------- Stat mini-cards (Meus Pacientes) ---------- */
+.medico-stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 16 18 16 18;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.05), 10, 0, 0, 3);
+}
+
+.medico-stat-icon-box {
+    -fx-background-radius: 10;
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-max-width: 42;
+    -fx-max-height: 42;
+}
+
+.medico-stat-icon-blue   { -fx-background-color: #dbeafe; }
+.medico-stat-icon-green  { -fx-background-color: #d1fae5; }
+.medico-stat-icon-purple { -fx-background-color: #ede9fe; }
+
+.medico-stat-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.medico-stat-value {
+    -fx-text-fill: #111827;
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+
+/* ---------- Generic surface card ---------- */
+.medico-surface-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.05), 12, 0, 0, 4);
+}
+
+.medico-panel-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.medico-form-label {
+    -fx-text-fill: #374151;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 700;
+}
+
+.medico-combo-input, .medico-date-input, .medico-search-input, .medico-textarea {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+}
+
+.medico-combo-input, .medico-date-input, .medico-search-input {
+    -fx-pref-height: 38px;
+}
+
+.medico-combo-input:focused, .medico-date-input:focused, .medico-search-input:focused, .medico-textarea:focused {
+    -fx-border-color: #2563eb;
+}
+
+.medico-empty-state-icon-circle {
+    -fx-fill: #f3f4f6;
+}
+
+.medico-empty-state-title {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 13.5px;
+}
+
+/* ---------- New record form header strip ---------- */
+.medico-form-header-strip {
+    -fx-background-color: #eff6ff;
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 16 20 16 20;
+}
+
+.medico-form-header-icon-box {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 9;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
+    -fx-alignment: CENTER;
+}
+
+.medico-form-header-icon-glyph {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+}
+
+.medico-form-header-title {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.medico-required-asterisk {
+    -fx-text-fill: #dc2626;
+}
+
+.medico-char-counter {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11.5px;
+}
+
+.medico-btn-save {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+}
+
+.medico-btn-save:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.medico-btn-cancel {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4b5563;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 9 16 9 16;
+    -fx-cursor: hand;
+}
+
+.medico-btn-cancel:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.medico-tip-box {
+    -fx-background-color: #eff6ff;
+    -fx-background-radius: 8;
+}
+
+.medico-tip-text {
+    -fx-text-fill: #1d4ed8;
+    -fx-font-size: 11.5px;
+}
+
+/* ---------- Patient list (Editar Dados) ---------- */
+.medico-patient-list-item {
+    -fx-background-color: transparent;
+    -fx-padding: 12 14 12 14;
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.medico-patient-list-item:hover {
+    -fx-background-color: #f8fafc;
+}
+
+.medico-patient-list-item-selected {
+    -fx-background-color: #eff6ff;
+    -fx-padding: 12 14 12 14;
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-cursor: hand;
+}
+
+.medico-patient-name {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 600;
+}
+
+.medico-patient-detail {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 11.5px;
+}
+
+/* ---------- Info strips (Total / Dica / Importante) ---------- */
+.medico-strip {
+    -fx-background-radius: 10;
+    -fx-padding: 14 16 14 16;
+}
+
+.medico-strip-blue   { -fx-background-color: #eff6ff; }
+.medico-strip-green  { -fx-background-color: #ecfdf5; }
+.medico-strip-purple { -fx-background-color: #f5f3ff; }
+
+.medico-strip-text-blue   { -fx-text-fill: #1d4ed8; -fx-font-size: 12.5px; -fx-font-weight: 600; }
+.medico-strip-text-green  { -fx-text-fill: #047857; -fx-font-size: 12.5px; -fx-font-weight: 600; }
+.medico-strip-text-purple { -fx-text-fill: #6d28d9; -fx-font-size: 12.5px; -fx-font-weight: 600; }

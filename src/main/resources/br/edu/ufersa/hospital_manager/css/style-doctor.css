@@ -1,0 +1,107 @@
+.root{
+    -fx-background-color:#f5f6fa;
+}
+
+/* Sidebar */
+
+.sidebar{
+    -fx-pref-width:230;
+    -fx-background-color:white;
+    -fx-padding:10;
+    -fx-spacing:15;
+}
+
+/* Logo */
+
+.logo-title{
+    -fx-font-size:15;
+    -fx-font-weight:bold;
+}
+
+.logo-subtitle{
+    -fx-font-size:11;
+    -fx-text-fill:gray;
+}
+
+/* Menu */
+
+.button{
+    -fx-background-color:transparent;
+    -fx-alignment:CENTER_LEFT;
+    -fx-pref-width:200;
+    -fx-padding:10;
+}
+
+.menu-button:hover{
+    -fx-background-color:#eef2ff;
+    -fx-background-radius:8;
+}
+
+.menu-selected{
+    -fx-background-color:#2563eb;
+    -fx-text-fill:white;
+    -fx-background-radius:8;
+}
+
+.logout-button{
+    -fx-text-fill:red;
+}
+
+/* Títulos */
+
+.title{
+    -fx-font-size:32;
+    -fx-font-weight:bold;
+}
+
+.subtitle{
+    -fx-text-fill:gray;
+}
+
+/* Cards */
+
+.card{
+    -fx-background-color:white;
+    -fx-padding:15;
+    -fx-background-radius:10;
+    -fx-border-radius:10;
+    -fx-border-color:#dddddd;
+    -fx-pref-width:230;
+}
+
+.card-number{
+    -fx-font-size:28;
+    -fx-font-weight:bold;
+}
+
+/* Caixa seleção */
+
+.selection-box{
+    -fx-background-color:white;
+    -fx-padding:15;
+    -fx-background-radius:8;
+    -fx-border-color:#ddd;
+    -fx-border-radius:8;
+}
+
+.combo-box{
+    -fx-pref-height:40;
+}
+
+/* Área vazia */
+
+.record-area{
+    -fx-background-color:white;
+    -fx-border-color:#ddd;
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+}
+
+.empty-icon{
+    -fx-font-size:60;
+    -fx-text-fill:#cccccc;
+}
+
+.empty-text{
+    -fx-text-fill:#999999;
+}

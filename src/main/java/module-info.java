@@ -1,11 +1,10 @@
 module hospital.manager {
-    requires java.sql;
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
-    requires mysql.connector.j;
+    requires java.sql;
 
-    exports br.edu.ufersa.hospital_manager;
-
+    opens br.edu.ufersa.hospital_manager to javafx.fxml;
     opens br.edu.ufersa.hospital_manager.controllers to javafx.fxml;
+    opens br.edu.ufersa.hospital_manager.model.entities to javafx.fxml;
+    exports br.edu.ufersa.hospital_manager;
 }

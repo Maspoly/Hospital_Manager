@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.time.LocalDateTime;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
@@ -112,9 +111,9 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     }
 
-    public MedicalRecord readByDate(LocalDate date) throws SQLException {
+    public MedicalRecord readByDate(LocalDateTime date) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM medical_records WHERE date = ?;");
-        ps.setDate(1, java.sql.Date.valueOf(date));
+        ps.setDate(1, java.sql.Date.valueOf(date.toLocalDate()));
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.CadastroPacienteController"
+            stylesheets="@../css/style.css">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230">
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onDashboard"/>
+                <Button text="Médicos"    styleClass="nav-item"        maxWidth="Infinity" onAction="#onMedicos"/>
+                <Button text="Pacientes"  styleClass="nav-item-active" maxWidth="Infinity" onAction="#onPacientes"/>
+                <Button text="Consultas"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onConsultas"/>
+                <Button text="Busca"      styleClass="nav-item"        maxWidth="Infinity" onAction="#onBusca"/>
+                <Button text="Relatórios" styleClass="nav-item"        maxWidth="Infinity" onAction="#onRelatorios"/>
+            </VBox>
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox styleClass="content-area" spacing="24">
+
+                <VBox spacing="4">
+                    <Label text="Cadastrar Paciente" styleClass="page-title"/>
+                    <Label text="Preencha os dados do novo paciente da clínica" styleClass="page-subtitle"/>
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="0">
+                    <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+
+                    <!-- Dados pessoais -->
+                    <Label text="Dados pessoais" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Nome completo *" styleClass="form-label"/>
+                        <TextField fx:id="fldNome" promptText="Ex.: Maria Souza" styleClass="text-input"/>
+                    </VBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CPF *" styleClass="form-label"/>
+                            <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Data de nascimento *" styleClass="form-label"/>
+                            <DatePicker fx:id="fldDataNascimento" promptText="dd/mm/aaaa"
+                                        styleClass="date-input" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Sexo *" styleClass="form-label"/>
+                            <ComboBox fx:id="fldSexo" promptText="Selecione..."
+                                      styleClass="combo-input" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Estado civil" styleClass="form-label"/>
+                            <ComboBox fx:id="fldEstadoCivil" promptText="Selecione..."
+                                      styleClass="combo-input" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 24 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Telefone *" styleClass="form-label"/>
+                            <TextField fx:id="fldTelefone" promptText="(00) 90000-0000" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="E-mail" styleClass="form-label"/>
+                            <TextField fx:id="fldEmail" promptText="paciente@email.com" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Rua *" styleClass="form-label"/>
+                            <TextField fx:id="fldRua" promptText="Rua das Flores" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" prefWidth="120">
+                            <Label text="Número *" styleClass="form-label"/>
+                            <TextField fx:id="fldNumero" promptText="200" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="form-label"/>
+                            <TextField fx:id="fldBairro" promptText="Centro" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="form-label"/>
+                            <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" prefWidth="80">
+                            <Label text="Estado *" styleClass="form-label"/>
+                            <TextField fx:id="fldEstado" promptText="RN" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 24 0;">
+                        <VBox spacing="6" prefWidth="180">
+                            <Label text="CEP" styleClass="form-label"/>
+                            <TextField fx:id="fldCep" promptText="00000-000" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Dados clínicos -->
+                    <Label text="Dados clínicos" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Tipo sanguíneo" styleClass="form-label"/>
+                            <ComboBox fx:id="fldTipoSanguineo" promptText="Selecione..."
+                                      styleClass="combo-input" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Convênio" styleClass="form-label"/>
+                            <ComboBox fx:id="fldConvenio" promptText="Selecione..."
+                                      styleClass="combo-input" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Alergias conhecidas" styleClass="form-label"/>
+                        <TextArea fx:id="fldAlergias" promptText="Descreva alergias, se houver..."
+                                  styleClass="text-input" prefRowCount="3" wrapText="true"/>
+                    </VBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 32 0;">
+                        <Label text="Observações" styleClass="form-label"/>
+                        <TextArea fx:id="fldObservacoes" promptText="Informações adicionais relevantes..."
+                                  styleClass="text-input" prefRowCount="3" wrapText="true"/>
+                    </VBox>
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="btn-ghost" onAction="#onCancelar"/>
+                        <Button text="Salvar paciente" styleClass="btn-accent" onAction="#onSalvar"/>
+                    </HBox>
+                </VBox>
+
+                <Label fx:id="lblErro" text=""
+                       style="-fx-text-fill: #dc2626; -fx-font-size: 13px;"
+                       visible="false" managed="false"/>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

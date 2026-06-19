@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane styleClass="medico-app-root" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.MedicoPacientesController">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="medico-sidebar" BorderPane.alignment="CENTER">
+
+            <HBox styleClass="medico-sidebar-header" spacing="9" alignment="CENTER_LEFT">
+                <StackPane styleClass="medico-sidebar-logo-badge">
+                    <Label text="⚕" styleClass="medico-sidebar-logo-glyph" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label text="Portal Médico" styleClass="medico-sidebar-brand" />
+                    <Label text="Clínica Dr. Luiz" styleClass="medico-sidebar-brand-sub" />
+                </VBox>
+            </HBox>
+
+            <HBox styleClass="medico-profile-box" spacing="10" alignment="CENTER_LEFT">
+                <StackPane>
+                    <Circle radius="17" styleClass="medico-avatar-circle" />
+                    <Label fx:id="lblIniciais" text="D" styleClass="medico-avatar-initial" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label fx:id="lblNomeMedico" text="Dr. João Lourenço" styleClass="medico-profile-name" />
+                    <Label fx:id="lblCrmMedico" text="CRM-12345" styleClass="medico-profile-crm" />
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
+                <Button text="📄  Meus Pacientes" styleClass="medico-nav-item-active" onAction="#goMeusPacientes" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+                <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item" onAction="#goEditarDados" maxWidth="Infinity" />
+                <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox styleClass="medico-logout-box">
+                <Button text="⏻  Sair" styleClass="medico-btn-logout" onAction="#onSair" maxWidth="Infinity" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <VBox styleClass="medico-content-area" spacing="22">
+
+            <VBox spacing="4">
+                <Label text="Meus Pacientes" styleClass="medico-page-title" />
+                <Label text="Visualize e gerencie os prontuários dos seus pacientes" styleClass="medico-page-subtitle" />
+            </VBox>
+
+            <HBox spacing="18">
+                <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                    <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-blue" />
+                    <VBox spacing="2">
+                        <Label text="Total de pacientes" styleClass="medico-stat-label" />
+                        <Label fx:id="lblTotalPacientes" text="0" styleClass="medico-stat-value" />
+                    </VBox>
+                </HBox>
+
+                <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                    <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-green" />
+                    <VBox spacing="2">
+                        <Label text="Total de Prontuários" styleClass="medico-stat-label" />
+                        <Label fx:id="lblTotalProntuarios" text="0" styleClass="medico-stat-value" />
+                    </VBox>
+                </HBox>
+
+                <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                    <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-purple" />
+                    <VBox spacing="2">
+                        <Label text="Prontuários Selecionando" styleClass="medico-stat-label" />
+                        <Label fx:id="lblProntuariosSelecionados" text="0" styleClass="medico-stat-value" />
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <VBox styleClass="medico-surface-card" spacing="10">
+                <padding>
+                    <Insets top="18" bottom="18" left="20" right="20" />
+                </padding>
+                <Label text="Selecionar Paciente" styleClass="medico-panel-title" />
+                <ComboBox fx:id="cmbPaciente" styleClass="medico-combo-input" maxWidth="Infinity"
+                          promptText="Selecione um paciente para ver seus prontuários" />
+            </VBox>
+
+            <VBox styleClass="medico-surface-card" spacing="10" VBox.vgrow="ALWAYS" alignment="CENTER">
+                <VBox fx:id="boxProntuarios" spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="40" bottom="40" left="20" right="20" />
+                    </padding>
+                    <StackPane>
+                        <Circle radius="26" styleClass="medico-empty-state-icon-circle" />
+                        <Label text="👤" style="-fx-font-size: 20px; -fx-text-fill: #c1c5cc;" />
+                    </StackPane>
+                    <Label text="Selecione um paciente acima para visualizar seus prontuários" styleClass="medico-empty-state-title" />
+                </VBox>
+            </VBox>
+
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,10 +1,17 @@
 package br.edu.ufersa.hospital_manager;
 
+import br.edu.ufersa.hospital_manager.model.entities.*;
+import br.edu.ufersa.hospital_manager.model.services.*;
+import br.edu.ufersa.hospital_manager.model.DAO.*;
+import br.edu.ufersa.hospital_manager.util.Connector;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 public class Main {
+
     public static void main(String[] args) {
-<<<<<<< Updated upstream
-        System.out.println("Hello world!");
-=======
 
         System.out.println("═══════════════════════════════════════════");
         System.out.println("        HOSPITAL MANAGER - TESTS           ");
@@ -29,7 +36,7 @@ public class Main {
         ManagerService service = new ManagerService();
 
         // Register
-        Manager manager = new Manager("Alice Manager", "11122233344", new Address("Manager" ,"10" ,"St","",""));
+        Manager manager = new Manager("Alice Manager", "11122233344", new Address("Manager", "10", "sl", null, null));
         try {
             service.registerManager(manager);
             System.out.println("Manager registered: " + manager.getName() + " | ID: " + manager.getId());
@@ -64,7 +71,7 @@ public class Main {
 
         // Duplicate CPF (should throw)
         try {
-            service.registerManager(new Manager("Alice Clone", "11122233344", new Address("Clone", "","St","","")));
+            service.registerManager(new Manager("Alice Clone", "11122233344", new Address("Clone St", null, null, null, null)));
             System.out.println("Should have thrown for duplicate CPF.");
         } catch (Exception e) {
             System.out.println("Duplicate CPF blocked: " + e.getMessage());
@@ -81,18 +88,10 @@ public class Main {
         DoctorService service = new DoctorService();
 
         // Register via ManagerService (regra de negócio do projeto)
-        Doctor doctor = new Doctor("Dr. House", "12345678901", new Address("Baker",  "221B", "St","",""), 350.0f, "123456");
+        Doctor doctor = new Doctor("Dr. House", "12345678901", new Address("221B Baker St", null, null, null, null), 350.0f, "123456");
         try {
             managerService.registerDoctor(doctor);
             System.out.println("Doctor registered: " + doctor.getName() + " | ID: " + doctor.getId());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Find by council code
-        try {
-            Doctor found = service.findByCouncilCode("123456");
-            System.out.println("Found by council code: " + found.getName());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -116,23 +115,17 @@ public class Main {
         // Update — busca o objeto atualizado do banco antes de editar
         try {
             Doctor toUpdate = service.findByCPF("12345678901");
-            service.updateDoctor(new Doctor("Dr. House Jr.", "12345678901", new Address("Baker",  "221B", "St","",""), 400.0f, "123456"));
+            service.updateDoctor(new Doctor("Dr. House Jr.", "12345678901", new Address("221B Baker St", null, null, null, null), 400.0f, "123456"));
+            
             System.out.println("Doctor updated: " + toUpdate.getName());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        // List all
-        try {
-            ArrayList<Doctor> doctors = service.listAll();
-            System.out.println("Total doctors: " + doctors.size());
-        } catch (Exception e) {
-            System.out.println( e.getMessage());
-        }
 
         // Duplicate council code (should throw)
         try {
-            managerService.registerDoctor(new Doctor("Dr. Duplicate", "98765432100", new Address("Some",  "", "St","",""), 200.0f, "123456"));
+            managerService.registerDoctor(new Doctor("Dr. Duplicate", "98765432100", new Address("Some St", null, null, null, null), 200.0f, "123456"));
             System.out.println("Should have thrown for duplicate council code.");
         } catch (Exception e) {
             System.out.println("Duplicate council code blocked: " + e.getMessage());
@@ -149,7 +142,7 @@ public class Main {
 
         // Register without medical record
         try {
-            Patient patient = service.registerPatient(new Patient("John Doe", "44455566677", new Address("Patient",  "42", "Rd","",""), null));
+            Patient patient = service.registerPatient(new Patient("John Doe", "44455566677", new Address("Patient Rd 42", null, null, null, null)));
             System.out.println("Patient registered: " + patient.getName() + " | ID: " + patient.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -174,7 +167,7 @@ public class Main {
         // Update
         try {
             Patient toUpdate = service.findByCPF("44455566677");
-            service.updatePatient(new Patient("John Doe Updated", "44455566677", new Address("New Address",  "42", "St","",""), null));
+            service.updatePatient(new Patient("John Doe Updated", "44455566677", new Address("New Address 42", null, null, null, null)));
             System.out.println("Patient updated: " + toUpdate.getName());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -190,7 +183,7 @@ public class Main {
 
         // Duplicate CPF (should throw)
         try {
-            service.registerPatient(new Patient("John Clone", "44455566677", new Address("Clone",  "", "St","",""), null));
+            service.registerPatient(new Patient("John Clone", "44455566677", new Address("Clone St", null, null, null, null)));
             System.out.println("Should have thrown for duplicate CPF.");
         } catch (Exception e) {
             System.out.println("Duplicate CPF blocked: " + e.getMessage());
@@ -221,9 +214,10 @@ public class Main {
         }
 
         // Create
-        MedicalRecord record = null;
+        MedicalRecord record = new MedicalRecord("Patient has fever and headache.", doctor, patient);
+        
         try {
-            record = service.registerMedicalRecord("Patient has fever and headache.", doctor, patient);
+            service.registerMedicalRecord(record);
             System.out.println("Medical record registered | ID: " + record.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -240,7 +234,7 @@ public class Main {
 
         // Find by date
         try {
-            MedicalRecord found = service.findByDate(LocalDate.now());
+            MedicalRecord found = service.findByDate(LocalDateTime.now());
             System.out.println("Found by date: " + found.getObservation());
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
@@ -248,8 +242,8 @@ public class Main {
 
         // Update observation
         try {
-            MedicalRecord updated = service.updateObservation(record, "Patient has fever, headache and nausea.");
-            System.out.println("Observation updated: " + updated.getObservation());
+            service.updateObservation(record, "Patient has fever, headache and nausea.");
+            System.out.println("Observation updated: " + record.getObservation());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -264,7 +258,10 @@ public class Main {
 
         // Duplicate today (should throw)
         try {
-            service.registerMedicalRecord("Another record today.", doctor, patient);
+            service.registerMedicalRecord(new MedicalRecord(
+                "Another record today.",
+                doctor,
+                patient));
             System.out.println("Should have thrown for duplicate record today.");
         } catch (Exception e) {
             System.out.println("Duplicate record today blocked: " + e.getMessage());
@@ -297,8 +294,8 @@ public class Main {
         // Schedule
         Consultation consultation = null;
         try {
-            consultation = service.scheduleConsultation(patient, doctor, LocalDate.now().plusDays(3), "SCHEDULED");
-            System.out.println("Consultation scheduled | ID: " + consultation.getId() + " | Date: " + consultation.getDate());
+            consultation = service.scheduleConsultation(patient, doctor, LocalDateTime.now().plusDays(3), "SCHEDULED");
+            System.out.println("Consultation scheduled | ID: " + consultation.getId() + " | Date: " + consultation.getDateTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return;
@@ -331,7 +328,7 @@ public class Main {
         // Reschedule
         try {
             Consultation rescheduled = service.rescheduleConsultation(consultation, LocalDate.now().plusDays(7));
-            System.out.println("Rescheduled to: " + rescheduled.getDate());
+            System.out.println("Rescheduled to: " + rescheduled.getDateTime());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -363,7 +360,7 @@ public class Main {
 
         // Past date (should throw)
         try {
-            service.scheduleConsultation(patient, doctor, LocalDate.now().minusDays(1), "SCHEDULED");
+            service.scheduleConsultation(patient, doctor, LocalDateTime.now().minusDays(1), "SCHEDULED");
             System.out.println("Should have thrown for past date.");
         } catch (Exception e) {
             System.out.println("Past date blocked: " + e.getMessage());
@@ -378,6 +375,5 @@ public class Main {
         }
 
         System.out.println();
->>>>>>> Stashed changes
     }
 }

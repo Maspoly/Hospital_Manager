@@ -1,21 +1,20 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
-import br.edu.ufersa.hospital_manager.model.DAO.PatientDAO;
-import br.edu.ufersa.hospital_manager.model.entities.Consultation;
-import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.DAO.*;
+import br.edu.ufersa.hospital_manager.model.entities.*;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class PatientService implements FindServices<Patient> {
 
     private final PatientDAO patientDAO;
+    private final MedicalRecordDAO medicalRecordDAO;
 
     public PatientService() {
         this.patientDAO = new PatientDAO();
+        this.medicalRecordDAO = new MedicalRecordDAO();
     }
 
     // ─── Create ───────────────────────────────────────────────────────────────
@@ -49,17 +48,19 @@ public class PatientService implements FindServices<Patient> {
         return patient;
     }
 
-    public Patient assignMedicalRecord(Patient patient, MedicalRecord medicalRecord) throws SQLException {
+    public void assignMedicalRecord(Patient patient, MedicalRecord medicalRecord) throws SQLException {
         if (patient == null) throw new RuntimeException("Patient cannot be null.");
         if (medicalRecord == null) throw new RuntimeException("Medical record cannot be null.");
+    
 
-        if (patient.getMedicalRecord() != null) {
+        if (medicalRecordDAO.readByPatient(patient) != null) {
             throw new RuntimeException("Patient already has an active medical record.");
+        } else{
+            medicalRecord.setPatient(patient);
+            medicalRecordDAO.create(medicalRecord);
+            patientDAO.update(patient);
         }
-
-        patient.setMedicalRecord(medicalRecord);
-        patientDAO.update(patient);
-        return patient;
+        
     }
 
     // ─── Searches ─────────────────────────────────────────────────────────────
@@ -90,41 +91,55 @@ public class PatientService implements FindServices<Patient> {
 
     // ─── Consultations ────────────────────────────────────────────────────────
 
-    public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDate date, String status) {
+    public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDateTime date, String status) {
         if (patient == null) throw new RuntimeException("Patient cannot be null.");
         if (doctor == null)  throw new RuntimeException("Doctor cannot be null.");
         if (date == null)    throw new RuntimeException("Date cannot be null.");
-        if (date.isBefore(LocalDate.now())) throw new RuntimeException("Consultation date cannot be in the past.");
-
-        return patient.cadastrarConsulta(doctor, date, status);
+        if (date.isBefore(LocalDateTime.now())) throw new RuntimeException("Consultation date cannot be in the past.");
+        Consultation consultation = new Consultation(patient, doctor, date, status);
+        return consultation;
     }
 
     public Consultation updateConsultation(Patient patient, Consultation consultation,
-                                            LocalDate newDate, String newStatus) {
+                                            LocalDateTime newDate, String newStatus) {
+        ConsultationService consultationService = new ConsultationService();
+
         if (patient == null)      throw new RuntimeException("Patient cannot be null.");
         if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
         if (newDate == null)      throw new RuntimeException("New date cannot be null.");
 
-        if (consultation.getDate().isBefore(LocalDate.now())) {
+        if (consultation.getDateTime().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Past consultations cannot be edited.");
         }
-
-        return patient.editorConsulta(consultation, newDate, newStatus);
+        try{
+             return consultationService.rescheduleConsultation(consultation, newDate);
+        }
+        catch (SQLException e) {
+            throw new IllegalArgumentException("Failed to reschedule consultation: " + e.getMessage());
+        }
     }
 
     public void removeConsultations(Patient patient, Consultation[] consultations) {
+        
         if (patient == null) throw new RuntimeException("Patient cannot be null.");
         if (consultations == null || consultations.length == 0)
             throw new RuntimeException("No consultations provided for removal.");
-
+        
         for (Consultation c : consultations) {
-            if (c != null && c.getDate().isBefore(LocalDate.now())) {
+            if (c != null && c.getDateTime().isBefore(LocalDateTime.now())) {
                 throw new RuntimeException(
-                    "Cannot remove past consultation scheduled for " + c.getDate() + "."
+                    "Cannot remove past consultation scheduled for " + c.getDateTime() + "."
                 );
             }
+            if (c.getPatient() == patient){
+                try {
+                    new ConsultationService().removeConsultation(c);
+                } catch (SQLException e) {
+                    throw new RuntimeException("Failed to remove consultation: " + e.getMessage());
+                }
+            } else {
+                throw new RuntimeException("Consultation does not belong to the specified patient.");
+            }
         }
-
-        patient.excluirConsulta(consultations);
     }
 }

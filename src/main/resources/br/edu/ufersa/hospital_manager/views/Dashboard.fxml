@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.DashboardController"
+            stylesheets="@../css/style.css">
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230">
+
+            <!-- Cabeçalho -->
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Navegação -->
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnDashboard" text="Dashboard"
+                        styleClass="nav-item-active"
+                        maxWidth="Infinity" onAction="#onDashboard"/>
+                <Button fx:id="btnMedicos" text="Médicos"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onMedicos"/>
+                <Button fx:id="btnPacientes" text="Pacientes"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onPacientes"/>
+                <Button fx:id="btnConsultas" text="Consultas"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onConsultas"/>
+                <Button fx:id="btnBusca" text="Busca"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onBusca"/>
+                <Button fx:id="btnRelatorios" text="Relatórios"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onRelatorios"/>
+            </VBox>
+
+            <!-- Rodapé -->
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox styleClass="content-area" spacing="24">
+
+                <!-- Boas-vindas -->
+                <VBox spacing="4">
+                    <Label fx:id="lblWelcome" text="Bem-vindo, Administrador!"
+                           styleClass="page-title"/>
+                    <Label text="Aqui está um resumo das atividades da clínica"
+                           styleClass="page-subtitle"/>
+                </VBox>
+
+                <!-- Cards de métricas -->
+                <GridPane hgap="18" vgap="18">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- Total de Médicos -->
+                    <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="8">
+                        <StackPane styleClass="stat-icon-badge, stat-icon-blue" minWidth="46" minHeight="46" maxWidth="46" maxHeight="46">
+                            <Label text="👨‍⚕️" styleClass="stat-icon-glyph"/>
+                        </StackPane>
+                        <Label text="Total de Médicos" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalMedicos" text="1" styleClass="stat-value"/>
+                    </VBox>
+
+                    <!-- Total de Pacientes -->
+                    <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="8">
+                        <StackPane styleClass="stat-icon-badge, stat-icon-green" minWidth="46" minHeight="46" maxWidth="46" maxHeight="46">
+                            <Label text="👥" styleClass="stat-icon-glyph"/>
+                        </StackPane>
+                        <Label text="Total de Pacientes" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalPacientes" text="2" styleClass="stat-value"/>
+                    </VBox>
+
+                    <!-- Consultas Hoje -->
+                    <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="8">
+                        <StackPane styleClass="stat-icon-badge, stat-icon-purple" minWidth="46" minHeight="46" maxWidth="46" maxHeight="46">
+                            <Label text="📅" styleClass="stat-icon-glyph"/>
+                        </StackPane>
+                        <Label text="Consultas Hoje" styleClass="stat-label"/>
+                        <Label fx:id="lblConsultasHoje" text="0" styleClass="stat-value"/>
+                    </VBox>
+
+                    <!-- Consultas Pendentes -->
+                    <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="8">
+                        <StackPane styleClass="stat-icon-badge, stat-icon-orange" minWidth="46" minHeight="46" maxWidth="46" maxHeight="46">
+                            <Label text="⚡" styleClass="stat-icon-glyph"/>
+                        </StackPane>
+                        <Label text="Consultas Pendentes" styleClass="stat-label"/>
+                        <Label fx:id="lblConsultasPendentes" text="0" styleClass="stat-value"/>
+                    </VBox>
+                </GridPane>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

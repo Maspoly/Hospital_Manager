@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.util.Connector;
@@ -27,44 +28,11 @@ public class PatientDAO implements BaseDAO<Patient> {
         this.connection = Connector.getConnection();
     }
 
-    @Override
-    public Patient readById(long id) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
-
-        ps.setLong(1, id);
-
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            AddressDAO addressDAO = new AddressDAO();
-            Address address = addressDAO.readById(rs.getLong("address_id"));
-
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address);
-
-            patient.setId(rs.getLong("id"));
-            return patient;
-        }
-
-        return null;
-    }
-
-    @Override
-    public void update(Patient entity) throws SQLException {
-        
-        PreparedStatement ps = connection.prepareStatement(UPDATE_SQL);
-
-        ps.setString(1, entity.getName());
-        ps.setString(2, entity.getCPF());
-        ps.setLong(3, entity.getAddress().getId());
-        ps.setLong(4, entity.getId());
-
-        ps.executeUpdate();
-        
-    }
 
     @Override
     public void create(Patient entity) throws SQLException {
 
+        
         AddressDAO addressDAO = new AddressDAO();
 
         if (entity.getAddress().getId() <= 0) {
@@ -78,9 +46,8 @@ public class PatientDAO implements BaseDAO<Patient> {
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
-<<<<<<< Updated upstream
         ps.setLong(3, entity.getAddress().getId());
-=======
+
         ps.setString(3, String.valueOf(entity.getAddress()));
 
         // medical_record_id can be null if the patient does not yet have a medical record.
@@ -89,7 +56,7 @@ public class PatientDAO implements BaseDAO<Patient> {
         } else {
             ps.setNull(4, java.sql.Types.BIGINT);
         }
->>>>>>> Stashed changes
+
 
         ps.executeUpdate();
 
@@ -105,9 +72,8 @@ public class PatientDAO implements BaseDAO<Patient> {
         PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
 
         ps.setLong(1, entity.getId());
+    }
 
-<<<<<<< Updated upstream
-=======
     @Override
     public void update(Patient entity) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(UPDATE_SQL);
@@ -122,7 +88,7 @@ public class PatientDAO implements BaseDAO<Patient> {
         }
 
         ps.setLong(5, entity.getId());
->>>>>>> Stashed changes
+
         ps.executeUpdate();
     }
 
@@ -141,15 +107,14 @@ public class PatientDAO implements BaseDAO<Patient> {
 
             Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address);
 
-<<<<<<< Updated upstream
-=======
-            Patient patient = new Patient(
+
+            patient = new Patient(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
                     medicalRecord
             );
->>>>>>> Stashed changes
+
             patient.setId(rs.getLong("id"));
             patients.add(patient);
         }
@@ -157,8 +122,6 @@ public class PatientDAO implements BaseDAO<Patient> {
         return patients;
     }
 
-<<<<<<< Updated upstream
-=======
     @Override
     public Patient readById(long id) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
@@ -186,7 +149,7 @@ public class PatientDAO implements BaseDAO<Patient> {
         throw new SQLException("Patient with ID " + id + " not found.");
     }
 
->>>>>>> Stashed changes
+
     public Patient readByCPF(String cpf) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
 
@@ -200,15 +163,14 @@ public class PatientDAO implements BaseDAO<Patient> {
 
             Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address);
 
-<<<<<<< Updated upstream
-=======
-            Patient patient = new Patient(
+
+            patient = new Patient(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
                     medicalRecord
             );
->>>>>>> Stashed changes
+
             patient.setId(rs.getLong("id"));
             return patient;
         }
@@ -229,15 +191,14 @@ public class PatientDAO implements BaseDAO<Patient> {
 
             Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address);
 
-<<<<<<< Updated upstream
-=======
-            Patient patient = new Patient(
+
+            patient = new Patient(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
                     medicalRecord
             );
->>>>>>> Stashed changes
+
             patient.setId(rs.getLong("id"));
             return patient;
         }

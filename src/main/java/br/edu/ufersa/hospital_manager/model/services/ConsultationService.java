@@ -1,5 +1,6 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
+import java.time.LocalDateTime;
 import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
@@ -7,7 +8,6 @@ import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ConsultationService {
@@ -20,13 +20,13 @@ public class ConsultationService {
 
     // ─── Create ───────────────────────────────────────────────────────────────
 
-    public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDate date, String status) throws SQLException {
+    public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDateTime date, String status) throws SQLException {
         if (patient == null) throw new RuntimeException("Patient cannot be null.");
         if (doctor == null)  throw new RuntimeException("Doctor cannot be null.");
         if (date == null)    throw new RuntimeException("Date cannot be null.");
 
         // Business rule: no past consultations
-        if (date.isBefore(LocalDate.now())) {
+        if (date.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Consultation date cannot be in the past.");
         }        
         Consultation consultation = new Consultation(patient, doctor, date, status);
@@ -46,7 +46,7 @@ public class ConsultationService {
         }
 
         // Business rule: cannot remove past consultations
-        if (consultation.getDate().isBefore(LocalDate.now())) {
+        if (consultation.getDateTime().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Past consultations cannot be removed.");
         }
         consultationDAO.delete(consultation);
@@ -56,7 +56,7 @@ public class ConsultationService {
     // ─── Update ───────────────────────────────────────────────────────────────
 
 
-    public Consultation rescheduleConsultation(Consultation consultation, LocalDate newDate) throws SQLException {
+    public Consultation rescheduleConsultation(Consultation consultation, LocalDateTime newDate) throws SQLException {
         if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
         if (newDate == null)      throw new RuntimeException("New date cannot be null.");
 
@@ -66,12 +66,12 @@ public class ConsultationService {
         }
 
         // Business rule: new date cannot be in the past
-        if (newDate.isBefore(LocalDate.now())) {
+        if (newDate.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("New consultation date cannot be in the past.");
         }
 
         // Entity validates the date field
-        consultation.setDate(newDate);
+        consultation.setDateTime(newDate);
         consultationDAO.update(consultation);
         return consultation;
         
@@ -115,13 +115,6 @@ public class ConsultationService {
             throw new RuntimeException("A medical record can only be attached to a COMPLETED consultation.");
         }
 
-        // Business rule: cannot overwrite an existing medical record
-        if (consultation.getMedicalRecord() != null) {
-            throw new RuntimeException("This consultation already has a medical record attached.");
-        }
-
-        consultation.setMedicalRecord(medicalRecord);
-
         consultationDAO.update(consultation);
         return consultation;
 
@@ -160,9 +153,9 @@ public class ConsultationService {
         
     }
 
-    public ArrayList<Consultation> findByDate(LocalDate date) throws SQLException {
+    public ArrayList<Consultation> findByDate(LocalDateTime date) throws SQLException {
         if (date == null) throw new RuntimeException("Date cannot be null.");
-        ArrayList<Consultation> consultations = consultationDAO.readByDate(date);
+        ArrayList<Consultation> consultations = consultationDAO.readByDateTime(date);
         if (consultations.isEmpty()) throw new RuntimeException("No consultations found for date: " + date);
         return consultations;
         
