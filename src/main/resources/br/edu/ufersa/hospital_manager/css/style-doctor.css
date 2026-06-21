@@ -1,0 +1,214 @@
+.root{
+    -fx-background-color:#f5f6fa;
+<<<<<<< HEAD
+=======
+    background-color:#f5f6fa;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Sidebar */
+
+.sidebar{
+    -fx-pref-width:230;
+<<<<<<< HEAD
+    -fx-background-color:white;
+    -fx-padding:10;
+=======
+    min-width:230;
+    -fx-background-color:white;
+    background-color:white;
+    -fx-padding:10;
+    padding:10;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-spacing:15;
+}
+
+/* Logo */
+
+.logo-title{
+    -fx-font-size:15;
+<<<<<<< HEAD
+    -fx-font-weight:bold;
+=======
+    font-size:15;
+    -fx-font-weight:bold;
+    font-weight:bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.logo-subtitle{
+    -fx-font-size:11;
+<<<<<<< HEAD
+    -fx-text-fill:gray;
+=======
+    font-size:11;
+    -fx-text-fill:gray;
+    color:gray;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Menu */
+
+.button{
+    -fx-background-color:transparent;
+<<<<<<< HEAD
+    -fx-alignment:CENTER_LEFT;
+    -fx-pref-width:200;
+    -fx-padding:10;
+=======
+    background-color:transparent;
+    -fx-alignment:CENTER_LEFT;
+    -fx-pref-width:200;
+    -fx-padding:10;
+    padding:10;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.menu-button:hover{
+    -fx-background-color:#eef2ff;
+<<<<<<< HEAD
+=======
+    background-color:#eef2ff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-background-radius:8;
+}
+
+.menu-selected{
+    -fx-background-color:#2563eb;
+<<<<<<< HEAD
+    -fx-text-fill:white;
+=======
+    background-color:#2563eb;
+    -fx-text-fill:white;
+    color:white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-background-radius:8;
+}
+
+.logout-button{
+    -fx-text-fill:red;
+<<<<<<< HEAD
+=======
+    color:red;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Títulos */
+
+.title{
+    -fx-font-size:32;
+<<<<<<< HEAD
+    -fx-font-weight:bold;
+=======
+    font-size:32;
+    -fx-font-weight:bold;
+    font-weight:bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.subtitle{
+    -fx-text-fill:gray;
+<<<<<<< HEAD
+=======
+    color:gray;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Cards */
+
+.card{
+    -fx-background-color:white;
+<<<<<<< HEAD
+    -fx-padding:15;
+    -fx-background-radius:10;
+    -fx-border-radius:10;
+    -fx-border-color:#dddddd;
+=======
+    background-color:white;
+    -fx-padding:15;
+    padding:15;
+    -fx-background-radius:10;
+    border-radius:10;
+    -fx-border-radius:10;
+    -fx-border-color:#dddddd;
+    border-color:#dddddd;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-pref-width:230;
+}
+
+.card-number{
+    -fx-font-size:28;
+<<<<<<< HEAD
+    -fx-font-weight:bold;
+=======
+    font-size:28;
+    -fx-font-weight:bold;
+    font-weight:bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Caixa seleção */
+
+.selection-box{
+    -fx-background-color:white;
+<<<<<<< HEAD
+    -fx-padding:15;
+    -fx-background-radius:8;
+    -fx-border-color:#ddd;
+    -fx-border-radius:8;
+=======
+    background-color:white;
+    -fx-padding:15;
+    padding:15;
+    -fx-background-radius:8;
+    -fx-border-color:#ddd;
+    border-color:#ddd;
+    -fx-border-radius:8;
+    border-radius:8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.combo-box{
+    -fx-pref-height:40;
+<<<<<<< HEAD
+=======
+    height:40;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* Área vazia */
+
+.record-area{
+    -fx-background-color:white;
+<<<<<<< HEAD
+    -fx-border-color:#ddd;
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+=======
+    background-color:white;
+    -fx-border-color:#ddd;
+    border-color:#ddd;
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+    border-radius:8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.empty-icon{
+    -fx-font-size:60;
+<<<<<<< HEAD
+    -fx-text-fill:#cccccc;
+=======
+    font-size:60;
+    -fx-text-fill:#cccccc;
+    color:#cccccc;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.empty-text{
+    -fx-text-fill:#999999;
+<<<<<<< HEAD
+=======
+    color:#999999;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}

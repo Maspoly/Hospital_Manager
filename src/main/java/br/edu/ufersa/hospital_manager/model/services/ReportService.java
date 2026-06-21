@@ -69,6 +69,10 @@ public class ReportService {
             }
         }
 
-        return new Report(total, scheduled, completed, canceled);
+        return new Report(doctor, start, end, LocalDateTime.now(), total, scheduled, completed, canceled);
+    }
+
+    public ArrayList<Consultation> listAllConsultations() throws SQLException {
+        return consultationDAO.listAll();
     }
 }

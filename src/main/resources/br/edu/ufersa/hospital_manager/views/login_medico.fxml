@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0"
+           styleClass="medico-root-background"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="br.edu.ufersa.hospital_manager.controllers.LoginMedicoController"
+           stylesheets="@../css/medico.css">
+
+    <VBox alignment="CENTER" maxWidth="420.0" spacing="22.0">
+
+        <!-- ===== Cabeçalho fora do cartão ===== -->
+        <VBox alignment="CENTER" spacing="8.0">
+            <StackPane>
+                <Circle radius="30.0" styleClass="medico-login-logo-circle" />
+                <Label text="⚕" styleClass="medico-login-logo-icon" />
+            </StackPane>
+            <Label text="Portal do Médico" styleClass="medico-login-title">
+                <font>
+                    <Font name="System Bold" size="21.0" />
+                </font>
+            </Label>
+            <Label text="Clínica Dr. Luiz" styleClass="medico-login-subtitle" />
+        </VBox>
+
+        <!-- ===== Cartão de login ===== -->
+        <VBox maxWidth="380.0" spacing="16.0" styleClass="medico-login-card">
+            <padding>
+                <Insets bottom="28.0" left="28.0" right="28.0" top="26.0" />
+            </padding>
+
+            <Label text="Acesso Médico" styleClass="medico-login-card-title" />
+
+            <VBox spacing="6.0">
+                <Label text="Nome de Usuário" styleClass="medico-field-label" />
+                <TextField fx:id="txtCodigo" promptText="CRM-12345" styleClass="medico-text-input" />
+            </VBox>
+
+            <VBox spacing="6.0">
+                <Label text="Senha" styleClass="medico-field-label" />
+                <PasswordField fx:id="txtSenha" promptText="••••••••" styleClass="medico-text-input" />
+            </VBox>
+
+            <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false"
+                    onAction="#onEntrarClick" styleClass="medico-btn-primary" text="Entrar" />
+
+            <VBox spacing="4.0" styleClass="medico-info-box">
+                <padding>
+                    <Insets bottom="12.0" left="14.0" right="14.0" top="12.0" />
+                </padding>
+                <Label styleClass="medico-info-title" text="Crendenciais de Teste:" />
+                <Label styleClass="medico-info-text" text="Código:  CRM-12345" />
+                <Label styleClass="medico-info-text" text="Senha:  medico123" />
+            </VBox>
+
+            <Label fx:id="lblVoltarGerente" onMouseClicked="#onVoltarGerenteClick"
+                   styleClass="medico-link-back" text="← Voltar para Login de Gerente"
+                   StackPane.alignment="CENTER" />
+        </VBox>
+
+    </VBox>
+</StackPane>

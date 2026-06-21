@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.CadastroConsultaController"
+            stylesheets="@../css/style.css">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230">
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onDashboard"/>
+                <Button text="Médicos"    styleClass="nav-item"        maxWidth="Infinity" onAction="#onMedicos"/>
+                <Button text="Pacientes"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onPacientes"/>
+                <Button text="Consultas"  styleClass="nav-item-active" maxWidth="Infinity" onAction="#onConsultas"/>
+                <Button text="Busca"      styleClass="nav-item"        maxWidth="Infinity" onAction="#onBusca"/>
+                <Button text="Relatórios" styleClass="nav-item"        maxWidth="Infinity" onAction="#onRelatorios"/>
+            </VBox>
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox styleClass="content-area" spacing="24">
+
+                <VBox spacing="4">
+                    <Label text="Agendar Consulta" styleClass="page-title"/>
+                    <Label text="Preencha os dados para registrar uma nova consulta" styleClass="page-subtitle"/>
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="0">
+                    <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+
+                    <!-- Participantes -->
+                    <Label text="Participantes" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Paciente *" styleClass="form-label"/>
+                        <ComboBox fx:id="fldPaciente" promptText="Selecione o paciente..."
+                                  styleClass="combo-input" maxWidth="Infinity"/>
+                    </VBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 24 0;">
+                        <Label text="Médico *" styleClass="form-label"/>
+                        <ComboBox fx:id="fldMedico" promptText="Selecione o médico..."
+                                  styleClass="combo-input" maxWidth="Infinity"/>
+                    </VBox>
+
+                    <!-- Data e hora -->
+                    <Label text="Data e hora" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 24 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Data *" styleClass="form-label"/>
+                            <DatePicker fx:id="fldData" promptText="dd/mm/aaaa"
+                                        styleClass="date-input" maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Hora *" styleClass="form-label"/>
+                            <ComboBox fx:id="fldHora" promptText="00:00"
+                                      styleClass="combo-input" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Status -->
+                    <Label text="Status" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 32 0;">
+                        <Label text="Status da consulta *" styleClass="form-label"/>
+                        <ComboBox fx:id="fldStatus" promptText="Selecione..."
+                                  styleClass="combo-input" maxWidth="Infinity"/>
+                        <Label text="Novas consultas são criadas como SCHEDULED por padrão."
+                               style="-fx-text-fill: #9ca3af; -fx-font-size: 12px;"/>
+                    </VBox>
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="btn-ghost" onAction="#onCancelar"/>
+                        <Button text="Agendar consulta" styleClass="btn-accent" onAction="#onSalvar"/>
+                    </HBox>
+                </VBox>
+
+                <Label fx:id="lblErro" text=""
+                       style="-fx-text-fill: #dc2626; -fx-font-size: 13px;"
+                       visible="false" managed="false"/>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

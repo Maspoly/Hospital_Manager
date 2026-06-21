@@ -1,21 +1,73 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
 import br.edu.ufersa.hospital_manager.model.DAO.DoctorDAO;
+import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
+import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 
-public class DoctorService implements FindServices<Doctor> {
+public class DoctorService implements DoctorServiceContract {
     private DoctorDAO doctorDAO;
 
     public DoctorService() {
         this.doctorDAO = new DoctorDAO();
     }
 
+    // ─── Doctor Management ───────────────────────────────────────────────────
+
+    // Registers a new doctor.
+    @Override
+    public void registerDoctor(Doctor doctor) throws SQLException {
+        DoctorDAO doctorDAO = new DoctorDAO();
+
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
+        }
+
+        if (doctorDAO.readByCPF(doctor.getCPF()) != null) {
+            throw new RuntimeException("A doctor with this CPF already exists.");
+        }
+
+        if (doctorDAO.readByCouncilCode(doctor.getCouncilCode()) != null) {
+            throw new RuntimeException("A doctor with this council code already exists.");
+        }
+
+        doctorDAO.create(doctor);
+    }
+
+    // Removes a doctor from the system.
+    @Override
+    public void removeDoctor(Doctor doctor) throws SQLException {
+        DoctorDAO doctorDAO = new DoctorDAO();
+        ConsultationDAO consultationDAO = new ConsultationDAO();
+        MedicalRecordDAO medicalRecordDAO = new MedicalRecordDAO();
+
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
+        }
+
+        if (doctorDAO.readById(doctor.getId()) == null) {
+            throw new RuntimeException("Doctor not found.");
+        }
+
+        ArrayList<Consultation> consultations = consultationDAO.readByDoctor(doctor);
+        if (!consultations.isEmpty()) {
+            consultationDAO.detachDoctor(doctor);
+        }
+
+        medicalRecordDAO.detachDoctor(doctor);
+
+        doctorDAO.delete(doctor);
+    }
+
+
     // ─── Update ───────────────────────────────────────────────────────────────
 
     // Updates doctor's information only if the doctor already exists.
+    @Override
     public void updateDoctor(Doctor doctor) throws SQLException {
         if (doctor == null) {
             throw new RuntimeException("Doctor cannot be null.");
@@ -52,23 +104,17 @@ public class DoctorService implements FindServices<Doctor> {
         return doctorDAO.readByCPF(cpf);
     }
 
-    // ─── Medical Records ──────────────────────────────────────────────────────
-
-    // Doctor writes a new medical record through MedicalRecordService.
-    public void registerMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
-        MedicalRecordService medicalRecordService = new MedicalRecordService();
-        medicalRecordService.registerMedicalRecord(medicalRecord);
+    @Override
+    public Doctor findByCouncilCode(String councilCode) throws SQLException {
+        if (councilCode == null || councilCode.isBlank()) {
+            throw new RuntimeException("Council code cannot be null or empty.");
+        }
+        return doctorDAO.readByCouncilCode(councilCode);
     }
 
-    // Doctor updates an existing medical record through MedicalRecordService.
-    public void updateMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
-        MedicalRecordService medicalRecordService = new MedicalRecordService();
-        medicalRecordService.updateMedicalRecord(medicalRecord);
+    @Override
+    public ArrayList<Doctor> listAll() throws SQLException {
+        return doctorDAO.listAll();
     }
 
-    // Doctor removes a medical record through MedicalRecordService.
-    public void deleteMedicalRecord(MedicalRecord medicalRecord) throws SQLException {
-        MedicalRecordService medicalRecordService = new MedicalRecordService();
-        medicalRecordService.removeMedicalRecord(medicalRecord);
-    }
 }

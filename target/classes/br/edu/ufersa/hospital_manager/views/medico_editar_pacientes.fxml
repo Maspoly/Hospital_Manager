@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane styleClass="medico-app-root" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.MedicoEditarPacientesController">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="medico-sidebar" BorderPane.alignment="CENTER">
+
+            <HBox styleClass="medico-sidebar-header" spacing="9" alignment="CENTER_LEFT">
+                <StackPane styleClass="medico-sidebar-logo-badge">
+                    <Label text="⚕" styleClass="medico-sidebar-logo-glyph" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label text="Portal Médico" styleClass="medico-sidebar-brand" />
+                    <Label text="Clínica Dr. Luiz" styleClass="medico-sidebar-brand-sub" />
+                </VBox>
+            </HBox>
+
+            <HBox styleClass="medico-profile-box" spacing="10" alignment="CENTER_LEFT">
+                <StackPane>
+                    <Circle radius="17" styleClass="medico-avatar-circle" />
+                    <Label fx:id="lblIniciais" text="D" styleClass="medico-avatar-initial" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label fx:id="lblNomeMedico" text="Dr. João Lourenço" styleClass="medico-profile-name" />
+                    <Label fx:id="lblCrmMedico" text="CRM-12345" styleClass="medico-profile-crm" />
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
+                <Button text="📄  Meus Pacientes" styleClass="medico-nav-item" onAction="#goMeusPacientes" maxWidth="Infinity" />
+<<<<<<< HEAD
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+                <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item-active" onAction="#goEditarDados" maxWidth="Infinity" />
+=======
+                <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
+                <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox styleClass="medico-logout-box">
+                <Button text="⏻  Sair" styleClass="medico-btn-logout" onAction="#onSair" maxWidth="Infinity" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <VBox styleClass="medico-content-area" spacing="22">
+
+            <VBox spacing="4">
+                <Label text="Editar Dados dos Pacientes" styleClass="medico-page-title" />
+                <Label text="Atualize as informações pessoais dos seus pacientes" styleClass="medico-page-subtitle" />
+            </VBox>
+
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+                <!-- Lista de pacientes -->
+                <VBox styleClass="medico-surface-card" spacing="10" prefWidth="320" minWidth="280">
+                    <padding>
+                        <Insets top="16" bottom="16" left="18" right="18" />
+                    </padding>
+                    <Label text="Selecionar Paciente" styleClass="medico-panel-title" />
+                    <TextField fx:id="txtBusca" styleClass="medico-search-input" promptText="🔍  Buscar por nome ou CPF" />
+
+                    <ScrollPane fitToWidth="true" styleClass="medico-surface-card" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="boxListaPacientes" />
+                    </ScrollPane>
+                </VBox>
+
+                <!-- Painel de edição -->
+                <VBox fx:id="boxPainelEdicao" styleClass="medico-surface-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets top="40" bottom="40" left="20" right="20" />
+                    </padding>
+                    <VBox alignment="CENTER" spacing="10">
+                        <StackPane>
+                            <Circle radius="26" styleClass="medico-empty-state-icon-circle" />
+                            <Label text="👤" style="-fx-font-size: 20px; -fx-text-fill: #c1c5cc;" />
+                        </StackPane>
+                        <Label text="Nenhum paciente selecionado" styleClass="medico-panel-title" />
+                        <Label text="Selecione um paciente na lista ao lado para editar suas informações pessoais"
+                               styleClass="medico-empty-state-title" wrapText="true" textAlignment="CENTER"
+                               maxWidth="280" />
+                    </VBox>
+                </VBox>
+
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox styleClass="medico-strip, medico-strip-blue" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label fx:id="lblTotalPacientesStrip" text="Total de Pacientes: 2" styleClass="medico-strip-text-blue" wrapText="true" />
+                </VBox>
+                <VBox styleClass="medico-strip, medico-strip-green" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Dica: Use a busca para encontrar pacientes rapidamente" styleClass="medico-strip-text-green" wrapText="true" />
+                </VBox>
+                <VBox styleClass="medico-strip, medico-strip-purple" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Importante: Mantenha os dados sempre atualizados" styleClass="medico-strip-text-purple" wrapText="true" />
+                </VBox>
+            </HBox>
+
+        </VBox>
+    </center>
+</BorderPane>

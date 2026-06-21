@@ -12,12 +12,36 @@ public class Doctor extends Person {
         setCouncilCode(councilCode); // validate and set council code
     }
 
+    public Doctor(String name, String cpf, Address address, String password, float consultationValue, String councilCode) throws RuntimeException {
+        super(name, cpf, address, password);
+        setConsultationValue(consultationValue);
+        setCouncilCode(councilCode);
+    }
+
+    public Doctor(String name, String cpf, Address address, String password, boolean passwordIsHash, float consultationValue, String councilCode) throws RuntimeException {
+        super(name, cpf, address, password, passwordIsHash);
+        setConsultationValue(consultationValue);
+        setCouncilCode(councilCode);
+    }
+
     // Constructor: initializes the doctor with default consultation value
     public Doctor(String name, String cpf, Address address, String councilCode) throws RuntimeException{
         super(name, cpf, address);
         setConsultationValue(100.0f); // set default consultation value
         setCouncilCode(councilCode); // validate and set council code
     
+    }
+
+    public Doctor(String name, String cpf, Address address, String password, String councilCode) throws RuntimeException{
+        super(name, cpf, address, password);
+        setConsultationValue(100.0f);
+        setCouncilCode(councilCode);
+    }
+
+    public Doctor(String name, String cpf, Address address, String password, boolean passwordIsHash, String councilCode) throws RuntimeException{
+        super(name, cpf, address, password, passwordIsHash);
+        setConsultationValue(100.0f);
+        setCouncilCode(councilCode);
     }
 
     // Getter for consultation value

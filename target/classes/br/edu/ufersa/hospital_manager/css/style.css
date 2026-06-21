@@ -1,0 +1,1273 @@
+/* =========================================================
+   CLÍNICA DR. LUIZ — STYLESHEET GLOBAL
+   ========================================================= */
+
+.root-background {
+    -fx-background-color: #eef2f8;
+<<<<<<< HEAD
+=======
+    background-color: #eef2f8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+/* =========================================================
+   LOGIN GERENTE 
+   ========================================================= */
+
+.login-logo-circle {
+    -fx-fill: #dbeafe;
+<<<<<<< HEAD
+=======
+    fill: #dbeafe;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.login-logo-icon {
+    -fx-font-size: 24px;
+<<<<<<< HEAD
+    -fx-text-fill: #2563eb;
+    -fx-font-weight: bold;
+=======
+    font-size: 24px;
+    -fx-text-fill: #2563eb;
+    color: #2563eb;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.login-title {
+    -fx-text-fill: #1f2937;
+<<<<<<< HEAD
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+=======
+    color: #1f2937;
+    -fx-font-size: 22px;
+    font-size: 22px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.login-subtitle {
+    -fx-text-fill: #9ca3af;
+<<<<<<< HEAD
+    -fx-font-size: 13px;
+=======
+    color: #9ca3af;
+    -fx-font-size: 13px;
+    font-size: 13px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.login-card {
+    -fx-background-color: white;
+<<<<<<< HEAD
+=======
+    background-color: white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 18, 0, 0, 6);
+}
+
+.login-card-title {
+    -fx-text-fill: #1f2937;
+<<<<<<< HEAD
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+=======
+    color: #1f2937;
+    -fx-font-size: 16px;
+    font-size: 16px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.field-label {
+    -fx-text-fill: #374151;
+<<<<<<< HEAD
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+=======
+    color: #374151;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.text-input {
+    -fx-background-color: #ffffff;
+<<<<<<< HEAD
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    -fx-pref-height: 38px;
+=======
+    background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 10 12 10 12;
+    padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-pref-height: 38px;
+    height: 38px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.text-input:focused {
+    -fx-border-color: #2563eb;
+<<<<<<< HEAD
+=======
+    border-color: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 6, 0, 0, 0);
+}
+
+.btn-primary {
+    -fx-background-color: #2563eb;
+<<<<<<< HEAD
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+=======
+    background-color: #2563eb;
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+<<<<<<< HEAD
+=======
+    background-color: #1d4ed8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1e40af;
+<<<<<<< HEAD
+=======
+    background-color: #1e40af;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.info-box {
+    -fx-background-color: #eff6ff;
+<<<<<<< HEAD
+=======
+    background-color: #eff6ff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-background-radius: 8;
+}
+
+.info-title {
+    -fx-text-fill: #1d4ed8;
+<<<<<<< HEAD
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+=======
+    color: #1d4ed8;
+    -fx-font-size: 12px;
+    font-size: 12px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.info-text {
+    -fx-text-fill: #1d4ed8;
+<<<<<<< HEAD
+    -fx-font-size: 12px;
+=======
+    color: #1d4ed8;
+    -fx-font-size: 12px;
+    font-size: 12px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.link-label {
+    -fx-text-fill: #2563eb;
+<<<<<<< HEAD
+    -fx-font-size: 12.5px;
+    -fx-cursor: hand;
+=======
+    color: #2563eb;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.link-label:hover {
+    -fx-underline: true;
+}
+<<<<<<< HEAD
+=======
+
+/* ---------- Role chooser modal ---------- */
+.role-dialog-backdrop {
+    -fx-background-color: rgba(17, 24, 39, 0.42);
+    background-color: rgba(17, 24, 39, 0.42);
+}
+
+.role-dialog-content {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.22), 30, 0, 0, 12);
+}
+
+.role-dialog-title {
+    -fx-text-fill: #111827;
+    color: #111827;
+    -fx-font-size: 22px;
+    font-size: 22px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.role-dialog-subtitle {
+    -fx-text-fill: #6b7280;
+    color: #6b7280;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.role-dialog-card {
+    -fx-background-color: #f8fafc;
+    background-color: #f8fafc;
+    -fx-background-radius: 14;
+    -fx-padding: 14 14 14 14;
+    padding: 14 14 14 14;
+    -fx-border-color: #e5e7eb;
+    border-color: #e5e7eb;
+    -fx-border-radius: 14;
+    border-radius: 14;
+    -fx-border-width: 1;
+    border-width: 1;
+}
+
+.role-dialog-button {
+    -fx-background-color: #2563eb;
+    background-color: #2563eb;
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 14px;
+    font-size: 14px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+    cursor: hand;
+    -fx-pref-width: Infinity;
+}
+
+.role-dialog-button:hover {
+    -fx-background-color: #1d4ed8;
+    background-color: #1d4ed8;
+}
+
+.role-dialog-description {
+    -fx-text-fill: #475569;
+    color: #475569;
+    -fx-font-size: 12px;
+    font-size: 12px;
+}
+
+/* ---------- Edit / form dialogs ---------- */
+.edit-dialog-backdrop {
+    -fx-background-color: rgba(17, 24, 39, 0.34);
+    background-color: rgba(17, 24, 39, 0.34);
+}
+
+.edit-dialog-card {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.20), 28, 0, 0, 12);
+}
+
+.edit-dialog-title {
+    -fx-text-fill: #111827;
+    color: #111827;
+    -fx-font-size: 22px;
+    font-size: 22px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.edit-dialog-subtitle {
+    -fx-text-fill: #6b7280;
+    color: #6b7280;
+    -fx-font-size: 13px;
+    font-size: 13px;
+}
+
+.edit-dialog-section {
+    -fx-background-color: #f8fafc;
+    background-color: #f8fafc;
+    -fx-background-radius: 14;
+    -fx-border-color: #e5e7eb;
+    border-color: #e5e7eb;
+    -fx-border-radius: 14;
+    border-radius: 14;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 16;
+    padding: 16;
+}
+
+.edit-dialog-section-title {
+    -fx-text-fill: #111827;
+    color: #111827;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.edit-dialog-field-label {
+    -fx-text-fill: #374151;
+    color: #374151;
+    -fx-font-size: 12px;
+    font-size: 12px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.edit-dialog-field {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 10 12 10 12;
+    padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-pref-height: 38px;
+    height: 38px;
+}
+
+.edit-dialog-field:focused {
+    -fx-border-color: #2563eb;
+    border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.18), 6, 0, 0, 0);
+}
+
+.edit-dialog-footer {
+    -fx-alignment: CENTER_RIGHT;
+}
+>>>>>>> 96ad7c6 (Linked screens to data base)
+/* =========================================================
+   APP SHELL (sidebar + content) — usado nas telas internas
+   ========================================================= */
+
+.app-root {
+    -fx-background-color: #f3f4f9;
+<<<<<<< HEAD
+=======
+    background-color: #f3f4f9;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #1e3a8a, #1e2f6b);
+<<<<<<< HEAD
+    -fx-pref-width: 252px;
+    -fx-min-width: 252px;
+=======
+    background-color: #1e3a8a;
+    background-image: linear-gradient(to bottom, #1e3a8a, #1e2f6b);
+    -fx-pref-width: 252px;
+    -fx-min-width: 252px;
+    min-width: 252px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-header {
+    -fx-padding: 26 24 22 24;
+<<<<<<< HEAD
+    -fx-border-color: transparent transparent rgba(255,255,255,0.12) transparent;
+    -fx-border-width: 0 0 1 0;
+=======
+    padding: 26 24 22 24;
+    -fx-border-color: transparent transparent rgba(255,255,255,0.12) transparent;
+    border-color: transparent transparent rgba(255,255,255,0.12) transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-logo-circle {
+    -fx-fill: rgba(255,255,255,0.16);
+<<<<<<< HEAD
+=======
+    fill: rgba(255,255,255,0.16);
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-logo-icon {
+    -fx-fill: #ffffff;
+<<<<<<< HEAD
+=======
+    fill: #ffffff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-brand {
+    -fx-text-fill: white;
+<<<<<<< HEAD
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+=======
+    color: white;
+    -fx-font-size: 16px;
+    font-size: 16px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-brand-sub {
+    -fx-text-fill: rgba(255,255,255,0.62);
+<<<<<<< HEAD
+    -fx-font-size: 11px;
+=======
+    color: rgba(255,255,255,0.62);
+    -fx-font-size: 11px;
+    font-size: 11px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.nav-list {
+    -fx-padding: 14 12 14 12;
+<<<<<<< HEAD
+=======
+    padding: 14 12 14 12;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-spacing: 4;
+}
+
+.nav-item {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-background-radius: 10;
+    -fx-text-fill: rgba(255,255,255,0.82);
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 600;
+    -fx-padding: 11 16 11 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-text-fill: rgba(255,255,255,0.82);
+    color: rgba(255,255,255,0.82);
+    -fx-font-size: 13.5px;
+    font-size: 13.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+    -fx-padding: 11 16 11 16;
+    padding: 11 16 11 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-graphic-text-gap: 10;
+}
+
+.nav-item:hover {
+    -fx-background-color: rgba(255,255,255,0.08);
+<<<<<<< HEAD
+    -fx-text-fill: white;
+=======
+    background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: white;
+    color: white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.nav-item-active {
+    -fx-background-color: #2f5fdb;
+<<<<<<< HEAD
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 16 11 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+=======
+    background-color: #2f5fdb;
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 13.5px;
+    font-size: 13.5px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-padding: 11 16 11 16;
+    padding: 11 16 11 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-effect: dropshadow(gaussian, rgba(47,95,219,0.5), 10, 0, 0, 2);
+}
+
+.sidebar-footer {
+    -fx-padding: 16 20 20 20;
+<<<<<<< HEAD
+    -fx-border-color: rgba(255,255,255,0.12) transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+=======
+    padding: 16 20 20 20;
+    -fx-border-color: rgba(255,255,255,0.12) transparent transparent transparent;
+    border-color: rgba(255,255,255,0.12) transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    border-width: 1 0 0 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-footer-label {
+    -fx-text-fill: rgba(255,255,255,0.55);
+<<<<<<< HEAD
+    -fx-font-size: 11px;
+=======
+    color: rgba(255,255,255,0.55);
+    -fx-font-size: 11px;
+    font-size: 11px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-footer-name {
+    -fx-text-fill: white;
+<<<<<<< HEAD
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+=======
+    color: white;
+    -fx-font-size: 13.5px;
+    font-size: 13.5px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.sidebar-footer-role {
+    -fx-text-fill: rgba(255,255,255,0.55);
+<<<<<<< HEAD
+    -fx-font-size: 11px;
+=======
+    color: rgba(255,255,255,0.55);
+    -fx-font-size: 11px;
+    font-size: 11px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Content area ---------- */
+.content-area {
+    -fx-background-color: #f3f4f9;
+<<<<<<< HEAD
+    -fx-padding: 32 36 32 36;
+=======
+    background-color: #f3f4f9;
+    -fx-padding: 32 36 32 36;
+    padding: 32 36 32 36;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.page-title {
+    -fx-text-fill: #111827;
+<<<<<<< HEAD
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+=======
+    color: #111827;
+    -fx-font-size: 26px;
+    font-size: 26px;
+    -fx-font-weight: 800;
+    font-weight: 800;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.page-subtitle {
+    -fx-text-fill: #6b7280;
+<<<<<<< HEAD
+    -fx-font-size: 13.5px;
+=======
+    color: #6b7280;
+    -fx-font-size: 13.5px;
+    font-size: 13.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Generic surface card ---------- */
+.surface-card {
+    -fx-background-color: white;
+<<<<<<< HEAD
+=======
+    background-color: white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.06), 14, 0, 0, 4);
+}
+
+/* ---------- Stat cards (Dashboard) ---------- */
+.stat-card {
+    -fx-background-color: white;
+<<<<<<< HEAD
+    -fx-background-radius: 14;
+    -fx-padding: 22 22 22 22;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.06), 14, 0, 0, 4);
+    -fx-cursor: hand;
+=======
+    background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 22 22 22 22;
+    padding: 22 22 22 22;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.06), 14, 0, 0, 4);
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.stat-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.12), 18, 0, 0, 6);
+}
+
+.stat-icon-badge {
+<<<<<<< HEAD
+    -fx-background-radius: 12;
+    -fx-min-width: 46;
+    -fx-min-height: 46;
+    -fx-max-width: 46;
+    -fx-max-height: 46;
+    -fx-alignment: CENTER;
+}
+
+.stat-icon-blue   { -fx-background-color: #3b82f6; }
+.stat-icon-green  { -fx-background-color: #10b981; }
+.stat-icon-purple { -fx-background-color: #8b5cf6; }
+.stat-icon-orange { -fx-background-color: #f97316; }
+
+.stat-icon-glyph {
+    -fx-text-fill: white;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+=======
+    border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-min-width: 46;
+    min-width: 46;
+    -fx-min-height: 46;
+    min-height: 46;
+    -fx-max-width: 46;
+    max-width: 46;
+    -fx-max-height: 46;
+    max-height: 46;
+    -fx-alignment: CENTER;
+}
+
+.stat-icon-blue   { -fx-background-color: #3b82f6; background-color: #3b82f6; }
+.stat-icon-green  { -fx-background-color: #10b981; background-color: #10b981; }
+.stat-icon-purple { -fx-background-color: #8b5cf6; background-color: #8b5cf6; }
+.stat-icon-orange { -fx-background-color: #f97316; background-color: #f97316; }
+
+.stat-icon-glyph {
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 19px;
+    font-size: 19px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.stat-label {
+    -fx-text-fill: #6b7280;
+<<<<<<< HEAD
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+=======
+    color: #6b7280;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.stat-value {
+    -fx-text-fill: #111827;
+<<<<<<< HEAD
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+=======
+    color: #111827;
+    -fx-font-size: 30px;
+    font-size: 30px;
+    -fx-font-weight: 800;
+    font-weight: 800;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Section / panel header inside a card ---------- */
+.panel-title {
+    -fx-text-fill: #1f2937;
+<<<<<<< HEAD
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+=======
+    color: #1f2937;
+    -fx-font-size: 15px;
+    font-size: 15px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Buttons ---------- */
+.btn-accent {
+    -fx-background-color: #2563eb;
+<<<<<<< HEAD
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+=======
+    background-color: #2563eb;
+    -fx-text-fill: white;
+    color: white;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-padding: 10 18 10 18;
+    padding: 10 18 10 18;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-accent:hover {
+    -fx-background-color: #1d4ed8;
+<<<<<<< HEAD
+=======
+    background-color: #1d4ed8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-accent:pressed {
+    -fx-background-color: #1e40af;
+<<<<<<< HEAD
+=======
+    background-color: #1e40af;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-text-fill: #2563eb;
+    color: #2563eb;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 7 14 7 14;
+    padding: 7 14 7 14;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-ghost:hover {
+    -fx-background-color: #f3f4f6;
+<<<<<<< HEAD
+=======
+    background-color: #f3f4f6;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-danger-ghost {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-text-fill: #dc2626;
+    color: #dc2626;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.btn-danger-ghost:hover {
+    -fx-underline: true;
+}
+
+/* ---------- Table ---------- */
+.data-table {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 0;
+=======
+    background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 0;
+    padding: 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .column-header-background {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-padding: 0 0 6 0;
+=======
+    background-color: transparent;
+    -fx-padding: 0 0 6 0;
+    padding: 0 0 6 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .column-header {
+    -fx-background-color: transparent;
+<<<<<<< HEAD
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10 12 10 12;
+=======
+    background-color: transparent;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+    -fx-padding: 10 12 10 12;
+    padding: 10 12 10 12;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .column-header .label {
+    -fx-text-fill: #6b7280;
+<<<<<<< HEAD
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 700;
+=======
+    color: #6b7280;
+    -fx-font-size: 11.5px;
+    font-size: 11.5px;
+    -fx-font-weight: 700;
+    font-weight: 700;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .table-row-cell {
+    -fx-background-color: white;
+<<<<<<< HEAD
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 4 0 4 0;
+=======
+    background-color: white;
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+    -fx-padding: 4 0 4 0;
+    padding: 4 0 4 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .table-row-cell:hover {
+    -fx-background-color: #f8fafc;
+<<<<<<< HEAD
+=======
+    background-color: #f8fafc;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .table-row-cell:selected {
+    -fx-background-color: #eff6ff;
+<<<<<<< HEAD
+=======
+    background-color: #eff6ff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.data-table .table-cell {
+    -fx-text-fill: #1f2937;
+<<<<<<< HEAD
+    -fx-font-size: 13px;
+    -fx-padding: 12 12 12 12;
+=======
+    color: #1f2937;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-padding: 12 12 12 12;
+    padding: 12 12 12 12;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table .placeholder .label {
+    -fx-text-fill: #9ca3af;
+<<<<<<< HEAD
+    -fx-font-size: 13px;
+=======
+    color: #9ca3af;
+    -fx-font-size: 13px;
+    font-size: 13px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.cell-title {
+    -fx-text-fill: #1f2937;
+<<<<<<< HEAD
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 600;
+=======
+    color: #1f2937;
+    -fx-font-size: 13.5px;
+    font-size: 13.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.cell-subtitle {
+    -fx-text-fill: #9ca3af;
+<<<<<<< HEAD
+    -fx-font-size: 11.5px;
+=======
+    color: #9ca3af;
+    -fx-font-size: 11.5px;
+    font-size: 11.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.cell-link {
+    -fx-text-fill: #2563eb;
+<<<<<<< HEAD
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+=======
+    color: #2563eb;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-font-weight: 600;
+    font-weight: 600;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.cell-link:hover {
+    -fx-underline: true;
+}
+
+/* ---------- Badges (status) ---------- */
+.badge {
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+<<<<<<< HEAD
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 700;
+=======
+    padding: 4 12 4 12;
+    -fx-font-size: 11.5px;
+    font-size: 11.5px;
+    -fx-font-weight: 700;
+    font-weight: 700;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-alignment: CENTER;
+}
+
+.badge-scheduled {
+    -fx-background-color: #dbeafe;
+<<<<<<< HEAD
+    -fx-text-fill: #1d4ed8;
+=======
+    background-color: #dbeafe;
+    -fx-text-fill: #1d4ed8;
+    color: #1d4ed8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.badge-completed {
+    -fx-background-color: #d1fae5;
+<<<<<<< HEAD
+    -fx-text-fill: #047857;
+=======
+    background-color: #d1fae5;
+    -fx-text-fill: #047857;
+    color: #047857;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.badge-canceled {
+    -fx-background-color: #fee2e2;
+<<<<<<< HEAD
+    -fx-text-fill: #b91c1c;
+=======
+    background-color: #fee2e2;
+    -fx-text-fill: #b91c1c;
+    color: #b91c1c;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+/* ---------- Forms (Busca / Relatórios) ---------- */
+.form-label {
+    -fx-text-fill: #374151;
+<<<<<<< HEAD
+    -fx-font-size: 12.5px;
+    -fx-font-weight: 700;
+=======
+    color: #374151;
+    -fx-font-size: 12.5px;
+    font-size: 12.5px;
+    -fx-font-weight: 700;
+    font-weight: 700;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.combo-input, .date-input {
+    -fx-background-color: #ffffff;
+<<<<<<< HEAD
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+    -fx-pref-height: 38px;
+=======
+    background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-pref-height: 38px;
+    height: 38px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.combo-input:focused, .date-input:focused {
+    -fx-border-color: #2563eb;
+<<<<<<< HEAD
+=======
+    border-color: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.empty-state-title {
+    -fx-text-fill: #6b7280;
+<<<<<<< HEAD
+    -fx-font-size: 13px;
+=======
+    color: #6b7280;
+    -fx-font-size: 13px;
+    font-size: 13px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+}
+
+.mini-stat-card {
+    -fx-background-radius: 12;
+    -fx-padding: 16 18 16 18;
+<<<<<<< HEAD
+    -fx-spacing: 4;
+}
+
+.mini-stat-default  { -fx-background-color: #f3f4f6; }
+.mini-stat-blue     { -fx-background-color: #eff6ff; }
+.mini-stat-green    { -fx-background-color: #ecfdf5; }
+.mini-stat-red      { -fx-background-color: #fef2f2; }
+
+.mini-stat-label-default { -fx-text-fill: #6b7280; -fx-font-size: 11.5px; -fx-font-weight: 600; }
+.mini-stat-label-blue    { -fx-text-fill: #2563eb; -fx-font-size: 11.5px; -fx-font-weight: 600; }
+.mini-stat-label-green   { -fx-text-fill: #059669; -fx-font-size: 11.5px; -fx-font-weight: 600; }
+.mini-stat-label-red     { -fx-text-fill: #dc2626; -fx-font-size: 11.5px; -fx-font-weight: 600; }
+
+.mini-stat-value { -fx-text-fill: #111827; -fx-font-size: 24px; -fx-font-weight: 800; }
+
+.help-fab {
+    -fx-background-color: white;
+    -fx-background-radius: 22;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 22;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+    -fx-text-fill: #6b7280;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+=======
+    padding: 16 18 16 18;
+    -fx-spacing: 4;
+}
+
+.mini-stat-default  { -fx-background-color: #f3f4f6; background-color: #f3f4f6; }
+.mini-stat-blue     { -fx-background-color: #eff6ff; background-color: #eff6ff; }
+.mini-stat-green    { -fx-background-color: #ecfdf5; background-color: #ecfdf5; }
+.mini-stat-red      { -fx-background-color: #fef2f2; background-color: #fef2f2; }
+
+.mini-stat-label-default { -fx-text-fill: #6b7280; -fx-font-size: 11.5px; -fx-font-weight: 600; color: #6b7280; font-size: 11.5px; font-weight: 600; }
+.mini-stat-label-blue    { -fx-text-fill: #2563eb; -fx-font-size: 11.5px; -fx-font-weight: 600; color: #2563eb; font-size: 11.5px; font-weight: 600; }
+.mini-stat-label-green   { -fx-text-fill: #059669; -fx-font-size: 11.5px; -fx-font-weight: 600; color: #059669; font-size: 11.5px; font-weight: 600; }
+.mini-stat-label-red     { -fx-text-fill: #dc2626; -fx-font-size: 11.5px; -fx-font-weight: 600; color: #dc2626; font-size: 11.5px; font-weight: 600; }
+
+.mini-stat-value { -fx-text-fill: #111827; -fx-font-size: 24px; -fx-font-weight: 800; color: #111827; font-size: 24px; font-weight: 800; }
+
+.help-fab {
+    -fx-background-color: white;
+    background-color: white;
+    -fx-background-radius: 22;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 22;
+    border-radius: 22;
+    -fx-min-width: 40;
+    min-width: 40;
+    -fx-min-height: 40;
+    min-height: 40;
+    -fx-max-width: 40;
+    max-width: 40;
+    -fx-max-height: 40;
+    max-height: 40;
+    -fx-text-fill: #6b7280;
+    color: #6b7280;
+    -fx-font-weight: bold;
+    font-weight: bold;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.10), 10, 0, 0, 3);
+}
+
+.help-fab:hover {
+    -fx-background-color: #f3f4f6;
+<<<<<<< HEAD
+}
+=======
+    background-color: #f3f4f6;
+}
+
+/* ---------- Search result cards ---------- */
+.search-result-card {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-border-color: #e5e7eb;
+    border-color: #e5e7eb;
+    -fx-border-radius: 14;
+    border-radius: 14;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 14 16 14 16;
+    padding: 14 16 14 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+    cursor: hand;
+    -fx-pref-width: Infinity;
+    -fx-content-display: LEFT;
+}
+
+.search-result-card:hover {
+    -fx-background-color: #f8fafc;
+    background-color: #f8fafc;
+    -fx-border-color: #bfdbfe;
+    border-color: #bfdbfe;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.12), 10, 0, 0, 2);
+}
+
+.search-result-card-title {
+    -fx-text-fill: #2563eb;
+    color: #2563eb;
+    -fx-font-size: 11px;
+    font-size: 11px;
+    -fx-font-weight: 800;
+    font-weight: 800;
+    -fx-text-transform: uppercase;
+    text-transform: uppercase;
+}
+
+.search-result-card-action {
+    -fx-text-fill: #2563eb;
+    color: #2563eb;
+    -fx-font-size: 11.5px;
+    font-size: 11.5px;
+    -fx-font-weight: 700;
+    font-weight: 700;
+}
+
+>>>>>>> 96ad7c6 (Linked screens to data base)

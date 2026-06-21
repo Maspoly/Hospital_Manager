@@ -15,9 +15,15 @@ public class Connector {
         if (connection == null){
             try{
                 connection = DriverManager.getConnection(URL, USER, PASS);
-            } catch (SQLException e){e.printStackTrace();}
+            } catch (SQLException e){
+                connection = null;
+            }
         }
         return connection;
+    }
+
+    public static boolean isAvailable() {
+        return getConnection() != null;
     }
 
     // Method to close the connection when done

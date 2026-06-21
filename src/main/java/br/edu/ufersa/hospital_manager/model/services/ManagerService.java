@@ -2,9 +2,7 @@ package br.edu.ufersa.hospital_manager.model.services;
 
 import java.sql.SQLException;
 
-import br.edu.ufersa.hospital_manager.model.DAO.DoctorDAO;
 import br.edu.ufersa.hospital_manager.model.DAO.ManagerDAO;
-import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 
 public class ManagerService implements FindServices<Manager> {
@@ -12,43 +10,6 @@ public class ManagerService implements FindServices<Manager> {
 
     public ManagerService() {
         this.managerDAO = new ManagerDAO();
-    }
-
-    // ─── Doctor Management ────────────────────────────────────────────────────
-
-    // Only managers can register doctors.
-    // CPF and council code must be unique.
-    public void registerDoctor(Doctor doctor) throws SQLException {
-        DoctorDAO doctorDAO = new DoctorDAO();
-
-        if (doctor == null) {
-            throw new RuntimeException("Doctor cannot be null.");
-        }
-
-        if (doctorDAO.readByCPF(doctor.getCPF()) != null) {
-            throw new RuntimeException("A doctor with this CPF already exists.");
-        }
-
-        if (doctorDAO.readByCouncilCode(doctor.getCouncilCode()) != null) {
-            throw new RuntimeException("A doctor with this council code already exists.");
-        }
-
-        doctorDAO.create(doctor);
-    }
-
-    // Removes a doctor from the system.
-    public void removeDoctor(Doctor doctor) throws SQLException {
-        DoctorDAO doctorDAO = new DoctorDAO();
-
-        if (doctor == null) {
-            throw new RuntimeException("Doctor cannot be null.");
-        }
-
-        if (doctorDAO.readById(doctor.getId()) == null) {
-            throw new RuntimeException("Doctor not found.");
-        }
-
-        doctorDAO.delete(doctor);
     }
 
     // ─── Manager Management ───────────────────────────────────────────────────

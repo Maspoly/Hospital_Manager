@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane styleClass="app-root" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.BuscaController">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="sidebar" BorderPane.alignment="CENTER">
+
+            <!-- Cabeçalho -->
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" styleClass="nav-item" onAction="#goDashboard" maxWidth="Infinity" />
+                <Button text="Médicos" styleClass="nav-item" onAction="#goMedicos" maxWidth="Infinity" />
+                <Button text="Pacientes" styleClass="nav-item" onAction="#goPacientes" maxWidth="Infinity" />
+                <Button text="Consultas" styleClass="nav-item" onAction="#goConsultas" maxWidth="Infinity" />
+                <Button text="Busca" styleClass="nav-item-active" onAction="#goBusca" maxWidth="Infinity" />
+                <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Rodapé -->
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <StackPane>
+            <VBox styleClass="content-area" spacing="22">
+
+                <VBox spacing="4">
+                    <Label text="Busca Avançada" styleClass="page-title" />
+                    <Label text="Pesquise por pacientes, médicos ou consultas" styleClass="page-subtitle" />
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="14">
+                    <padding>
+                        <Insets top="20" bottom="20" left="22" right="22" />
+                    </padding>
+
+                    <GridPane hgap="16" vgap="6">
+                        <columnConstraints>
+                            <javafx.scene.layout.ColumnConstraints percentWidth="30" />
+                            <javafx.scene.layout.ColumnConstraints percentWidth="30" />
+                            <javafx.scene.layout.ColumnConstraints percentWidth="40" />
+                        </columnConstraints>
+
+                        <Label text="Buscar por" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <Label text="Critério" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                        <Label text="Termo de busca" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+
+                        <ComboBox fx:id="cmbBuscarPor" styleClass="combo-input" maxWidth="Infinity"
+                                  GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <ComboBox fx:id="cmbCriterio" styleClass="combo-input" maxWidth="Infinity"
+                                  GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                        <TextField fx:id="txtTermo" styleClass="text-input" promptText="Digite para buscar..."
+                                   GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                    </GridPane>
+
+                    <Button text="Buscar" styleClass="btn-accent" maxWidth="Infinity" onAction="#onBuscar" />
+<<<<<<< HEAD
+=======
+                    <Label text="Os critérios mudam conforme o tipo de busca. Clique em um resultado para ver detalhes e abrir a tela relacionada." styleClass="empty-state-title" wrapText="true" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="10" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="18" bottom="18" left="22" right="22" />
+                    </padding>
+                    <Label fx:id="lblResultados" text="Resultados da Busca (0)" styleClass="panel-title" />
+<<<<<<< HEAD
+                    <VBox fx:id="boxResultados" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
+=======
+                    <VBox fx:id="boxResultados" spacing="10" VBox.vgrow="ALWAYS" alignment="TOP_LEFT">
+>>>>>>> 96ad7c6 (Linked screens to data base)
+                        <Label text="Faça uma busca para ver os resultados." styleClass="empty-state-title" />
+                    </VBox>
+                </VBox>
+
+            </VBox>
+
+            <Button text="?" styleClass="help-fab" StackPane.alignment="BOTTOM_RIGHT" translateX="-24" translateY="-24" />
+        </StackPane>
+    </center>
+</BorderPane>
