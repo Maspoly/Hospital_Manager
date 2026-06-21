@@ -47,14 +47,22 @@
 
                 <VBox spacing="4">
                     <Label text="Cadastrar Paciente" styleClass="page-title"/>
+<<<<<<< HEAD
                     <Label text="Preencha os dados do novo paciente da clínica" styleClass="page-subtitle"/>
+=======
+                    <Label text="Preencha apenas os dados essenciais do paciente" styleClass="page-subtitle"/>
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 </VBox>
 
                 <VBox styleClass="surface-card" spacing="0">
                     <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
 
                     <!-- Dados pessoais -->
+<<<<<<< HEAD
                     <Label text="Dados pessoais" styleClass="panel-title"/>
+=======
+                    <Label text="Dados essenciais" styleClass="panel-title"/>
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     <Separator style="-fx-padding: 10 0 18 0;"/>
 
                     <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
@@ -67,6 +75,7 @@
                             <Label text="CPF *" styleClass="form-label"/>
                             <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="text-input"/>
                         </VBox>
+<<<<<<< HEAD
                         <VBox spacing="6" HBox.hgrow="ALWAYS">
                             <Label text="Data de nascimento *" styleClass="form-label"/>
                             <DatePicker fx:id="fldDataNascimento" promptText="dd/mm/aaaa"
@@ -97,6 +106,14 @@
                             <TextField fx:id="fldEmail" promptText="paciente@email.com" styleClass="text-input"/>
                         </VBox>
                     </HBox>
+=======
+                    </HBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 24 0;">
+                        <Label text="Senha de acesso *" styleClass="form-label"/>
+                        <PasswordField fx:id="fldSenha" promptText="Senha para login" styleClass="text-input"/>
+                    </VBox>
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
                     <!-- Endereço -->
                     <Label text="Endereço" styleClass="panel-title"/>
@@ -128,6 +145,7 @@
                         </VBox>
                     </HBox>
 
+<<<<<<< HEAD
                     <HBox spacing="16" style="-fx-padding: 0 0 24 0;">
                         <VBox spacing="6" prefWidth="180">
                             <Label text="CEP" styleClass="form-label"/>
@@ -162,6 +180,10 @@
                         <Label text="Observações" styleClass="form-label"/>
                         <TextArea fx:id="fldObservacoes" promptText="Informações adicionais relevantes..."
                                   styleClass="text-input" prefRowCount="3" wrapText="true"/>
+=======
+                    <VBox spacing="6" style="-fx-padding: 0 0 32 0;">
+                        <Label text="O sistema vai salvar apenas o necessário para cadastro e login." styleClass="page-subtitle" wrapText="true"/>
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     </VBox>
 
                     <HBox spacing="12" alignment="CENTER_RIGHT">

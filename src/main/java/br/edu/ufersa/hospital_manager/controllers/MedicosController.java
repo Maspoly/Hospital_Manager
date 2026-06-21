@@ -1,5 +1,16 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
+<<<<<<< HEAD
+=======
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.edu.ufersa.hospital_manager.model.entities.Address;
+import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +29,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+<<<<<<< HEAD
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -25,6 +37,12 @@ import java.util.List;
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+=======
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
 
 public class MedicosController {
@@ -59,10 +77,21 @@ public class MedicosController {
     @FXML
     private TableColumn<Doctor, Void> colAcoes;
 
+<<<<<<< HEAD
     @FXML
     public void initialize() {
         configurarColunas();
         carregarDadosMock();
+=======
+    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final ObservableList<Doctor> medicos = FXCollections.observableArrayList();
+    private boolean usingDatabase = true;
+
+    @FXML
+    public void initialize() {
+        configurarColunas();
+        carregarDados();
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -167,6 +196,7 @@ public class MedicosController {
         };
     }
 
+<<<<<<< HEAD
     private void carregarDadosMock() {
         ObservableList<Doctor> dados = FXCollections.observableArrayList();
 
@@ -176,6 +206,25 @@ public class MedicosController {
         dados.add(doctor1);
 
         tableMedicos.setItems(dados);
+=======
+    private void carregarDados() {
+        try {
+            medicos.setAll(doctorService.listAll());
+            usingDatabase = true;
+        } catch (SQLException exception) {
+            usingDatabase = false;
+            medicos.setAll(carregarDadosMock());
+        }
+
+        tableMedicos.setItems(medicos);
+    }
+
+    private List<Doctor> carregarDadosMock() {
+        List<Doctor> dados = new ArrayList<>();
+        Address endereco1 = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
+        dados.add(new Doctor("Luiz Silva", "12345678900", endereco1, 250.0f, "123456"));
+        return dados;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private String formatarCpf(String cpf) {
@@ -191,8 +240,98 @@ public class MedicosController {
     }
 
     private void onEditarMedico(Doctor doctor) {
+<<<<<<< HEAD
         // TODO: abrir formulário de edição conectado ao DoctorDAO/DoctorServices
         NavigationHelper.showInfo("Editar Médico", "Edição de \"" + doctor.getName() + "\" em construção.");
+=======
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Editar Médico");
+        dialog.setHeaderText(null);
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        ((Button) pane.lookupButton(ButtonType.OK)).setText("Salvar alterações");
+
+        Address address = doctor.getAddress();
+        TextField nome = field(doctor.getName());
+        TextField cpf = field(doctor.getCPF());
+        TextField rua = field(address.getStreet());
+        TextField numero = field(address.getNumber());
+        TextField bairro = field(address.getNeighborhood());
+        TextField cidade = field(address.getCity());
+        TextField estado = field(address.getState());
+        TextField crm = field(doctor.getCouncilCode());
+        TextField valor = field(String.valueOf(doctor.getConsultationValue()));
+
+        GridPane personalGrid = new GridPane();
+        personalGrid.setHgap(12);
+        personalGrid.setVgap(12);
+        personalGrid.addRow(0, label("Nome completo"), nome);
+        personalGrid.addRow(1, label("CPF"), cpf);
+
+        GridPane addressGrid = new GridPane();
+        addressGrid.setHgap(12);
+        addressGrid.setVgap(12);
+        addressGrid.addRow(0, label("Rua"), rua, label("Número"), numero);
+        addressGrid.addRow(1, label("Bairro"), bairro, label("Cidade"), cidade);
+        addressGrid.addRow(2, label("Estado"), estado);
+
+        GridPane professionalGrid = new GridPane();
+        professionalGrid.setHgap(12);
+        professionalGrid.setVgap(12);
+        professionalGrid.addRow(0, label("CRM / Conselho"), crm);
+        professionalGrid.addRow(1, label("Valor da consulta (R$)"), valor);
+
+        VBox sections = new VBox(14,
+                section("Dados pessoais", personalGrid),
+                section("Endereço", addressGrid),
+                section("Dados profissionais", professionalGrid)
+        );
+        sections.setPadding(new Insets(2, 2, 0, 2));
+
+        VBox header = new VBox(4,
+            dialogTitle("Editar Médico"),
+            dialogSubtitle("Mantenha apenas os dados realmente usados pelo sistema.")
+        );
+
+        VBox content = new VBox(18, header, sections, footer(pane));
+        content.setPadding(new Insets(24));
+        content.setPrefWidth(720);
+        content.getStyleClass().add("edit-dialog-card");
+
+        StackPane backdrop = new StackPane(content);
+        backdrop.setPadding(new Insets(22));
+        backdrop.getStyleClass().add("edit-dialog-backdrop");
+
+        pane.setContent(backdrop);
+        pane.getStylesheets().add(getClass().getResource("/br/edu/ufersa/hospital_manager/css/style.css").toExternalForm());
+        dialog.showAndWait().ifPresent(result -> {
+            if (result != ButtonType.OK) {
+                return;
+            }
+
+            try {
+                doctor.setName(nome.getText().trim());
+                doctor.setCPF(cpf.getText().trim().replaceAll("[^0-9]", ""));
+                doctor.getAddress().setStreet(rua.getText().trim());
+                doctor.getAddress().setNumber(numero.getText().trim());
+                doctor.getAddress().setNeighborhood(bairro.getText().trim());
+                doctor.getAddress().setCity(cidade.getText().trim());
+                doctor.getAddress().setState(estado.getText().trim());
+                doctor.setCouncilCode(crm.getText().trim().replaceAll("[^0-9]", ""));
+                doctor.setConsultationValue(Float.parseFloat(valor.getText().trim().replace(",", ".")));
+
+                if (usingDatabase) {
+                    doctorService.updateDoctor(doctor);
+                }
+
+                tableMedicos.refresh();
+                NavigationHelper.showInfo("Editar Médico", "Dados de \"" + doctor.getName() + "\" atualizados com sucesso.");
+            } catch (RuntimeException | SQLException exception) {
+                NavigationHelper.showError(exception.getMessage());
+            }
+        });
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void onExcluirMedico(Doctor doctor) {
@@ -201,11 +340,74 @@ public class MedicosController {
                 "Tem certeza que deseja excluir \"" + doctor.getName() + "\"?"
         );
         if (confirmado) {
+<<<<<<< HEAD
             // TODO: remover via DoctorDAO/DoctorServices e recarregar a tabela
             tableMedicos.getItems().remove(doctor);
         }
     }
 
+=======
+            try {
+                if (usingDatabase) {
+                    doctorService.removeDoctor(doctor);
+                    carregarDados();
+                } else {
+                    tableMedicos.getItems().remove(doctor);
+                }
+            } catch (SQLException exception) {
+                NavigationHelper.showError("Erro ao excluir médico: " + exception.getMessage());
+            }
+        }
+    }
+
+    private TextField field(String value) {
+        TextField field = new TextField(value);
+        field.getStyleClass().add("edit-dialog-field");
+        return field;
+    }
+
+    private Label label(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-field-label");
+        return label;
+    }
+
+    private Label dialogTitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-title");
+        return label;
+    }
+
+    private Label dialogSubtitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-subtitle");
+        return label;
+    }
+
+    private VBox section(String title, GridPane grid) {
+        VBox box = new VBox(12, sectionTitle(title), grid);
+        box.getStyleClass().add("edit-dialog-section");
+        return box;
+    }
+
+    private Label sectionTitle(String title) {
+        Label label = new Label(title);
+        label.getStyleClass().add("edit-dialog-section-title");
+        return label;
+    }
+
+    private VBox footer(DialogPane pane) {
+        Button saveButton = (Button) pane.lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) pane.lookupButton(ButtonType.CANCEL);
+        saveButton.getStyleClass().add("btn-accent");
+        cancelButton.getStyleClass().add("btn-ghost");
+
+        HBox footer = new HBox(10, cancelButton, saveButton);
+        footer.getStyleClass().add("edit-dialog-footer");
+        return new VBox(footer);
+    }
+
+>>>>>>> 96ad7c6 (Linked screens to data base)
     @FXML
     public void onNovoMedico(ActionEvent event) {
         // TODO: abrir formulário de cadastro conectado ao DoctorDAO/DoctorServices
@@ -216,7 +418,11 @@ public class MedicosController {
 
     @FXML
     public void goDashboard(ActionEvent event) {
+<<<<<<< HEAD
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "dashboard.fxml");
+=======
+        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -243,6 +449,15 @@ public class MedicosController {
     public void goRelatorios(ActionEvent event) {
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
     }
+<<<<<<< HEAD
+=======
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "login.fxml");
+    }
+>>>>>>> 96ad7c6 (Linked screens to data base)
         // ─────────────────────────────────────────────────────────
     // Utilitários de navegação
     // ─────────────────────────────────────────────────────────
@@ -284,6 +499,7 @@ public class MedicosController {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
         @FXML
         private void onNovoMedico() {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -343,4 +559,6 @@ public class MedicosController {
                 l.getStyleClass().add("form-label");
                 return l;
             }
+=======
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }

@@ -41,8 +41,13 @@
 
             <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
                 <Button text="📄  Meus Pacientes" styleClass="medico-nav-item" onAction="#goMeusPacientes" maxWidth="Infinity" />
+<<<<<<< HEAD
                 <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
                 <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item" onAction="#goEditarDados" maxWidth="Infinity" />
+=======
+                <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 <Button text="📊  Meus Relatórios" styleClass="medico-nav-item-active" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
@@ -58,7 +63,11 @@
 
             <VBox spacing="4">
                 <Label text="Meus Relatórios" styleClass="medico-page-title" />
+<<<<<<< HEAD
                 <Label text="Gere relatórios das suas consultas por período" styleClass="medico-page-subtitle" />
+=======
+                <Label text="Gere um relatório e acompanhe o histórico salvo no banco" styleClass="medico-page-subtitle" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
             </VBox>
 
             <!-- Filtros -->
@@ -67,7 +76,11 @@
                     <Insets top="20" bottom="20" left="22" right="22" />
                 </padding>
 
+<<<<<<< HEAD
                 <Label text="Selecionar Período" styleClass="medico-panel-title" />
+=======
+                <Label text="Novo relatório" styleClass="medico-panel-title" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
                 <HBox spacing="16">
                     <VBox spacing="6" HBox.hgrow="ALWAYS">
@@ -80,6 +93,7 @@
                     </VBox>
                 </HBox>
 
+<<<<<<< HEAD
                 <Button text="Gerar Relatório" styleClass="medico-btn-save" onAction="#onGerarRelatorio" maxWidth="Infinity" />
             </VBox>
 
@@ -87,6 +101,15 @@
             <HBox spacing="18">
                 <VBox styleClass="medico-stat-card" spacing="4" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                     <Label text="Total de Consultas" styleClass="medico-stat-label" />
+=======
+                <Button text="Gerar e salvar relatório" styleClass="medico-btn-save" onAction="#onGerarRelatorio" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Resumo do relatório -->
+            <HBox spacing="18">
+                <VBox styleClass="medico-stat-card" spacing="4" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                    <Label text="Total no relatório atual" styleClass="medico-stat-label" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     <Label fx:id="lblTotalConsultas" text="0" styleClass="medico-stat-value" />
                 </VBox>
                 <VBox styleClass="medico-stat-card" spacing="4" HBox.hgrow="ALWAYS" maxWidth="Infinity">
@@ -103,11 +126,16 @@
                 </VBox>
             </HBox>
 
+<<<<<<< HEAD
             <!-- Lista de consultas -->
+=======
+            <!-- Histórico de relatórios -->
+>>>>>>> 96ad7c6 (Linked screens to data base)
             <VBox styleClass="medico-surface-card" spacing="10" VBox.vgrow="ALWAYS">
                 <padding>
                     <Insets top="18" bottom="18" left="22" right="22" />
                 </padding>
+<<<<<<< HEAD
                 <Label fx:id="lblConsultasEncontradas" text="Consultas Encontradas (0)" styleClass="medico-panel-title" />
                 <VBox fx:id="boxConsultas" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
                     <StackPane>
@@ -115,6 +143,11 @@
                         <Label text="📋" style="-fx-font-size: 20px; -fx-text-fill: #c1c5cc;" />
                     </StackPane>
                     <Label text="Selecione um período acima e clique em 'Gerar Relatório'" styleClass="medico-empty-state-title" />
+=======
+                <Label fx:id="lblRelatoriosEncontrados" text="Histórico de relatórios" styleClass="medico-panel-title" />
+                <VBox fx:id="boxRelatorios" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
+                    <Label text="Gere um relatório acima para preencher este histórico" styleClass="medico-empty-state-title" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 </VBox>
             </VBox>
 

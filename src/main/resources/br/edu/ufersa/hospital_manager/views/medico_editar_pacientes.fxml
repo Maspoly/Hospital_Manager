@@ -43,8 +43,13 @@
 
             <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
                 <Button text="📄  Meus Pacientes" styleClass="medico-nav-item" onAction="#goMeusPacientes" maxWidth="Infinity" />
+<<<<<<< HEAD
                 <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
                 <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item-active" onAction="#goEditarDados" maxWidth="Infinity" />
+=======
+                <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 

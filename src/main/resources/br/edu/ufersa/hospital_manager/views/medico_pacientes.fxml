@@ -2,8 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<<<<<<< HEAD
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+=======
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+>>>>>>> 96ad7c6 (Linked screens to data base)
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -43,8 +49,13 @@
 
             <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
                 <Button text="📄  Meus Pacientes" styleClass="medico-nav-item-active" onAction="#goMeusPacientes" maxWidth="Infinity" />
+<<<<<<< HEAD
                 <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
                 <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item" onAction="#goEditarDados" maxWidth="Infinity" />
+=======
+                <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
@@ -56,6 +67,7 @@
 
     <!-- ===================== CONTENT ===================== -->
     <center>
+<<<<<<< HEAD
         <VBox styleClass="medico-content-area" spacing="22">
 
             <VBox spacing="4">
@@ -112,5 +124,74 @@
             </VBox>
 
         </VBox>
+=======
+        <HBox styleClass="medico-content-area" spacing="18">
+
+            <VBox spacing="22" HBox.hgrow="ALWAYS">
+
+                <VBox spacing="4">
+                    <Label text="Meus Pacientes" styleClass="medico-page-title" />
+                    <Label text="Visualize e gerencie os prontuários dos seus pacientes" styleClass="medico-page-subtitle" />
+                </VBox>
+
+                <HBox spacing="18">
+                    <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                        <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-blue" />
+                        <VBox spacing="2">
+                            <Label text="Total de pacientes" styleClass="medico-stat-label" />
+                            <Label fx:id="lblTotalPacientes" text="0" styleClass="medico-stat-value" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                        <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-green" />
+                        <VBox spacing="2">
+                            <Label text="Total de Prontuários" styleClass="medico-stat-label" />
+                            <Label fx:id="lblTotalProntuarios" text="0" styleClass="medico-stat-value" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox styleClass="medico-stat-card" spacing="14" HBox.hgrow="ALWAYS" maxWidth="Infinity" alignment="CENTER_LEFT">
+                        <StackPane styleClass="medico-stat-icon-box, medico-stat-icon-purple" />
+                        <VBox spacing="2">
+                            <Label text="Prontuários Selecionados" styleClass="medico-stat-label" />
+                            <Label fx:id="lblProntuariosSelecionados" text="0" styleClass="medico-stat-value" />
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <VBox styleClass="medico-surface-card" spacing="10" VBox.vgrow="ALWAYS" alignment="CENTER">
+                    <VBox fx:id="boxProntuarios" spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <padding>
+                            <Insets top="40" bottom="40" left="20" right="20" />
+                        </padding>
+                        <StackPane>
+                            <Circle radius="26" styleClass="medico-empty-state-icon-circle" />
+                            <Label text="👤" style="-fx-font-size: 20px; -fx-text-fill: #c1c5cc;" />
+                        </StackPane>
+                        <Label fx:id="lblPacienteSelecionado" text="Selecione um paciente na lateral" styleClass="medico-empty-state-title" />
+                        <Label text="O prontuário do paciente aparecerá aqui após a seleção" styleClass="medico-empty-state-title" />
+                    </VBox>
+                </VBox>
+
+            </VBox>
+
+            <VBox styleClass="medico-surface-card" spacing="14" prefWidth="320" maxWidth="320">
+                <padding>
+                    <Insets top="18" right="16" bottom="18" left="16" />
+                </padding>
+
+                <VBox spacing="4">
+                    <Label text="Pacientes com consulta ativa" styleClass="medico-panel-title" />
+                    <Label text="Busque por nome ou CPF" styleClass="medico-empty-state-title" wrapText="true" />
+                </VBox>
+
+                <TextField fx:id="txtBuscarPaciente" styleClass="medico-search-input" promptText="Buscar paciente" maxWidth="Infinity" />
+
+                <ListView fx:id="lstPacientes" styleClass="medico-patient-list" VBox.vgrow="ALWAYS" prefHeight="420" />
+            </VBox>
+
+        </HBox>
+>>>>>>> 96ad7c6 (Linked screens to data base)
     </center>
 </BorderPane>

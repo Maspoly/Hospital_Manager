@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Connector {
     private final static String URL = "jdbc:mysql://localhost:3306/hospital_manager";
     private final static String USER = "root";
-    private final static String PASS = "";
+    private final static String PASS = "192106";
     private static Connection connection = null;
 
     // Singleton pattern for database connection
@@ -15,9 +15,15 @@ public class Connector {
         if (connection == null){
             try{
                 connection = DriverManager.getConnection(URL, USER, PASS);
-            } catch (SQLException e){e.printStackTrace();}
+            } catch (SQLException e){
+                connection = null;
+            }
         }
         return connection;
+    }
+
+    public static boolean isAvailable() {
+        return getConnection() != null;
     }
 
     // Method to close the connection when done

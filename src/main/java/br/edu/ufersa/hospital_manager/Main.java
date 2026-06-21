@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+<<<<<<< HEAD
 
         System.out.println("═══════════════════════════════════════════");
         System.out.println("        HOSPITAL MANAGER - TESTS           ");
@@ -375,5 +376,8 @@ public class Main {
         }
 
         System.out.println();
+=======
+        MainTest.main(args);
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 }

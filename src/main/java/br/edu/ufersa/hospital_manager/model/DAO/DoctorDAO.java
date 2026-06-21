@@ -11,13 +11,12 @@ import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.util.Connector;
 
 public class DoctorDAO implements BaseDAO<Doctor> {
-    
-    
+
     private Connection connection;
 
     public DoctorDAO() {
-        this.connection = Connector.getConnection();
     }
+<<<<<<< HEAD
     
     public static final String INSERT_SQL = "INSERT INTO doctor (name, cpf, adress, consultation_value, council_code) VALUES (?, ?, ?, ?, ?);";
     public static final String  DELETE_SQL = "DELETE FROM doctor WHERE id = ?;";
@@ -37,6 +36,50 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         ps.setString(3, String.valueOf(entity.getAddress()));
         ps.setFloat(4, entity.getConsultationValue());
         ps.setString(5, entity.getCouncilCode());
+=======
+
+    private Connection getConnection() throws SQLException {
+        if (connection == null) {
+            connection = Connector.getConnection();
+        }
+
+        if (connection == null) {
+            throw new SQLException("Database connection is not available.");
+        }
+
+        return connection;
+    }
+
+    public static final String INSERT_SQL = "INSERT INTO doctor (name, cpf, password, address_id, consultation_value, council_code) VALUES (?, ?, ?, ?, ?, ?);";
+    public static final String DELETE_SQL = "DELETE FROM doctor WHERE id = ?;";
+    public static final String UPDATE_SQL = "UPDATE doctor SET name = ?, cpf = ?, password = ?, address_id = ?, consultation_value = ?, council_code = ? WHERE id = ?;";
+    public static final String SELECT_ALL_SQL = "SELECT * FROM doctor;";
+    public static final String SELECT_BY_CPF_SQL = "SELECT * FROM doctor WHERE cpf = ?;";
+    public static final String SELECT_BY_ID_SQL = "SELECT * FROM doctor WHERE id = ?;";
+    public static final String SELECT_BY_NAME_SQL = "SELECT * FROM doctor WHERE LOWER(name) LIKE ?;";
+    public static final String SELECT_BY_COUNCIL_CODE_SQL = "SELECT * FROM doctor WHERE council_code = ?;";
+
+    @Override
+    public void create(Doctor entity) throws SQLException {
+        AddressDAO addressDAO = new AddressDAO();
+
+        if (entity.getAddress().getId() <= 0) {
+            addressDAO.create(entity.getAddress());
+        }
+
+        PreparedStatement ps = getConnection().prepareStatement(
+                INSERT_SQL,
+                PreparedStatement.RETURN_GENERATED_KEYS
+        );
+
+        ps.setString(1, entity.getName());
+        ps.setString(2, entity.getCPF());
+        ps.setString(3, entity.getPasswordHash());
+        ps.setLong(4, entity.getAddress().getId());
+        ps.setFloat(5, entity.getConsultationValue());
+        ps.setString(6, entity.getCouncilCode());
+
+>>>>>>> 96ad7c6 (Linked screens to data base)
         ps.executeUpdate();
 
         ResultSet rs = ps.getGeneratedKeys();
@@ -48,23 +91,41 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
     @Override
     public void delete(Doctor entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
+        long addressId = entity.getAddress().getId();
+        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
         ps.setLong(1, entity.getId());
+        ps.executeUpdate();
+        ps = getConnection().prepareStatement("DELETE FROM addresses WHERE id = ?;");
+        ps.setLong(1, addressId);
         ps.executeUpdate();
     }
 
     @Override
     public ArrayList<Doctor> listAll() throws SQLException {
-        Statement ps = connection.createStatement();
+        Statement ps = getConnection().createStatement();
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
         ArrayList<Doctor> doctors = new ArrayList<>();
+<<<<<<< HEAD
 
         while (rs.next()) {
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
+=======
+        AddressDAO addressDAO = new AddressDAO();
+
+        while (rs.next()) {
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true,
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );
@@ -78,31 +139,51 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
     @Override
     public void update(Doctor entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
+<<<<<<< HEAD
         ps.setString(3, String.valueOf(entity.getAddress()));
         ps.setFloat(4, entity.getConsultationValue());
         ps.setString(5, entity.getCouncilCode());
         ps.setLong(6, entity.getId());
+=======
+        ps.setString(3, entity.getPasswordHash());
+        ps.setLong(4, entity.getAddress().getId());
+        ps.setFloat(5, entity.getConsultationValue());
+        ps.setString(6, entity.getCouncilCode());
+        ps.setLong(7, entity.getId());
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
         ps.executeUpdate();
     }
 
     @Override
     public Doctor readById(long id) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
 
         ps.setLong(1, id);
 
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+<<<<<<< HEAD
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
+=======
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true,
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );
@@ -115,17 +196,29 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByCPF(String cpf) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_CPF_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_CPF_SQL);
 
         ps.setString(1, cpf);
 
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+<<<<<<< HEAD
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
+=======
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true,
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );
@@ -138,17 +231,29 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByName(String name) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_NAME_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_NAME_SQL);
 
-        ps.setString(1, name);
+        ps.setString(1, "%" + name.toLowerCase() + "%");
 
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+<<<<<<< HEAD
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
+=======
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true,
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );
@@ -161,17 +266,29 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByCouncilCode(String councilCode) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_COUNCIL_CODE_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_COUNCIL_CODE_SQL);
 
         ps.setString(1, councilCode);
 
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+<<<<<<< HEAD
             Doctor doctor = new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     new AddressDAO().readById(rs.getLong("address_id")),
+=======
+            AddressDAO addressDAO = new AddressDAO();
+            Address address = addressDAO.readById(rs.getLong("address_id"));
+
+            Doctor doctor = new Doctor(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true,
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     rs.getFloat("consultation_value"),
                     rs.getString("council_code")
             );

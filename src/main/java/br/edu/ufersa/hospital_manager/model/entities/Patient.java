@@ -6,4 +6,16 @@ public class Patient extends Person {
         super(name, cpf, address);
     }
 
+<<<<<<< HEAD
 }
+=======
+    public Patient(String name, String cpf, Address address, String password) {
+        super(name, cpf, address, password);
+    }
+
+    public Patient(String name, String cpf, Address address, String password, boolean passwordIsHash) {
+        super(name, cpf, address, password, passwordIsHash);
+    }
+
+}
+>>>>>>> 96ad7c6 (Linked screens to data base)

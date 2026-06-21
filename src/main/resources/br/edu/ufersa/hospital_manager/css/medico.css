@@ -4,33 +4,62 @@
 
 .medico-root-background {
     -fx-background-color: #eef2f8;
+<<<<<<< HEAD
+=======
+    background-color: #eef2f8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ===================== LOGIN MÉDICO ===================== */
 
 .medico-login-logo-circle {
     -fx-fill: #dbeafe;
+<<<<<<< HEAD
+=======
+    fill: #dbeafe;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-login-logo-icon {
     -fx-font-size: 24px;
     -fx-text-fill: #2563eb;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    font-size: 24px;
+    color: #2563eb;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-login-title {
     -fx-text-fill: #1f2937;
     -fx-font-size: 22px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 22px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-login-subtitle {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 13px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 13px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-login-card {
     -fx-background-color: white;
+<<<<<<< HEAD
+=======
+    background-color: white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 16;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 18, 0, 0, 6);
 }
@@ -39,16 +68,29 @@
     -fx-text-fill: #1f2937;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-field-label {
     -fx-text-fill: #374151;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #374151;
+    font-size: 13px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-text-input {
     -fx-background-color: #ffffff;
+<<<<<<< HEAD
     -fx-background-radius: 8;
     -fx-border-color: #d1d5db;
     -fx-border-radius: 8;
@@ -56,33 +98,79 @@
     -fx-padding: 10 12 10 12;
     -fx-font-size: 13px;
     -fx-pref-height: 38px;
+=======
+    background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 10 12 10 12;
+    padding: 10 12 10 12;
+    -fx-font-size: 13px;
+    font-size: 13px;
+    -fx-pref-height: 38px;
+    height: 38px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-text-input:focused {
     -fx-border-color: #2563eb;
     -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 6, 0, 0, 0);
+<<<<<<< HEAD
+=======
+    border-color: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-primary {
     -fx-background-color: #2563eb;
+<<<<<<< HEAD
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-pref-height: 42px;
     -fx-cursor: hand;
+=======
+    background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-pref-height: 42px;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-primary:hover {
     -fx-background-color: #1d4ed8;
+<<<<<<< HEAD
+=======
+    background-color: #1d4ed8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-primary:pressed {
     -fx-background-color: #1e40af;
+<<<<<<< HEAD
+=======
+    background-color: #1e40af;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-info-box {
     -fx-background-color: #eff6ff;
+<<<<<<< HEAD
+=======
+    background-color: #eff6ff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 8;
 }
 
@@ -90,17 +178,34 @@
     -fx-text-fill: #1d4ed8;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-info-text {
     -fx-text-fill: #1d4ed8;
     -fx-font-size: 12px;
+<<<<<<< HEAD
+=======
+    color: #1d4ed8;
+    font-size: 12px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-link-back {
     -fx-text-fill: #2563eb;
     -fx-font-size: 12.5px;
     -fx-cursor: hand;
+<<<<<<< HEAD
+=======
+    color: #2563eb;
+    font-size: 12.5px;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-link-back:hover {
@@ -113,124 +218,261 @@
 
 .medico-app-root {
     -fx-background-color: #f3f4f9;
+<<<<<<< HEAD
+=======
+    background-color: #f3f4f9;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Sidebar (clara, diferente do admin) ---------- */
 .medico-sidebar {
     -fx-background-color: white;
+<<<<<<< HEAD
     -fx-pref-width: 244px;
     -fx-min-width: 244px;
     -fx-border-color: transparent #e5e7eb transparent transparent;
     -fx-border-width: 0 1 0 0;
+=======
+    background-color: white;
+    -fx-pref-width: 244px;
+    -fx-min-width: 244px;
+    min-width: 244px;
+    -fx-border-color: transparent #e5e7eb transparent transparent;
+    border-color: transparent #e5e7eb transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    border-width: 0 1 0 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-sidebar-header {
     -fx-padding: 20 20 16 20;
+<<<<<<< HEAD
     -fx-border-color: transparent transparent #e5e7eb transparent;
     -fx-border-width: 0 0 1 0;
+=======
+    padding: 20 20 16 20;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-sidebar-logo-badge {
     -fx-background-color: #2563eb;
+<<<<<<< HEAD
     -fx-background-radius: 9;
     -fx-min-width: 34;
     -fx-min-height: 34;
     -fx-max-width: 34;
     -fx-max-height: 34;
+=======
+    background-color: #2563eb;
+    -fx-background-radius: 9;
+    -fx-min-width: 34;
+    min-width: 34;
+    -fx-min-height: 34;
+    min-height: 34;
+    -fx-max-width: 34;
+    max-width: 34;
+    -fx-max-height: 34;
+    max-height: 34;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-alignment: CENTER;
 }
 
 .medico-sidebar-logo-glyph {
     -fx-text-fill: white;
     -fx-font-size: 15px;
+<<<<<<< HEAD
+=======
+    color: white;
+    font-size: 15px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-sidebar-brand {
     -fx-text-fill: #1f2937;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-sidebar-brand-sub {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 10.5px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 10.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Profile block (avatar + nome + CRM) ---------- */
 .medico-profile-box {
     -fx-padding: 14 20 14 20;
+<<<<<<< HEAD
     -fx-border-color: transparent transparent #e5e7eb transparent;
     -fx-border-width: 0 0 1 0;
+=======
+    padding: 14 20 14 20;
+    -fx-border-color: transparent transparent #e5e7eb transparent;
+    border-color: transparent transparent #e5e7eb transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-avatar-circle {
     -fx-fill: #2563eb;
+<<<<<<< HEAD
+=======
+    fill: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-avatar-initial {
     -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-profile-name {
     -fx-text-fill: #1f2937;
     -fx-font-size: 13.5px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 13.5px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-profile-crm {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 11px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 11px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Nav ---------- */
 .medico-nav-list {
     -fx-padding: 12 12 12 12;
+<<<<<<< HEAD
+=======
+    padding: 12 12 12 12;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-spacing: 3;
 }
 
 .medico-nav-item {
     -fx-background-color: transparent;
+<<<<<<< HEAD
+=======
+    background-color: transparent;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 9;
     -fx-text-fill: #4b5563;
     -fx-font-size: 13px;
     -fx-font-weight: 600;
+<<<<<<< HEAD
     -fx-padding: 10 14 10 14;
     -fx-alignment: CENTER_LEFT;
     -fx-pref-width: Infinity;
     -fx-cursor: hand;
+=======
+    color: #4b5563;
+    font-size: 13px;
+    font-weight: 600;
+    -fx-padding: 10 14 10 14;
+    padding: 10 14 10 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-graphic-text-gap: 10;
 }
 
 .medico-nav-item:hover {
     -fx-background-color: #f3f4f6;
+<<<<<<< HEAD
+=======
+    background-color: #f3f4f6;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-nav-item-active {
     -fx-background-color: #2563eb;
+<<<<<<< HEAD
+=======
+    background-color: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 9;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
     -fx-padding: 10 14 10 14;
     -fx-alignment: CENTER_LEFT;
     -fx-pref-width: Infinity;
     -fx-cursor: hand;
+=======
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    -fx-padding: 10 14 10 14;
+    padding: 10 14 10 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: Infinity;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-graphic-text-gap: 10;
 }
 
 /* ---------- Sair (logout) ---------- */
 .medico-logout-box {
     -fx-padding: 16 20 18 20;
+<<<<<<< HEAD
+=======
+    padding: 16 20 18 20;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-logout {
     -fx-background-color: transparent;
+<<<<<<< HEAD
     -fx-text-fill: #dc2626;
     -fx-font-size: 13px;
     -fx-font-weight: 600;
     -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-alignment: CENTER_LEFT;
     -fx-graphic-text-gap: 8;
 }
@@ -242,31 +484,56 @@
 /* ---------- Content area ---------- */
 .medico-content-area {
     -fx-background-color: #f3f4f9;
+<<<<<<< HEAD
     -fx-padding: 30 34 30 34;
+=======
+    background-color: #f3f4f9;
+    -fx-padding: 30 34 30 34;
+    padding: 30 34 30 34;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-page-title {
     -fx-text-fill: #111827;
     -fx-font-size: 24px;
     -fx-font-weight: 800;
+<<<<<<< HEAD
+=======
+    color: #111827;
+    font-size: 24px;
+    font-weight: 800;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-page-subtitle {
     -fx-text-fill: #6b7280;
     -fx-font-size: 13.5px;
+<<<<<<< HEAD
+=======
+    color: #6b7280;
+    font-size: 13.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Stat mini-cards (Meus Pacientes) ---------- */
 .medico-stat-card {
     -fx-background-color: white;
+<<<<<<< HEAD
     -fx-background-radius: 12;
     -fx-padding: 16 18 16 18;
+=======
+    background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 16 18 16 18;
+    padding: 16 18 16 18;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.05), 10, 0, 0, 3);
 }
 
 .medico-stat-icon-box {
     -fx-background-radius: 10;
     -fx-min-width: 42;
+<<<<<<< HEAD
     -fx-min-height: 42;
     -fx-max-width: 42;
     -fx-max-height: 42;
@@ -275,22 +542,52 @@
 .medico-stat-icon-blue   { -fx-background-color: #dbeafe; }
 .medico-stat-icon-green  { -fx-background-color: #d1fae5; }
 .medico-stat-icon-purple { -fx-background-color: #ede9fe; }
+=======
+    min-width: 42;
+    -fx-min-height: 42;
+    min-height: 42;
+    -fx-max-width: 42;
+    max-width: 42;
+    -fx-max-height: 42;
+    max-height: 42;
+}
+
+.medico-stat-icon-blue   { -fx-background-color: #dbeafe; background-color: #dbeafe; }
+.medico-stat-icon-green  { -fx-background-color: #d1fae5; background-color: #d1fae5; }
+.medico-stat-icon-purple { -fx-background-color: #ede9fe; background-color: #ede9fe; }
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
 .medico-stat-label {
     -fx-text-fill: #6b7280;
     -fx-font-size: 12px;
     -fx-font-weight: 600;
+<<<<<<< HEAD
+=======
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 600;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-stat-value {
     -fx-text-fill: #111827;
     -fx-font-size: 22px;
     -fx-font-weight: 800;
+<<<<<<< HEAD
+=======
+    color: #111827;
+    font-size: 22px;
+    font-weight: 800;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Generic surface card ---------- */
 .medico-surface-card {
     -fx-background-color: white;
+<<<<<<< HEAD
+=======
+    background-color: white;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 14;
     -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.05), 12, 0, 0, 4);
 }
@@ -299,93 +596,361 @@
     -fx-text-fill: #1f2937;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-form-label {
     -fx-text-fill: #374151;
     -fx-font-size: 12.5px;
     -fx-font-weight: 700;
+<<<<<<< HEAD
+=======
+    color: #374151;
+    font-size: 12.5px;
+    font-weight: 700;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-combo-input, .medico-date-input, .medico-search-input, .medico-textarea {
     -fx-background-color: #ffffff;
+<<<<<<< HEAD
     -fx-background-radius: 8;
     -fx-border-color: #d1d5db;
     -fx-border-radius: 8;
     -fx-border-width: 1;
     -fx-font-size: 13px;
+=======
+    background-color: #ffffff;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-font-size: 13px;
+    font-size: 13px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-combo-input, .medico-date-input, .medico-search-input {
     -fx-pref-height: 38px;
+<<<<<<< HEAD
+=======
+    height: 38px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-combo-input:focused, .medico-date-input:focused, .medico-search-input:focused, .medico-textarea:focused {
     -fx-border-color: #2563eb;
+<<<<<<< HEAD
+=======
+    border-color: #2563eb;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-empty-state-icon-circle {
     -fx-fill: #f3f4f6;
+<<<<<<< HEAD
+=======
+    fill: #f3f4f6;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-empty-state-title {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 13.5px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 13.5px;
+}
+
+.medico-consultation-card {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-color: #cbd5e1;
+    border-color: #cbd5e1;
+    -fx-border-radius: 12;
+    border-radius: 12;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 14 16 14 16;
+    padding: 14 16 14 16;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.09), 12, 0, 0, 4);
+}
+
+.medico-consultation-title {
+    -fx-text-fill: #0b1120;
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
+    color: #0b1120;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.medico-consultation-detail {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 600;
+    color: #1f2937;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.medico-consultation-card:hover {
+    -fx-background-color: #f8fbff;
+    -fx-border-color: #93c5fd;
+    background-color: #f8fbff;
+    border-color: #93c5fd;
+}
+
+.medico-record-card {
+    -fx-background-color: #ffffff;
+    background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-border-color: #cbd5e1;
+    border-color: #cbd5e1;
+    -fx-border-radius: 14;
+    border-radius: 14;
+    -fx-border-width: 1;
+    border-width: 1;
+    padding: 18 18 18 18;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.08), 12, 0, 0, 4);
+}
+
+.medico-record-editor {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.medico-record-date {
+    -fx-text-fill: #334155;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.medico-record-section-title {
+    -fx-text-fill: #1e40af;
+    -fx-font-size: 12px;
+    -fx-font-weight: 800;
+    color: #1e40af;
+    font-size: 12px;
+    font-weight: 800;
+    -fx-text-transform: uppercase;
+    text-transform: uppercase;
+}
+
+.medico-record-observation {
+    -fx-text-fill: #111827;
+    -fx-font-size: 13.5px;
+    -fx-line-spacing: 2px;
+    color: #111827;
+    font-size: 13.5px;
+}
+
+.medico-record-card .label {
+    -fx-wrap-text: true;
+}
+
+.medico-record-card:hover {
+    -fx-background-color: #f8fbff;
+    -fx-border-color: #93c5fd;
+    background-color: #f8fbff;
+    border-color: #93c5fd;
+}
+
+.medico-patient-list {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    padding: 0;
+    -fx-border-color: transparent;
+    border-color: transparent;
+}
+
+.medico-patient-list .virtual-flow {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.medico-patient-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 8 0;
+    background-color: transparent;
+    padding: 0 0 8 0;
+}
+
+.medico-patient-list .list-cell:filled:selected, .medico-patient-list .list-cell:filled:selected:hover {
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+
+.medico-patient-cell {
+    -fx-background-color: #f8fafc;
+    background-color: #f8fafc;
+    -fx-background-radius: 10;
+    -fx-border-color: #e5e7eb;
+    border-color: #e5e7eb;
+    -fx-border-radius: 10;
+    border-radius: 10;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-padding: 10 12 10 12;
+    padding: 10 12 10 12;
+}
+
+.medico-patient-list .list-cell:filled:selected .medico-patient-cell {
+    -fx-background-color: #eff6ff;
+    -fx-border-color: #93c5fd;
+    background-color: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.medico-patient-cell-name {
+    -fx-text-fill: #111827;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    color: #111827;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.medico-patient-cell-detail {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 11.5px;
+    color: #6b7280;
+    font-size: 11.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- New record form header strip ---------- */
 .medico-form-header-strip {
     -fx-background-color: #eff6ff;
+<<<<<<< HEAD
     -fx-background-radius: 12 12 0 0;
     -fx-padding: 16 20 16 20;
+=======
+    background-color: #eff6ff;
+    -fx-background-radius: 12 12 0 0;
+    -fx-padding: 16 20 16 20;
+    padding: 16 20 16 20;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-form-header-icon-box {
     -fx-background-color: #2563eb;
+<<<<<<< HEAD
     -fx-background-radius: 9;
     -fx-min-width: 34;
     -fx-min-height: 34;
     -fx-max-width: 34;
     -fx-max-height: 34;
+=======
+    background-color: #2563eb;
+    -fx-background-radius: 9;
+    -fx-min-width: 34;
+    min-width: 34;
+    -fx-min-height: 34;
+    min-height: 34;
+    -fx-max-width: 34;
+    max-width: 34;
+    -fx-max-height: 34;
+    max-height: 34;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-alignment: CENTER;
 }
 
 .medico-form-header-icon-glyph {
     -fx-text-fill: white;
     -fx-font-size: 15px;
+<<<<<<< HEAD
+=======
+    color: white;
+    font-size: 15px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-form-header-title {
     -fx-text-fill: #1f2937;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: bold;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-required-asterisk {
     -fx-text-fill: #dc2626;
+<<<<<<< HEAD
+=======
+    color: #dc2626;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-char-counter {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 11.5px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 11.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-save {
     -fx-background-color: #2563eb;
+<<<<<<< HEAD
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-padding: 10 18 10 18;
     -fx-cursor: hand;
+=======
+    background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 18 10 18;
+    padding: 10 18 10 18;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-save:hover {
     -fx-background-color: #1d4ed8;
+<<<<<<< HEAD
+=======
+    background-color: #1d4ed8;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-cancel {
     -fx-background-color: transparent;
+<<<<<<< HEAD
     -fx-text-fill: #4b5563;
     -fx-font-size: 13px;
     -fx-font-weight: 600;
@@ -394,58 +959,129 @@
     -fx-background-radius: 8;
     -fx-padding: 9 16 9 16;
     -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-text-fill: #4b5563;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    color: #4b5563;
+    font-size: 13px;
+    font-weight: 600;
+    -fx-border-color: #d1d5db;
+    border-color: #d1d5db;
+    -fx-border-radius: 8;
+    border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 9 16 9 16;
+    padding: 9 16 9 16;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-btn-cancel:hover {
     -fx-background-color: #f3f4f6;
+<<<<<<< HEAD
+=======
+    background-color: #f3f4f6;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-tip-box {
     -fx-background-color: #eff6ff;
+<<<<<<< HEAD
+=======
+    background-color: #eff6ff;
+>>>>>>> 96ad7c6 (Linked screens to data base)
     -fx-background-radius: 8;
 }
 
 .medico-tip-text {
     -fx-text-fill: #1d4ed8;
     -fx-font-size: 11.5px;
+<<<<<<< HEAD
+=======
+    color: #1d4ed8;
+    font-size: 11.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Patient list (Editar Dados) ---------- */
 .medico-patient-list-item {
     -fx-background-color: transparent;
+<<<<<<< HEAD
     -fx-padding: 12 14 12 14;
     -fx-border-color: transparent transparent #f1f2f6 transparent;
     -fx-border-width: 0 0 1 0;
     -fx-cursor: hand;
+=======
+    background-color: transparent;
+    -fx-padding: 12 14 12 14;
+    padding: 12 14 12 14;
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-patient-list-item:hover {
     -fx-background-color: #f8fafc;
+<<<<<<< HEAD
+=======
+    background-color: #f8fafc;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-patient-list-item-selected {
     -fx-background-color: #eff6ff;
+<<<<<<< HEAD
     -fx-padding: 12 14 12 14;
     -fx-border-color: transparent transparent #f1f2f6 transparent;
     -fx-border-width: 0 0 1 0;
     -fx-cursor: hand;
+=======
+    background-color: #eff6ff;
+    -fx-padding: 12 14 12 14;
+    padding: 12 14 12 14;
+    -fx-border-color: transparent transparent #f1f2f6 transparent;
+    border-color: transparent transparent #f1f2f6 transparent;
+    -fx-border-width: 0 0 1 0;
+    border-width: 0 0 1 0;
+    -fx-cursor: hand;
+    cursor: hand;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-patient-name {
     -fx-text-fill: #1f2937;
     -fx-font-size: 13.5px;
     -fx-font-weight: 600;
+<<<<<<< HEAD
+=======
+    color: #1f2937;
+    font-size: 13.5px;
+    font-weight: 600;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 .medico-patient-detail {
     -fx-text-fill: #9ca3af;
     -fx-font-size: 11.5px;
+<<<<<<< HEAD
+=======
+    color: #9ca3af;
+    font-size: 11.5px;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 }
 
 /* ---------- Info strips (Total / Dica / Importante) ---------- */
 .medico-strip {
     -fx-background-radius: 10;
     -fx-padding: 14 16 14 16;
+<<<<<<< HEAD
 }
 
 .medico-strip-blue   { -fx-background-color: #eff6ff; }
@@ -455,3 +1091,15 @@
 .medico-strip-text-blue   { -fx-text-fill: #1d4ed8; -fx-font-size: 12.5px; -fx-font-weight: 600; }
 .medico-strip-text-green  { -fx-text-fill: #047857; -fx-font-size: 12.5px; -fx-font-weight: 600; }
 .medico-strip-text-purple { -fx-text-fill: #6d28d9; -fx-font-size: 12.5px; -fx-font-weight: 600; }
+=======
+    padding: 14 16 14 16;
+}
+
+.medico-strip-blue   { -fx-background-color: #eff6ff; background-color: #eff6ff; }
+.medico-strip-green  { -fx-background-color: #ecfdf5; background-color: #ecfdf5; }
+.medico-strip-purple { -fx-background-color: #f5f3ff; background-color: #f5f3ff; }
+
+.medico-strip-text-blue   { -fx-text-fill: #1d4ed8; -fx-font-size: 12.5px; -fx-font-weight: 600; color: #1d4ed8; font-size: 12.5px; font-weight: 600; }
+.medico-strip-text-green  { -fx-text-fill: #047857; -fx-font-size: 12.5px; -fx-font-weight: 600; color: #047857; font-size: 12.5px; font-weight: 600; }
+.medico-strip-text-purple { -fx-text-fill: #6d28d9; -fx-font-size: 12.5px; -fx-font-weight: 600; color: #6d28d9; font-size: 12.5px; font-weight: 600; }
+>>>>>>> 96ad7c6 (Linked screens to data base)

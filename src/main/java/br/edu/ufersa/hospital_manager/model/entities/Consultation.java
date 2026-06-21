@@ -12,8 +12,8 @@ public class Consultation {
     
     public Consultation(Patient patient, Doctor doctor, LocalDateTime dateTime, String status) {
         id = 0; // ID will be set by the database when the consultation is registered
-        setPatient(patient);
-        setDoctor(doctor);
+        this.patient = patient;
+        this.doctor = doctor;
         setDateTime(dateTime);
         setStatus(status);
     }
@@ -33,9 +33,6 @@ public class Consultation {
     }
 
     public void setPatient(Patient patient) throws RuntimeException {
-        if (patient == null) {
-            throw new RuntimeException("Patient cannot be null.");
-        }
         this.patient = patient;
     }
 
@@ -44,9 +41,6 @@ public class Consultation {
     }
 
     public void setDoctor(Doctor doctor) throws RuntimeException {
-        if (doctor == null) {
-            throw new RuntimeException("Doctor cannot be null.");
-        }
         this.doctor = doctor;
     }
 

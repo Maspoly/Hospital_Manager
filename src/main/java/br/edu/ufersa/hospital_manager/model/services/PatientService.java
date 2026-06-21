@@ -7,6 +7,15 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
+=======
+import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
+import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
+import br.edu.ufersa.hospital_manager.model.DAO.PatientDAO;
+import br.edu.ufersa.hospital_manager.model.entities.Consultation;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
+
+>>>>>>> 96ad7c6 (Linked screens to data base)
 public class PatientService implements FindServices<Patient> {
 
     private final PatientDAO patientDAO;
@@ -35,8 +44,37 @@ public class PatientService implements FindServices<Patient> {
 
     // ─── Delete ───────────────────────────────────────────────────────────────
 
+<<<<<<< HEAD
     public void removePatient(long id) throws SQLException {
         Patient patient = findById(id);
+=======
+    // Updates patient information only if the patient already exists.
+    public void updatePatient(Patient patient) throws SQLException {
+        if (patient == null) {
+            throw new RuntimeException("Patient cannot be null.");
+        }
+        if (patientDAO.readById(patient.getId()) == null) {
+            throw new RuntimeException("Patient not found.");
+        }
+        patientDAO.update(patient);
+
+    }
+
+    // Permanently removes a patient from the database.
+    public void removePatient(Patient patient) throws SQLException {
+        ConsultationDAO consultationDAO = new ConsultationDAO();
+        MedicalRecordDAO medicalRecordDAO = new MedicalRecordDAO();
+
+        if (patient == null) {
+            throw new RuntimeException("Patient cannot be null.");
+        }
+        if (patientDAO.readById(patient.getId()) == null) {
+            throw new RuntimeException("Patient not found.");
+        }
+
+        consultationDAO.detachPatient(patient);
+        medicalRecordDAO.detachPatient(patient);
+>>>>>>> 96ad7c6 (Linked screens to data base)
         patientDAO.delete(patient);
     }
 
@@ -84,11 +122,17 @@ public class PatientService implements FindServices<Patient> {
     }
 
     public ArrayList<Patient> listAll() throws SQLException {
+<<<<<<< HEAD
         ArrayList<Patient> patients = patientDAO.listAll();
         if (patients.isEmpty()) throw new RuntimeException("No patients registered in the system.");
         return patients;
     }
 
+=======
+        return patientDAO.listAll();
+    }
+    
+>>>>>>> 96ad7c6 (Linked screens to data base)
     // ─── Consultations ────────────────────────────────────────────────────────
 
     public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDateTime date, String status) {

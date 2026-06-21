@@ -14,9 +14,18 @@ public class MedicalRecord {
     public MedicalRecord(String observation, Doctor doctor, Patient patient) {
         setDate();
         setObservation(observation);
-        setDoctor(doctor);
-        setPatient(patient);
+        this.doctor = doctor;
+        this.patient = patient;
         id = 0; // default value, should be set by the database when inserted
+    }
+
+    public MedicalRecord(String observation, Doctor doctor, Patient patient, LocalDate date) {
+        this.observation = null;
+        this.doctor = doctor;
+        this.patient = patient;
+        this.date = date;
+        setObservation(observation);
+        id = 0;
     }
     
     // Getters and Setters for id
@@ -37,17 +46,11 @@ public class MedicalRecord {
     }
     
     public void setDoctor(Doctor doctor) throws RuntimeException {
-        if (doctor == null) {
-            throw new RuntimeException("Doctor cannot be null.");
-        }
         this.doctor = doctor;
     }
     
     // Getters and Setters for patient
     public void setPatient(Patient patient) throws RuntimeException {
-        if (patient == null) {
-            throw new RuntimeException("Patient cannot be null.");
-        }
         this.patient = patient;
     }
     public Patient getPatient() {
@@ -60,16 +63,10 @@ public class MedicalRecord {
     }
 
     public void setDate() throws RuntimeException {
-        if (this.date != null) {
-            throw new RuntimeException("Date is already set and cannot be changed.");
-        }
         this.date = LocalDate.now(); // sets creation date
     }
 
     public void setDate(LocalDate date) throws RuntimeException {
-        if (this.date != null) {
-            throw new RuntimeException("Date is already set and cannot be changed.");
-        }
         this.date = date;
     }
 

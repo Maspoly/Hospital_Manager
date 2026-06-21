@@ -25,6 +25,7 @@ public class ConsultationService {
         if (doctor == null)  throw new RuntimeException("Doctor cannot be null.");
         if (date == null)    throw new RuntimeException("Date cannot be null.");
 
+<<<<<<< HEAD
         // Business rule: no past consultations
         if (date.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Consultation date cannot be in the past.");
@@ -36,6 +37,42 @@ public class ConsultationService {
     }
 
     // ─── Delete ───────────────────────────────────────────────────────────────
+=======
+        if (consultation.getPatient() == null || consultation.getDoctor() == null) {
+            throw new RuntimeException("Consultation requires a patient and a doctor at creation time.");
+        }
+
+        if (consultationDAO.readByDoctorAndDateTime(consultation.getDoctor(), consultation.getDateTime()) != null) {
+            throw new RuntimeException("Doctor already has a consultation at this time.");
+        }
+
+        consultation.setStatus("SCHEDULED");
+        consultationDAO.create(consultation);
+    }
+
+    public void createConsultation(Consultation consultation) throws SQLException {
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
+        }
+
+        if (consultation.getPatient() == null || consultation.getDoctor() == null) {
+            throw new RuntimeException("Consultation requires a patient and a doctor at creation time.");
+        }
+
+        if (consultation.getStatus() == null || consultation.getStatus().isBlank()) {
+            consultation.setStatus("SCHEDULED");
+        }
+
+        consultationDAO.create(consultation);
+    }
+
+    // Cancels a consultation without removing it from the database.
+    // The consultation status becomes CANCELED.
+    public void cancelConsultation(Consultation consultation) throws SQLException {
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
+        }
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
     public void removeConsultation(Consultation consultation) throws SQLException {
         if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
@@ -165,5 +202,9 @@ public class ConsultationService {
         ArrayList<Consultation> consultations = consultationDAO.listAll();
         if (consultations.isEmpty()) throw new RuntimeException("No consultations registered in the system.");
         return consultations;
+    }
+
+    public ArrayList<Consultation> listAll() throws SQLException {
+        return consultationDAO.listAll();
     }
 }

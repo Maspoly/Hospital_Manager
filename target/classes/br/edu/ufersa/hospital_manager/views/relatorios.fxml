@@ -61,7 +61,11 @@
 
                 <VBox spacing="4">
                     <Label text="Relatórios de Consultas" styleClass="page-title" />
+<<<<<<< HEAD
                     <Label text="Gere relatórios de consultas por médico e período" styleClass="page-subtitle" />
+=======
+                    <Label text="Selecione um médico e gere o relatório do período atual" styleClass="page-subtitle" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 </VBox>
 
                 <VBox styleClass="surface-card" spacing="14">
@@ -69,7 +73,11 @@
                         <Insets top="20" bottom="20" left="22" right="22" />
                     </padding>
 
+<<<<<<< HEAD
                     <Label text="Filtros do Relatório" styleClass="panel-title" />
+=======
+                    <Label text="Relatório por médico" styleClass="panel-title" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
                     <GridPane hgap="16" vgap="6">
                         <columnConstraints>
@@ -90,12 +98,20 @@
                                     GridPane.rowIndex="1" GridPane.columnIndex="2" />
                     </GridPane>
 
+<<<<<<< HEAD
                     <Button text="Gerar Relatório" styleClass="btn-accent" onAction="#onGerarRelatorio" />
+=======
+                    <Button text="Gerar relatório agora" styleClass="btn-accent" onAction="#onGerarRelatorio" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                 </VBox>
 
                 <HBox spacing="18">
                     <VBox styleClass="mini-stat-card, mini-stat-default" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+<<<<<<< HEAD
                         <Label text="Total de Consultas" styleClass="mini-stat-label-default" />
+=======
+                        <Label text="Total" styleClass="mini-stat-label-default" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                         <Label fx:id="lblTotalConsultas" text="0" styleClass="mini-stat-value" />
                     </VBox>
                     <VBox styleClass="mini-stat-card, mini-stat-blue" HBox.hgrow="ALWAYS" maxWidth="Infinity">
@@ -116,9 +132,15 @@
                     <padding>
                         <Insets top="18" bottom="18" left="22" right="22" />
                     </padding>
+<<<<<<< HEAD
                     <Label fx:id="lblConsultasEncontradas" text="Consultas Encontradas (0)" styleClass="panel-title" />
                     <VBox fx:id="boxConsultasEncontradas" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
                         <Label text="Nenhuma consulta encontrada para os filtros selecionados." styleClass="empty-state-title" />
+=======
+                    <Label fx:id="lblRelatoriosEncontrados" text="Relatório de consultas" styleClass="panel-title" />
+                    <VBox fx:id="boxRelatorios" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
+                        <Label text="Selecione um médico e gere o relatório para ver o resumo." styleClass="empty-state-title" />
+>>>>>>> 96ad7c6 (Linked screens to data base)
                     </VBox>
                 </VBox>
 

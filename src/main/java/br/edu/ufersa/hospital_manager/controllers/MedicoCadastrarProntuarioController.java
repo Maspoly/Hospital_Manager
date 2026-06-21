@@ -2,6 +2,7 @@ package br.edu.ufersa.hospital_manager.controllers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -14,6 +15,33 @@ import javafx.scene.control.TextArea;
 
 import br.edu.ufersa.hospital_manager.model.entities.*;
 import br.edu.ufersa.hospital_manager.model.services.*;
+=======
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import br.edu.ufersa.hospital_manager.model.entities.Consultation;
+import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
 
 public class MedicoCadastrarProntuarioController {
@@ -28,10 +56,20 @@ public class MedicoCadastrarProntuarioController {
     private Label lblCrmMedico;
 
     @FXML
+<<<<<<< HEAD
     private ComboBox<Patient> cmbPaciente;
 
     @FXML
     private DatePicker dateConsulta;
+=======
+    private DatePicker dateConsulta;
+
+    @FXML
+    private TextField txtBuscarPaciente;
+
+    @FXML
+    private ListView<Patient> lstPacientes;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
     @FXML
     private TextArea txtObservacoes;
@@ -39,20 +77,39 @@ public class MedicoCadastrarProntuarioController {
     @FXML
     private Label lblContador;
 
+<<<<<<< HEAD
     private final List<Patient> pacientesMock = new ArrayList<>();
     private final MedicalRecordService medicalRecordService = new MedicalRecordService();
     private Doctor medicoLogado;
+=======
+    @FXML
+    private Label lblPacienteSelecionado;
+
+    private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
+    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final ObservableList<Patient> pacientesDisponiveis = FXCollections.observableArrayList();
+    private final FilteredList<Patient> pacientesFiltrados = new FilteredList<>(pacientesDisponiveis, patient -> true);
+    private Doctor medicoLogado;
+    private Patient pacienteSelecionado;
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
     @FXML
     public void initialize() {
         configurarDadosMedico();
+<<<<<<< HEAD
         carregarDadosMock();
         configurarComboBox();
+=======
+        carregarDados();
+        configurarListaPacientes();
+        configurarBuscaPaciente();
+>>>>>>> 96ad7c6 (Linked screens to data base)
         configurarContadorCaracteres();
         dateConsulta.setValue(LocalDate.now());
     }
 
     private void configurarDadosMedico() {
+<<<<<<< HEAD
         // TODO: carregar dados do médico logado via DoctorService
         lblIniciais.setText("J");
         lblNomeMedico.setText("Dr. João Lourenço");
@@ -85,6 +142,102 @@ public class MedicoCadastrarProntuarioController {
             }
         });
         cmbPaciente.setPromptText("Selecione um paciente");
+=======
+        if (ServiceRoleContext.getCurrentUser() instanceof Doctor) {
+            medicoLogado = (Doctor) ServiceRoleContext.getCurrentUser();
+            lblIniciais.setText(extrairIniciais(medicoLogado.getName()));
+            lblNomeMedico.setText("Dr. " + medicoLogado.getName());
+            lblCrmMedico.setText("CRM-" + medicoLogado.getCouncilCode());
+            return;
+        }
+
+        medicoLogado = null;
+        lblIniciais.setText("D");
+        lblNomeMedico.setText("Dr. Médico");
+        lblCrmMedico.setText("CRM-000000");
+    }
+
+    private void carregarDados() {
+        pacientesDisponiveis.clear();
+
+        if (medicoLogado == null) {
+            return;
+        }
+
+        try {
+            Map<Long, Patient> pacientesUnicos = new LinkedHashMap<>();
+            ArrayList<Consultation> consultas = consultationService.findByDoctor(medicoLogado);
+
+            for (Consultation consultation : consultas) {
+                if (consultation.getPatient() != null) {
+                    pacientesUnicos.putIfAbsent(consultation.getPatient().getId(), consultation.getPatient());
+                }
+            }
+
+            ArrayList<Patient> pacientesOrdenados = new ArrayList<>(pacientesUnicos.values());
+            pacientesOrdenados.sort(Comparator.comparing(Patient::getName, String.CASE_INSENSITIVE_ORDER));
+            pacientesDisponiveis.setAll(pacientesOrdenados);
+        } catch (Exception exception) {
+            pacientesDisponiveis.clear();
+        }
+    }
+
+    private void configurarListaPacientes() {
+        lstPacientes.setItems(pacientesFiltrados);
+        lstPacientes.setPlaceholder(new Label("Nenhum paciente encontrado."));
+        lstPacientes.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Patient patient, boolean empty) {
+                super.updateItem(patient, empty);
+
+                if (empty || patient == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                Label nome = new Label(patient.getName());
+                nome.getStyleClass().add("medico-patient-cell-name");
+
+                Label cpf = new Label("CPF: " + patient.getCPF());
+                cpf.getStyleClass().add("medico-patient-cell-detail");
+
+                VBox conteudo = new VBox(2, nome, cpf);
+                conteudo.getStyleClass().add("medico-patient-cell");
+
+                setText(null);
+                setGraphic(conteudo);
+            }
+        });
+
+        lstPacientes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            pacienteSelecionado = newVal;
+            lblPacienteSelecionado.setText(newVal == null ? "Nenhum paciente selecionado" : newVal.getName());
+        });
+
+        lblPacienteSelecionado.setText("Nenhum paciente selecionado");
+    }
+
+    private void configurarBuscaPaciente() {
+        txtBuscarPaciente.textProperty().addListener((obs, oldVal, newVal) -> {
+            String termo = newVal == null ? "" : newVal.trim().toLowerCase(Locale.ROOT);
+            String termoCpf = termo.replaceAll("\\D", "");
+
+            pacientesFiltrados.setPredicate(patient -> {
+                if (termo.isBlank()) {
+                    return true;
+                }
+
+                boolean nomeOk = patient.getName() != null && patient.getName().toLowerCase(Locale.ROOT).contains(termo);
+                boolean cpfOk = !termoCpf.isBlank() && patient.getCPF() != null && patient.getCPF().contains(termoCpf);
+                return nomeOk || cpfOk;
+            });
+
+            if (pacienteSelecionado != null && !pacientesFiltrados.contains(pacienteSelecionado)) {
+                lstPacientes.getSelectionModel().clearSelection();
+            }
+        });
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void configurarContadorCaracteres() {
@@ -95,11 +248,19 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     public void onSalvarProntuario(ActionEvent event) {
+<<<<<<< HEAD
         Patient paciente = cmbPaciente.getValue();
         String observacoes = txtObservacoes.getText();
 
         if (paciente == null) {
             NavigationHelper.showError("Selecione um paciente antes de salvar.");
+=======
+        Patient paciente = pacienteSelecionado;
+        String observacoes = txtObservacoes.getText();
+
+        if (paciente == null) {
+            NavigationHelper.showError("Selecione um paciente na lista lateral antes de salvar.");
+>>>>>>> 96ad7c6 (Linked screens to data base)
             return;
         }
         if (observacoes == null || observacoes.trim().isEmpty()) {
@@ -108,7 +269,10 @@ public class MedicoCadastrarProntuarioController {
         }
 
         try {
+<<<<<<< HEAD
             // Verifica se paciente já tem prontuário
+=======
+>>>>>>> 96ad7c6 (Linked screens to data base)
             try {
                 MedicalRecord existing = medicalRecordService.findByPatient(paciente);
                 if (existing != null) {
@@ -119,7 +283,10 @@ public class MedicoCadastrarProntuarioController {
                 // Paciente não tem prontuário, pode criar
             }
 
+<<<<<<< HEAD
             // Cria novo prontuário
+=======
+>>>>>>> 96ad7c6 (Linked screens to data base)
             MedicalRecord record = new MedicalRecord(observacoes, medicoLogado, paciente);
             medicalRecordService.registerMedicalRecord(record);
 
@@ -136,7 +303,13 @@ public class MedicoCadastrarProntuarioController {
     }
 
     private void limparFormulario() {
+<<<<<<< HEAD
         cmbPaciente.setValue(null);
+=======
+        lstPacientes.getSelectionModel().clearSelection();
+        pacienteSelecionado = null;
+        lblPacienteSelecionado.setText("Nenhum paciente selecionado");
+>>>>>>> 96ad7c6 (Linked screens to data base)
         dateConsulta.setValue(LocalDate.now());
         txtObservacoes.clear();
     }
@@ -149,6 +322,7 @@ public class MedicoCadastrarProntuarioController {
     }
 
     @FXML
+<<<<<<< HEAD
     public void goCadastrarProntuario(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
     }
@@ -156,6 +330,15 @@ public class MedicoCadastrarProntuarioController {
     @FXML
     public void goEditarDados(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_editar_pacientes.fxml", "medico.css");
+=======
+    public void goMinhasConsultas(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "medico_consultas.fxml", "medico.css");
+    }
+
+    @FXML
+    public void goCadastrarProntuario(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -165,6 +348,29 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     public void onSair(ActionEvent event) {
+<<<<<<< HEAD
         NavigationHelper.goTo((Node) event.getSource(), "login_medico.fxml", "medico.css");
+=======
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
+    }
+
+    private String extrairIniciais(String nome) {
+        if (nome == null || nome.isBlank()) {
+            return "D";
+        }
+
+        StringBuilder iniciais = new StringBuilder();
+        for (String parte : nome.trim().split("\\s+")) {
+            if (!parte.isBlank()) {
+                iniciais.append(Character.toUpperCase(parte.charAt(0)));
+            }
+            if (iniciais.length() == 2) {
+                break;
+            }
+        }
+
+        return iniciais.length() > 0 ? iniciais.toString() : "D";
+>>>>>>> 96ad7c6 (Linked screens to data base)
     }
 }

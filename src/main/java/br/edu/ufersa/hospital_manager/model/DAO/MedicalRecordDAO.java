@@ -17,7 +17,28 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     private Connection connection;
 
     public MedicalRecordDAO() {
-        this.connection = Connector.getConnection();
+        ensureNullableForeignKeys();
+    }
+
+    private void ensureNullableForeignKeys() {
+        try (Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate("ALTER TABLE medical_records MODIFY doctor_id BIGINT NULL;");
+            statement.executeUpdate("ALTER TABLE medical_records MODIFY patient_id BIGINT NULL;");
+        } catch (SQLException exception) {
+            // Keep startup resilient if the schema is already compatible or unavailable.
+        }
+    }
+
+    private Connection getConnection() throws SQLException {
+        if (connection == null) {
+            connection = Connector.getConnection();
+        }
+
+        if (connection == null) {
+            throw new SQLException("Database connection is not available.");
+        }
+
+        return connection;
     }
     
     public static final String INSERT_SQL = "INSERT INTO medical_records (date, observation, patient_id, doctor_id) VALUES (?, ?, ?, ?)";
@@ -28,11 +49,19 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void create(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = getConnection().prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
         ps.setDate(1, java.sql.Date.valueOf(entity.getDate()));
         ps.setString(2, entity.getObservation());
-        ps.setLong(3, entity.getPatient().getId());
-        ps.setLong(4, entity.getDoctor().getId());
+        if (entity.getPatient() == null) {
+            ps.setNull(3, java.sql.Types.BIGINT);
+        } else {
+            ps.setLong(3, entity.getPatient().getId());
+        }
+        if (entity.getDoctor() == null) {
+            ps.setNull(4, java.sql.Types.BIGINT);
+        } else {
+            ps.setLong(4, entity.getDoctor().getId());
+        }
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
         if (rs.next()) {
@@ -42,7 +71,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void delete(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(DELETE_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
         ps.setLong(1, entity.getId());
         ps.executeUpdate();
 
@@ -50,24 +79,33 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public ArrayList<MedicalRecord> listAll() throws SQLException {
-        Statement ps = connection.createStatement();
+        Statement ps = getConnection().createStatement();
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
         ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
 
         while (rs.next()) {
+<<<<<<< HEAD
             DoctorDAO doctorDAO = new DoctorDAO();
             PatientDAO patientDAO = new PatientDAO();
             Doctor doctor = doctorDAO.readById(rs.getLong("doctor_id"));
             Patient patient = patientDAO.readById(rs.getLong("patient_id"));
+=======
+            Doctor doctor = readDoctorIfPresent(doctorDAO, rs);
+            Patient patient = readPatientIfPresent(patientDAO, rs);
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
             MedicalRecord medicalRecord = new MedicalRecord(
                     rs.getString("observation"),
                     doctor,
+<<<<<<< HEAD
                     patient
+=======
+                    patient,
+                    rs.getDate("date").toLocalDate()
+>>>>>>> 96ad7c6 (Linked screens to data base)
             );
             medicalRecord.setId(rs.getLong("id"));
-            medicalRecord.setDate(rs.getDate("date").toLocalDate());
             medicalRecords.add(medicalRecord);
         }
 
@@ -76,23 +114,32 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public MedicalRecord readById(long id) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
         ps.setLong(1, id);
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
+<<<<<<< HEAD
             DoctorDAO doctorDAO = new DoctorDAO();
             PatientDAO patientDAO = new PatientDAO();
             Doctor doctor = doctorDAO.readById(rs.getLong("doctor_id"));
             Patient patient = patientDAO.readById(rs.getLong("patient_id"));
+=======
+            Doctor doctor = readDoctorIfPresent(doctorDAO, rs);
+            Patient patient = readPatientIfPresent(patientDAO, rs);
+>>>>>>> 96ad7c6 (Linked screens to data base)
 
             MedicalRecord medicalRecord = new MedicalRecord(
                     rs.getString("observation"),
                     doctor,
+<<<<<<< HEAD
                     patient
+=======
+                    patient,
+                    rs.getDate("date").toLocalDate()
+>>>>>>> 96ad7c6 (Linked screens to data base)
             );
             medicalRecord.setId(rs.getLong("id"));
-            medicalRecord.setDate(rs.getDate("date").toLocalDate());
             return medicalRecord;
         }
 
@@ -101,19 +148,61 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void update(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
         ps.setDate(1, java.sql.Date.valueOf(entity.getDate()));
         ps.setString(2, entity.getObservation());
-        ps.setLong(3, entity.getPatient().getId());
-        ps.setLong(4, entity.getDoctor().getId());
+        if (entity.getPatient() == null) {
+            ps.setNull(3, java.sql.Types.BIGINT);
+        } else {
+            ps.setLong(3, entity.getPatient().getId());
+        }
+        if (entity.getDoctor() == null) {
+            ps.setNull(4, java.sql.Types.BIGINT);
+        } else {
+            ps.setLong(4, entity.getDoctor().getId());
+        }
         ps.setLong(5, entity.getId());
         ps.executeUpdate();
 
     }
 
+<<<<<<< HEAD
     public MedicalRecord readByDate(LocalDateTime date) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM medical_records WHERE date = ?;");
         ps.setDate(1, java.sql.Date.valueOf(date.toLocalDate()));
+=======
+    public void detachDoctor(Doctor doctor) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE medical_records SET doctor_id = NULL WHERE doctor_id = ?;");
+        ps.setLong(1, doctor.getId());
+        ps.executeUpdate();
+    }
+
+    public void detachPatient(Patient patient) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE medical_records SET patient_id = NULL WHERE patient_id = ?;");
+        ps.setLong(1, patient.getId());
+        ps.executeUpdate();
+    }
+
+    private Doctor readDoctorIfPresent(DoctorDAO doctorDAO, ResultSet rs) throws SQLException {
+        long id = rs.getLong("doctor_id");
+        if (rs.wasNull()) {
+            return null;
+        }
+        return doctorDAO.readById(id);
+    }
+
+    private Patient readPatientIfPresent(PatientDAO patientDAO, ResultSet rs) throws SQLException {
+        long id = rs.getLong("patient_id");
+        if (rs.wasNull()) {
+            return null;
+        }
+        return patientDAO.readById(id);
+    }
+
+    public ArrayList<MedicalRecord> readByDate(LocalDate date) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DATE_SQL);
+        ps.setDate(1, java.sql.Date.valueOf(date));
+>>>>>>> 96ad7c6 (Linked screens to data base)
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
@@ -125,6 +214,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
             MedicalRecord medicalRecord = new MedicalRecord(
                     rs.getString("observation"),
                     doctor,
+<<<<<<< HEAD
                     patient
             );
             medicalRecord.setId(rs.getLong("id"));
@@ -133,11 +223,22 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
         } else {
             throw new SQLException("Medical record with date " + date + " not found.");
+=======
+                    patient,
+                    rs.getDate("date").toLocalDate()
+            );
+            medicalRecord.setId(rs.getLong("id"));
+            medicalRecords.add(medicalRecord);
+>>>>>>> 96ad7c6 (Linked screens to data base)
         }
     }
 
     public MedicalRecord readByPatient(Patient oPatient) throws SQLException {
+<<<<<<< HEAD
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM medical_records WHERE patient_id = ?;");
+=======
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_PATIENT_SQL);
+>>>>>>> 96ad7c6 (Linked screens to data base)
         ps.setLong(1, oPatient.getId());
         ResultSet rs = ps.executeQuery();
 
@@ -150,10 +251,14 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
             MedicalRecord medicalRecord = new MedicalRecord(
                     rs.getString("observation"),
                     doctor,
+<<<<<<< HEAD
                     patient
+=======
+                    patient,
+                    rs.getDate("date").toLocalDate()
+>>>>>>> 96ad7c6 (Linked screens to data base)
             );
             medicalRecord.setId(rs.getLong("id"));
-            medicalRecord.setDate(rs.getDate("date").toLocalDate());
             return medicalRecord;
         }
 
@@ -161,7 +266,11 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     }
 
     public ArrayList<MedicalRecord> readByDoctor(Doctor oDoctor) throws SQLException {
+<<<<<<< HEAD
         PreparedStatement ps = connection.prepareStatement("SELECT * FROM medical_records WHERE doctor_id = ?;");
+=======
+        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DOCTOR_SQL);
+>>>>>>> 96ad7c6 (Linked screens to data base)
         ps.setLong(1, oDoctor.getId());
         ResultSet rs = ps.executeQuery();
 
@@ -176,10 +285,14 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
             MedicalRecord medicalRecord = new MedicalRecord(
                     rs.getString("observation"),
                     doctor,
+<<<<<<< HEAD
                     patient
+=======
+                    patient,
+                    rs.getDate("date").toLocalDate()
+>>>>>>> 96ad7c6 (Linked screens to data base)
             );
             medicalRecord.setId(rs.getLong("id"));
-            medicalRecord.setDate(rs.getDate("date").toLocalDate());
             medicalRecords.add(medicalRecord);
         }
 
