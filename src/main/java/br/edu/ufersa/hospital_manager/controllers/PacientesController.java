@@ -1,7 +1,5 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-=======
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,31 +10,18 @@ import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
->>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-<<<<<<< HEAD
-=======
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
->>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-<<<<<<< HEAD
-import javafx.scene.layout.HBox;
-
-import br.edu.ufersa.hospital_manager.model.entities.Address;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-
-public class PacientesController {
-
-=======
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -49,7 +34,6 @@ public class PacientesController {
     private final ObservableList<Patient> pacientes = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
 
->>>>>>> 96ad7c6 (Linked screens to data base)
     @FXML
     private TableView<Patient> tablePacientes;
 
@@ -71,11 +55,7 @@ public class PacientesController {
     @FXML
     public void initialize() {
         configurarColunas();
-<<<<<<< HEAD
-        carregarDadosMock();
-=======
         carregarDados();
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void configurarColunas() {
@@ -141,21 +121,6 @@ public class PacientesController {
         });
     }
 
-<<<<<<< HEAD
-    private void carregarDadosMock() {
-        ObservableList<Patient> dados = FXCollections.observableArrayList();
-
-        Address endereco1 = new Address("Rua das Flores", "50", "Centro", "Mossoró", "RN");
-        Patient paciente1 = new Patient("Maria Santos", "11122233344", endereco1);
-
-        Address endereco2 = new Address("Av. Central", "200", "Centro", "Mossoró", "RN");
-        Patient paciente2 = new Patient("João Oliveira", "55566677788", endereco2);
-
-        dados.add(paciente1);
-        dados.add(paciente2);
-
-        tablePacientes.setItems(dados);
-=======
     private void carregarDados() {
         try {
             pacientes.setAll(patientService.listAll());
@@ -178,7 +143,6 @@ public class PacientesController {
         dados.add(new Patient("João Oliveira", "55566677788", endereco2));
 
         return dados;
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private String formatarCpf(String cpf) {
@@ -190,15 +154,6 @@ public class PacientesController {
     }
 
     private void onVerProntuarios(Patient patient) {
-<<<<<<< HEAD
-        // TODO: navegar para tela de prontuários do paciente, conectado ao MedicalRecordDAO/Services
-        NavigationHelper.showInfo("Prontuários", "Prontuários de \"" + patient.getName() + "\" em construção.");
-    }
-
-    private void onEditarPaciente(Patient patient) {
-        // TODO: abrir formulário de edição conectado ao PatientDAO/PatientServices
-        NavigationHelper.showInfo("Editar Paciente", "Edição de \"" + patient.getName() + "\" em construção.");
-=======
         try {
             MedicalRecord record = medicalRecordService.findByPatient(patient);
             if (record == null) {
@@ -256,7 +211,6 @@ public class PacientesController {
         } catch (RuntimeException | SQLException exception) {
             NavigationHelper.showError(exception.getMessage());
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void onExcluirPaciente(Patient patient) {
@@ -265,10 +219,6 @@ public class PacientesController {
                 "Tem certeza que deseja excluir \"" + patient.getName() + "\"?"
         );
         if (confirmado) {
-<<<<<<< HEAD
-            // TODO: remover via PatientDAO/PatientServices e recarregar a tabela
-            tablePacientes.getItems().remove(patient);
-=======
             try {
                 if (usingDatabase) {
                     patientService.removePatient(patient);
@@ -279,7 +229,6 @@ public class PacientesController {
             } catch (SQLException exception) {
                 NavigationHelper.showError("Erro ao excluir paciente: " + exception.getMessage());
             }
->>>>>>> 96ad7c6 (Linked screens to data base)
         }
     }
 
@@ -293,11 +242,7 @@ public class PacientesController {
 
     @FXML
     public void goDashboard(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "dashboard.fxml");
-=======
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML

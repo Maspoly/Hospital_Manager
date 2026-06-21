@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 import br.edu.ufersa.hospital_manager.util.Connector;
 
@@ -16,24 +17,6 @@ public class ManagerDAO implements BaseDAO<Manager> {
 
     public ManagerDAO() {
     }
-<<<<<<< HEAD
-    
-    public static final String INSERT_SQL = "INSERT INTO manager (name, cpf, adress) VALUES (?, ?, ?);";
-    public static final String  DELETE_SQL = "DELETE FROM manager WHERE id = ?;";
-    public static final String  UPDATE_SQL = "UPDATE manager SET name = ?, cpf = ?, adress = ? WHERE id = ?;";
-    public static final String  SELECT_ALL_SQL = "SELECT * FROM manager;";
-    public static final String  SELECT_BY_CPF_SQL = "SELECT * FROM manager WHERE cpf = ?;";
-    public static final String  SELECT_BY_ID_SQL = "SELECT * FROM manager WHERE id = ?;";
-    public static final String  SELECT_BY_NAME_SQL = "SELECT * FROM manager WHERE name = ?;";
-    
-    
-    @Override
-    public void create(Manager entity) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
-        ps.setString(1, entity.getName());
-        ps.setString(2, entity.getCPF());
-        ps.setString(3, String.valueOf(entity.getAddress()));
-=======
 
     private Connection getConnection() throws SQLException {
         if (connection == null) {
@@ -73,9 +56,10 @@ public class ManagerDAO implements BaseDAO<Manager> {
         ps.setString(3, entity.getPasswordHash());
         ps.setLong(4, entity.getAddress().getId());
 
->>>>>>> 96ad7c6 (Linked screens to data base)
         ps.executeUpdate();
+
         ResultSet rs = ps.getGeneratedKeys();
+
         if (rs.next()) {
             entity.setId(rs.getLong(1));
         }
@@ -98,18 +82,12 @@ public class ManagerDAO implements BaseDAO<Manager> {
 
         ArrayList<Manager> managers = new ArrayList<>();
 
+        AddressDAO addressDAO = new AddressDAO();
+
         while (rs.next()) {
-<<<<<<< HEAD
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    new AddressDAO().readById(rs.getLong("address_id"))
-            );
-=======
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
             Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
->>>>>>> 96ad7c6 (Linked screens to data base)
 
             manager.setId(rs.getLong("id"));
             managers.add(manager);
@@ -124,14 +102,9 @@ public class ManagerDAO implements BaseDAO<Manager> {
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
-<<<<<<< HEAD
-        ps.setString(3, String.valueOf(entity.getAddress()));
-        ps.setLong(4, entity.getId());
-=======
         ps.setString(3, entity.getPasswordHash());
         ps.setLong(4, entity.getAddress().getId());
         ps.setLong(5, entity.getId());
->>>>>>> 96ad7c6 (Linked screens to data base)
 
         ps.executeUpdate();
     }
@@ -145,24 +118,16 @@ public class ManagerDAO implements BaseDAO<Manager> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-<<<<<<< HEAD
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    new AddressDAO().readById(rs.getLong("address_id"))
-            );
-=======
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
             Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
->>>>>>> 96ad7c6 (Linked screens to data base)
 
             manager.setId(rs.getLong("id"));
             return manager;
         }
 
-        throw new SQLException("Manager with ID " + id + " not found.");
+        return null;
     }
 
     public Manager readByCPF(String cpf) throws SQLException {
@@ -173,24 +138,16 @@ public class ManagerDAO implements BaseDAO<Manager> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-<<<<<<< HEAD
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    new AddressDAO().readById(rs.getLong("address_id"))
-            );
-=======
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
             Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
->>>>>>> 96ad7c6 (Linked screens to data base)
 
             manager.setId(rs.getLong("id"));
             return manager;
         }
 
-        throw new SQLException("Manager with CPF " + cpf + " not found.");
+        return null;
     }
 
     public Manager readByName(String name) throws SQLException {
@@ -201,23 +158,15 @@ public class ManagerDAO implements BaseDAO<Manager> {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-<<<<<<< HEAD
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    new AddressDAO().readById(rs.getLong("address_id"))
-            );
-=======
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
             Manager manager = new Manager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
->>>>>>> 96ad7c6 (Linked screens to data base)
 
             manager.setId(rs.getLong("id"));
             return manager;
         }
 
-        throw new SQLException("Manager with name " + name + " not found.");
+        return null;
     }
 }

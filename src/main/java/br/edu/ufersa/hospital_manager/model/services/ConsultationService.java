@@ -1,43 +1,30 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 public class ConsultationService {
-
-    private final ConsultationDAO consultationDAO;
+    private ConsultationDAO consultationDAO;
 
     public ConsultationService() {
         this.consultationDAO = new ConsultationDAO();
     }
 
-    // ─── Create ───────────────────────────────────────────────────────────────
+    // ─── Scheduling ───────────────────────────────────────────────────────────
 
-    public Consultation scheduleConsultation(Patient patient, Doctor doctor, LocalDateTime date, String status) throws SQLException {
-        if (patient == null) throw new RuntimeException("Patient cannot be null.");
-        if (doctor == null)  throw new RuntimeException("Doctor cannot be null.");
-        if (date == null)    throw new RuntimeException("Date cannot be null.");
+    // Creates a new consultation.
+    // A doctor cannot have two consultations at the same date and time.
+    public void scheduleConsultation(Consultation consultation) throws SQLException {
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
+        }
 
-<<<<<<< HEAD
-        // Business rule: no past consultations
-        if (date.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Consultation date cannot be in the past.");
-        }        
-        Consultation consultation = new Consultation(patient, doctor, date, status);
-        consultationDAO.create(consultation); // sets the generated ID back to the entity
-        return consultation;
-        
-    }
-
-    // ─── Delete ───────────────────────────────────────────────────────────────
-=======
         if (consultation.getPatient() == null || consultation.getDoctor() == null) {
             throw new RuntimeException("Consultation requires a patient and a doctor at creation time.");
         }
@@ -72,136 +59,97 @@ public class ConsultationService {
         if (consultation == null) {
             throw new RuntimeException("Consultation cannot be null.");
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
 
+        if (consultationDAO.readById(consultation.getId()) == null) {
+            throw new RuntimeException("Consultation not found.");
+        }
+
+        consultation.setStatus("CANCELED");
+        consultationDAO.update(consultation);
+    }
+
+    // Marks a consultation as completed.
+    // The consultation remains stored in the database.
+    public void completeConsultation(Consultation consultation) throws SQLException {
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
+        }
+
+        if (consultationDAO.readById(consultation.getId()) == null) {
+            throw new RuntimeException("Consultation not found.");
+        }
+
+        consultation.setStatus("COMPLETED");
+        consultationDAO.update(consultation);
+    }
+
+    // ─── Update And Removal ───────────────────────────────────────────────────
+
+    // Updates consultation information.
+    public void updateConsultation(Consultation consultation) throws SQLException {
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
+        }
+
+        if (consultationDAO.readById(consultation.getId()) == null) {
+            throw new RuntimeException("Consultation not found.");
+        }
+
+        consultationDAO.update(consultation);
+    }
+
+    // Permanently removes a consultation from the database.
+    // Intended for administrative corrections.
     public void removeConsultation(Consultation consultation) throws SQLException {
-        if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
-
-        // Business rule: only scheduled consultations can be removed
-        if (!consultation.getStatus().equals("SCHEDULED")) {
-            throw new RuntimeException("Only SCHEDULED consultations can be removed.");
+        if (consultation == null) {
+            throw new RuntimeException("Consultation cannot be null.");
         }
 
-        // Business rule: cannot remove past consultations
-        if (consultation.getDateTime().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Past consultations cannot be removed.");
+        if (consultationDAO.readById(consultation.getId()) == null) {
+            throw new RuntimeException("Consultation not found.");
         }
+
         consultationDAO.delete(consultation);
-        
-    }
-
-    // ─── Update ───────────────────────────────────────────────────────────────
-
-
-    public Consultation rescheduleConsultation(Consultation consultation, LocalDateTime newDate) throws SQLException {
-        if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
-        if (newDate == null)      throw new RuntimeException("New date cannot be null.");
-
-        // Business rule: only scheduled consultations can be rescheduled
-        if (!consultation.getStatus().equals("SCHEDULED")) {
-            throw new RuntimeException("Only SCHEDULED consultations can be rescheduled.");
-        }
-
-        // Business rule: new date cannot be in the past
-        if (newDate.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("New consultation date cannot be in the past.");
-        }
-
-        // Entity validates the date field
-        consultation.setDateTime(newDate);
-        consultationDAO.update(consultation);
-        return consultation;
-        
-    }
-
-    /**
-     * Updates the status of a consultation.
-     * Rule: COMPLETED consultations cannot change status.
-     * Rule: CANCELED consultations cannot change status.
-     */
-    public Consultation updateStatus(Consultation consultation, String newStatus) throws SQLException {
-        if (consultation == null) throw new RuntimeException("Consultation cannot be null.");
-        if (newStatus == null || newStatus.isBlank()) throw new RuntimeException("Status cannot be empty.");
-
-        // Business rule: terminal statuses cannot be changed
-        if (consultation.getStatus().equals("COMPLETED") || consultation.getStatus().equals("CANCELED")) {
-            throw new RuntimeException(
-                "Cannot change status of a " + consultation.getStatus() + " consultation."
-            );
-        }
-
-        // Entity validates the status value (SCHEDULED, COMPLETED, CANCELED)
-        consultation.setStatus(newStatus);
-
-        consultationDAO.update(consultation);
-        return consultation;
-        
-    }
-
-    /**
-     * Attaches a medical record to a completed consultation.
-     * Rule: Only COMPLETED consultations can have a medical record attached.
-     * Rule: Consultation cannot already have a medical record.
-     */
-    public Consultation attachMedicalRecord(Consultation consultation, MedicalRecord medicalRecord) throws SQLException {
-        if (consultation == null)  throw new RuntimeException("Consultation cannot be null.");
-        if (medicalRecord == null) throw new RuntimeException("Medical record cannot be null.");
-
-        // Business rule: only completed consultations get a medical record
-        if (!consultation.getStatus().equals("COMPLETED")) {
-            throw new RuntimeException("A medical record can only be attached to a COMPLETED consultation.");
-        }
-
-        consultationDAO.update(consultation);
-        return consultation;
-
     }
 
     // ─── Searches ─────────────────────────────────────────────────────────────
 
-    public Consultation findById(long id) throws SQLException {
-        if (id <= 0) throw new RuntimeException("ID must be a positive number.");
-        return consultationDAO.readById(id);
-        
+    public ArrayList<Consultation> findByDoctor(Doctor doctor) throws SQLException {
+        if (doctor == null) {
+            throw new RuntimeException("Doctor cannot be null.");
+        }
+        if (doctor.getId() <= 0) {
+            throw new RuntimeException("Doctor not found.");
+        }
+
+        return consultationDAO.readByDoctor(doctor);
     }
 
     public ArrayList<Consultation> findByPatient(Patient patient) throws SQLException {
-        if (patient == null) throw new RuntimeException("Patient cannot be null.");
-        ArrayList<Consultation> consultations = consultationDAO.readByPatient(patient);
-        if (consultations.isEmpty()) throw new RuntimeException("No consultations found for this patient.");
-        return consultations;
-        
+        if (patient == null) {
+            throw new RuntimeException("Patient cannot be null.");
+        }
+        if (patient.getId() <= 0) {
+            throw new RuntimeException("Patient not found.");
+        }
+
+        return consultationDAO.readByPatient(patient);
     }
 
-    public ArrayList<Consultation> findByDoctor(Doctor doctor) throws SQLException {
-        if (doctor == null) throw new RuntimeException("Doctor cannot be null.");
-    
-        ArrayList<Consultation> consultations = consultationDAO.readByDoctor(doctor);
-        if (consultations.isEmpty()) throw new RuntimeException("No consultations found for this doctor.");
-        return consultations;
-        
+    public ArrayList<Consultation> findByDateTime(LocalDateTime dateTime) throws SQLException {
+        if (dateTime == null) {
+            throw new RuntimeException("Date time cannot be null.");
+        }
+
+        return consultationDAO.readByDateTime(dateTime);
     }
 
-    public ArrayList<Consultation> findByStatus(String status) throws SQLException {
-        if (status == null || status.isBlank()) throw new RuntimeException("Status cannot be empty.");
-        ArrayList<Consultation> consultations = consultationDAO.readByStatus(status);
-        if (consultations.isEmpty()) throw new RuntimeException("No consultations found with status: " + status);
-        return consultations;
-        
-    }
+    public Consultation findById(long id) throws SQLException {
+        if (id <= 0) {
+            throw new RuntimeException("ID must be a positive number.");
+        }
 
-    public ArrayList<Consultation> findByDate(LocalDateTime date) throws SQLException {
-        if (date == null) throw new RuntimeException("Date cannot be null.");
-        ArrayList<Consultation> consultations = consultationDAO.readByDateTime(date);
-        if (consultations.isEmpty()) throw new RuntimeException("No consultations found for date: " + date);
-        return consultations;
-        
-    }
-
-    public ArrayList<Consultation> listAll() throws SQLException {
-        ArrayList<Consultation> consultations = consultationDAO.listAll();
-        if (consultations.isEmpty()) throw new RuntimeException("No consultations registered in the system.");
-        return consultations;
+        return consultationDAO.readById(id);
     }
 
     public ArrayList<Consultation> listAll() throws SQLException {

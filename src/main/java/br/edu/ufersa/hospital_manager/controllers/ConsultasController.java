@@ -1,34 +1,16 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-=======
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
-<<<<<<< HEAD
-=======
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,7 +31,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 public class ConsultasController {
 
@@ -73,12 +54,6 @@ public class ConsultasController {
     @FXML
     private TableColumn<Consultation, Void> colAcoes;
 
-<<<<<<< HEAD
-    @FXML
-    public void initialize() {
-        configurarColunas();
-        carregarDadosMock();
-=======
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
     private final ObservableList<Consultation> consultas = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
@@ -87,7 +62,6 @@ public class ConsultasController {
     public void initialize() {
         configurarColunas();
         carregarDados();
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void configurarColunas() {
@@ -97,19 +71,11 @@ public class ConsultasController {
         );
 
         colPaciente.setCellValueFactory(data ->
-<<<<<<< HEAD
-                new javafx.beans.property.SimpleStringProperty(data.getValue().getPatient().getName())
-        );
-
-        colMedico.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty("Dr. " + data.getValue().getDoctor().getName())
-=======
             new javafx.beans.property.SimpleStringProperty(data.getValue().getPatient() != null ? data.getValue().getPatient().getName() : "Paciente removido")
         );
 
         colMedico.setCellValueFactory(data ->
             new javafx.beans.property.SimpleStringProperty(data.getValue().getDoctor() != null ? "Dr. " + data.getValue().getDoctor().getName() : "Médico removido")
->>>>>>> 96ad7c6 (Linked screens to data base)
         );
 
         colStatus.setCellFactory(col -> new TableCell<Consultation, String>() {
@@ -167,10 +133,6 @@ public class ConsultasController {
         }
     }
 
-<<<<<<< HEAD
-    private void carregarDadosMock() {
-        ObservableList<Consultation> dados = FXCollections.observableArrayList();
-=======
     private void carregarDados() {
         try {
             consultas.setAll(consultationService.listAll());
@@ -185,7 +147,6 @@ public class ConsultasController {
 
     private List<Consultation> carregarDadosMock() {
         List<Consultation> dados = new ArrayList<>();
->>>>>>> 96ad7c6 (Linked screens to data base)
 
         Address enderecoMedico = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
         Doctor doctor = new Doctor("Luiz Silva", "12345678900", enderecoMedico, 250.0f, "123456");
@@ -193,18 +154,6 @@ public class ConsultasController {
         Address enderecoPaciente = new Address("Rua das Flores", "50", "Centro", "Mossoró", "RN");
         Patient patient = new Patient("Maria Santos", "11122233344", enderecoPaciente);
 
-<<<<<<< HEAD
-        Consultation consulta1 = new Consultation(patient, doctor, java.time.LocalDateTime.now().plusDays(2), "SCHEDULED");
-
-        dados.add(consulta1);
-
-        tableConsultas.setItems(dados);
-    }
-
-    private void onEditarConsulta(Consultation consulta) {
-        // TODO: abrir formulário de edição conectado ao ConsultationDAO/ConsultationServices
-        NavigationHelper.showInfo("Editar Consulta", "Edição da consulta em construção.");
-=======
         dados.add(new Consultation(patient, doctor, java.time.LocalDateTime.now().plusDays(2), "SCHEDULED"));
         return dados;
     }
@@ -252,7 +201,6 @@ public class ConsultasController {
                 NavigationHelper.showError(exception.getMessage());
             }
         });
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void onCancelarConsulta(Consultation consulta) {
@@ -261,10 +209,6 @@ public class ConsultasController {
                 "Tem certeza que deseja cancelar essa consulta?"
         );
         if (confirmado) {
-<<<<<<< HEAD
-            // TODO: atualizar status via ConsultationDAO/ConsultationServices
-            tableConsultas.getItems().remove(consulta);
-=======
             try {
                 if (usingDatabase) {
                     consultationService.cancelConsultation(consulta);
@@ -276,16 +220,11 @@ public class ConsultasController {
             } catch (SQLException exception) {
                 NavigationHelper.showError("Erro ao cancelar consulta: " + exception.getMessage());
             }
->>>>>>> 96ad7c6 (Linked screens to data base)
         }
     }
 
     @FXML
     public void onAgendarConsulta(ActionEvent event) {
-<<<<<<< HEAD
-        // TODO: abrir formulário de agendamento conectado ao ConsultationDAO/ConsultationServices
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "CadastroConsulta.fxml");
     }
 
@@ -293,11 +232,7 @@ public class ConsultasController {
 
     @FXML
     public void goDashboard(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "dashboard.fxml");
-=======
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML

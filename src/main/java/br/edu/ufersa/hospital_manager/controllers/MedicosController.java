@@ -1,7 +1,5 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-=======
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,6 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
->>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,20 +26,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-<<<<<<< HEAD
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import java.util.List;
-
-import br.edu.ufersa.hospital_manager.model.entities.Address;
-import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-=======
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 
 public class MedicosController {
@@ -77,12 +64,6 @@ public class MedicosController {
     @FXML
     private TableColumn<Doctor, Void> colAcoes;
 
-<<<<<<< HEAD
-    @FXML
-    public void initialize() {
-        configurarColunas();
-        carregarDadosMock();
-=======
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final ObservableList<Doctor> medicos = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
@@ -91,7 +72,6 @@ public class MedicosController {
     public void initialize() {
         configurarColunas();
         carregarDados();
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -196,17 +176,6 @@ public class MedicosController {
         };
     }
 
-<<<<<<< HEAD
-    private void carregarDadosMock() {
-        ObservableList<Doctor> dados = FXCollections.observableArrayList();
-
-        Address endereco1 = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
-        Doctor doctor1 = new Doctor("Luiz Silva", "12345678900", endereco1, 250.0f, "123456");
-
-        dados.add(doctor1);
-
-        tableMedicos.setItems(dados);
-=======
     private void carregarDados() {
         try {
             medicos.setAll(doctorService.listAll());
@@ -224,7 +193,6 @@ public class MedicosController {
         Address endereco1 = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
         dados.add(new Doctor("Luiz Silva", "12345678900", endereco1, 250.0f, "123456"));
         return dados;
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private String formatarCpf(String cpf) {
@@ -240,10 +208,6 @@ public class MedicosController {
     }
 
     private void onEditarMedico(Doctor doctor) {
-<<<<<<< HEAD
-        // TODO: abrir formulário de edição conectado ao DoctorDAO/DoctorServices
-        NavigationHelper.showInfo("Editar Médico", "Edição de \"" + doctor.getName() + "\" em construção.");
-=======
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Médico");
         dialog.setHeaderText(null);
@@ -331,7 +295,6 @@ public class MedicosController {
                 NavigationHelper.showError(exception.getMessage());
             }
         });
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void onExcluirMedico(Doctor doctor) {
@@ -340,13 +303,6 @@ public class MedicosController {
                 "Tem certeza que deseja excluir \"" + doctor.getName() + "\"?"
         );
         if (confirmado) {
-<<<<<<< HEAD
-            // TODO: remover via DoctorDAO/DoctorServices e recarregar a tabela
-            tableMedicos.getItems().remove(doctor);
-        }
-    }
-
-=======
             try {
                 if (usingDatabase) {
                     doctorService.removeDoctor(doctor);
@@ -407,7 +363,6 @@ public class MedicosController {
         return new VBox(footer);
     }
 
->>>>>>> 96ad7c6 (Linked screens to data base)
     @FXML
     public void onNovoMedico(ActionEvent event) {
         // TODO: abrir formulário de cadastro conectado ao DoctorDAO/DoctorServices
@@ -418,11 +373,7 @@ public class MedicosController {
 
     @FXML
     public void goDashboard(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "dashboard.fxml");
-=======
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -449,15 +400,12 @@ public class MedicosController {
     public void goRelatorios(ActionEvent event) {
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
     }
-<<<<<<< HEAD
-=======
 
     @FXML
     public void onSair(ActionEvent event) {
         ServiceRoleContext.clear();
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "login.fxml");
     }
->>>>>>> 96ad7c6 (Linked screens to data base)
         // ─────────────────────────────────────────────────────────
     // Utilitários de navegação
     // ─────────────────────────────────────────────────────────
@@ -499,66 +447,4 @@ public class MedicosController {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
-        @FXML
-        private void onNovoMedico() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Cadastrar novo médico");
-        dialog.setHeaderText(null);
-
-        DialogPane pane = dialog.getDialogPane();
-        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        // Estiliza o botão OK
-        Button btnOk = (Button) pane.lookupButton(ButtonType.OK);
-        btnOk.setText("Salvar médico");
-        btnOk.getStyleClass().add("btn-accent");
-
-        GridPane grid = new GridPane();
-        grid.setHgap(12);
-        grid.setVgap(12);
-        grid.setPadding(new Insets(16, 24, 8, 24));
-
-        TextField fNome        = new TextField(); fNome.setPromptText("Dr. João da Silva");
-        TextField fCpf         = new TextField(); fCpf.setPromptText("000.000.000-00");
-        TextField fCrm         = new TextField(); fCrm.setPromptText("CRM 00000/UF");
-        TextField fEspecialidade = new TextField(); fEspecialidade.setPromptText("Clínica Geral");
-        TextField fValor       = new TextField(); fValor.setPromptText("0,00");
-        TextField fEndereco    = new TextField(); fEndereco.setPromptText("Av. Principal, 100 - Cidade/UF");
-        TextField fTelefone    = new TextField(); fTelefone.setPromptText("(00) 90000-0000");
-        TextField fEmail       = new TextField(); fEmail.setPromptText("medico@clinica.com");
-
-        // Aplica a classe CSS dos campos existentes
-        for (TextField f : List.of(fNome,fCpf,fCrm,fEspecialidade,fValor,fEndereco,fTelefone,fEmail))
-            f.getStyleClass().add("text-input");
-
-        grid.addRow(0, label("Nome completo"), fNome);
-        GridPane.setColumnSpan(fNome, 3);
-        grid.addRow(1, label("CPF"), fCpf, label("CRM / Conselho"), fCrm);
-        grid.addRow(2, label("Especialidade"), fEspecialidade, label("Valor consulta (R$)"), fValor);
-        grid.addRow(3, label("Endereço"), fEndereco);
-        GridPane.setColumnSpan(fEndereco, 3);
-        grid.addRow(4, label("Telefone"), fTelefone, label("E-mail"), fEmail);
-
-        pane.setContent(grid);
-        pane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-
-        dialog.showAndWait().ifPresent(result -> {
-            if (result == ButtonType.OK) {
-                String endereço = fEndereco.getText();
-                String[] partes = endereço.split(",");
-                String rua = partes.length > 0 ? partes[0].trim() : "";
-                String numero = partes.length > 1 ? partes[1].trim() : "";
-                Doctor m = new Doctor(fNome.getText(), fCpf.getText(), new Address(rua, numero,null,null,null), Float.parseFloat(fValor.getText().replace(",", ".")), fCrm.getText());
-            }
-                });
-            }
-
-            private Label label(String texto) {
-                Label l = new Label(texto);
-                l.getStyleClass().add("form-label");
-                return l;
-            }
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
 }

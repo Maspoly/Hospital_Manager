@@ -2,20 +2,6 @@ package br.edu.ufersa.hospital_manager.controllers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.List;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-
-import br.edu.ufersa.hospital_manager.model.entities.*;
-import br.edu.ufersa.hospital_manager.model.services.*;
-=======
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -41,7 +27,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 
 public class MedicoCadastrarProntuarioController {
@@ -56,12 +41,6 @@ public class MedicoCadastrarProntuarioController {
     private Label lblCrmMedico;
 
     @FXML
-<<<<<<< HEAD
-    private ComboBox<Patient> cmbPaciente;
-
-    @FXML
-    private DatePicker dateConsulta;
-=======
     private DatePicker dateConsulta;
 
     @FXML
@@ -69,7 +48,6 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     private ListView<Patient> lstPacientes;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
     @FXML
     private TextArea txtObservacoes;
@@ -77,11 +55,6 @@ public class MedicoCadastrarProntuarioController {
     @FXML
     private Label lblContador;
 
-<<<<<<< HEAD
-    private final List<Patient> pacientesMock = new ArrayList<>();
-    private final MedicalRecordService medicalRecordService = new MedicalRecordService();
-    private Doctor medicoLogado;
-=======
     @FXML
     private Label lblPacienteSelecionado;
 
@@ -91,58 +64,18 @@ public class MedicoCadastrarProntuarioController {
     private final FilteredList<Patient> pacientesFiltrados = new FilteredList<>(pacientesDisponiveis, patient -> true);
     private Doctor medicoLogado;
     private Patient pacienteSelecionado;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
     @FXML
     public void initialize() {
         configurarDadosMedico();
-<<<<<<< HEAD
-        carregarDadosMock();
-        configurarComboBox();
-=======
         carregarDados();
         configurarListaPacientes();
         configurarBuscaPaciente();
->>>>>>> 96ad7c6 (Linked screens to data base)
         configurarContadorCaracteres();
         dateConsulta.setValue(LocalDate.now());
     }
 
     private void configurarDadosMedico() {
-<<<<<<< HEAD
-        // TODO: carregar dados do médico logado via DoctorService
-        lblIniciais.setText("J");
-        lblNomeMedico.setText("Dr. João Lourenço");
-        lblCrmMedico.setText("CRM-12345");
-        
-        // Cria médico mock para uso no prontuário
-        Address enderecoMedico = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
-        medicoLogado = new Doctor("João Lourenço", "12345678900", enderecoMedico, 250.0f, "123456");
-    }
-
-    private void carregarDadosMock() {
-        Address endereco1 = new Address("Rua das Flores", "50", "Centro", "Mossoró", "RN");
-        pacientesMock.add(new Patient("Maria Santos", "11122233344", endereco1));
-
-        Address endereco2 = new Address("Av. Central", "200", "Centro", "Mossoró", "RN");
-        pacientesMock.add(new Patient("João Oliveira", "55566677788", endereco2));
-    }
-
-    private void configurarComboBox() {
-        cmbPaciente.getItems().addAll(pacientesMock);
-        cmbPaciente.setConverter(new javafx.util.StringConverter<Patient>() {
-            @Override
-            public String toString(Patient patient) {
-                return patient == null ? "" : patient.getName();
-            }
-
-            @Override
-            public Patient fromString(String string) {
-                return null;
-            }
-        });
-        cmbPaciente.setPromptText("Selecione um paciente");
-=======
         if (ServiceRoleContext.getCurrentUser() instanceof Doctor) {
             medicoLogado = (Doctor) ServiceRoleContext.getCurrentUser();
             lblIniciais.setText(extrairIniciais(medicoLogado.getName()));
@@ -237,7 +170,6 @@ public class MedicoCadastrarProntuarioController {
                 lstPacientes.getSelectionModel().clearSelection();
             }
         });
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void configurarContadorCaracteres() {
@@ -248,19 +180,11 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     public void onSalvarProntuario(ActionEvent event) {
-<<<<<<< HEAD
-        Patient paciente = cmbPaciente.getValue();
-        String observacoes = txtObservacoes.getText();
-
-        if (paciente == null) {
-            NavigationHelper.showError("Selecione um paciente antes de salvar.");
-=======
         Patient paciente = pacienteSelecionado;
         String observacoes = txtObservacoes.getText();
 
         if (paciente == null) {
             NavigationHelper.showError("Selecione um paciente na lista lateral antes de salvar.");
->>>>>>> 96ad7c6 (Linked screens to data base)
             return;
         }
         if (observacoes == null || observacoes.trim().isEmpty()) {
@@ -269,10 +193,6 @@ public class MedicoCadastrarProntuarioController {
         }
 
         try {
-<<<<<<< HEAD
-            // Verifica se paciente já tem prontuário
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
             try {
                 MedicalRecord existing = medicalRecordService.findByPatient(paciente);
                 if (existing != null) {
@@ -283,10 +203,6 @@ public class MedicoCadastrarProntuarioController {
                 // Paciente não tem prontuário, pode criar
             }
 
-<<<<<<< HEAD
-            // Cria novo prontuário
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
             MedicalRecord record = new MedicalRecord(observacoes, medicoLogado, paciente);
             medicalRecordService.registerMedicalRecord(record);
 
@@ -303,13 +219,9 @@ public class MedicoCadastrarProntuarioController {
     }
 
     private void limparFormulario() {
-<<<<<<< HEAD
-        cmbPaciente.setValue(null);
-=======
         lstPacientes.getSelectionModel().clearSelection();
         pacienteSelecionado = null;
         lblPacienteSelecionado.setText("Nenhum paciente selecionado");
->>>>>>> 96ad7c6 (Linked screens to data base)
         dateConsulta.setValue(LocalDate.now());
         txtObservacoes.clear();
     }
@@ -322,15 +234,6 @@ public class MedicoCadastrarProntuarioController {
     }
 
     @FXML
-<<<<<<< HEAD
-    public void goCadastrarProntuario(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
-    }
-
-    @FXML
-    public void goEditarDados(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "medico_editar_pacientes.fxml", "medico.css");
-=======
     public void goMinhasConsultas(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_consultas.fxml", "medico.css");
     }
@@ -338,7 +241,6 @@ public class MedicoCadastrarProntuarioController {
     @FXML
     public void goCadastrarProntuario(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -348,9 +250,6 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     public void onSair(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo((Node) event.getSource(), "login_medico.fxml", "medico.css");
-=======
         ServiceRoleContext.clear();
         NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
@@ -371,6 +270,5 @@ public class MedicoCadastrarProntuarioController {
         }
 
         return iniciais.length() > 0 ? iniciais.toString() : "D";
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 }

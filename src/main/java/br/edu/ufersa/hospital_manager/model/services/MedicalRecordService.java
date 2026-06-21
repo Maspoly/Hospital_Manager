@@ -1,8 +1,9 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+
 import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
@@ -23,15 +24,11 @@ public class MedicalRecordService implements MedicalRecordServiceContract {
         if (medicalRecord == null) {
             throw new RuntimeException("Medical record cannot be null.");
         }
-<<<<<<< HEAD
-        
-=======
 
         if (ServiceRoleContext.getCurrentUser() instanceof Doctor) {
             medicalRecord.setDoctor((Doctor) ServiceRoleContext.getCurrentUser());
         }
 
->>>>>>> 96ad7c6 (Linked screens to data base)
         if (medicalRecordDAO.readById(medicalRecord.getId()) != null) {
             throw new RuntimeException("A medical record with this ID already exists.");
         }
@@ -104,28 +101,11 @@ public class MedicalRecordService implements MedicalRecordServiceContract {
         }
         return medicalRecordDAO.readByDoctor(doctor);
     }
-<<<<<<< HEAD
-
-    public MedicalRecord findByDate(LocalDateTime date) throws SQLException {
-=======
     @Override
     public ArrayList<MedicalRecord> findByDate(LocalDate date) throws SQLException {
->>>>>>> 96ad7c6 (Linked screens to data base)
         if (date == null) {
             throw new RuntimeException("Date cannot be null.");
         }
-        return medicalRecordDAO.readByDate(date);
-        
+        return medicalRecordDAO.readByDate(date); 
     }
-    public MedicalRecord updateObservation(
-        MedicalRecord record,
-        String observation)
-        throws SQLException {
-
-    record.setObservation(observation);
-
-    medicalRecordDAO.update(record);
-
-    return record;
-}
 }

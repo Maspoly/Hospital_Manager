@@ -1,13 +1,5 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-=======
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,24 +23,14 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
->>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-<<<<<<< HEAD
-import br.edu.ufersa.hospital_manager.model.entities.Address;
-import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-
-public class BuscaController {
-
-=======
 public class BuscaController {
 
     private static final DateTimeFormatter DATA_HORA_FORMATO = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
->>>>>>> 96ad7c6 (Linked screens to data base)
     @FXML
     private ComboBox<String> cmbBuscarPor;
 
@@ -64,28 +46,16 @@ public class BuscaController {
     @FXML
     private VBox boxResultados;
 
-<<<<<<< HEAD
-=======
     private final PatientServiceProxy patientService = new PatientServiceProxy();
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
 
->>>>>>> 96ad7c6 (Linked screens to data base)
     // Dados mock para simular a busca (futuramente vêm de PatientServices/DoctorServices)
     private final List<Patient> pacientesMock = new ArrayList<>();
     private final List<Doctor> medicosMock = new ArrayList<>();
 
     @FXML
     public void initialize() {
-<<<<<<< HEAD
-        cmbBuscarPor.getItems().addAll("Paciente", "Médico", "Consulta");
-        cmbBuscarPor.setValue("Paciente");
-
-        cmbCriterio.getItems().addAll("Nome", "CPF");
-        cmbCriterio.setValue("Nome");
-
-        cmbBuscarPor.valueProperty().addListener((obs, oldVal, newVal) -> atualizarCriterios(newVal));
-=======
         cmbBuscarPor.getItems().setAll("Paciente", "Médico", "Consulta");
         cmbBuscarPor.setValue("Paciente");
 
@@ -93,7 +63,6 @@ public class BuscaController {
         cmbCriterio.valueProperty().addListener((obs, oldVal, newVal) -> atualizarTermoPlaceholder());
 
         atualizarCriterios(cmbBuscarPor.getValue());
->>>>>>> 96ad7c6 (Linked screens to data base)
 
         carregarDadosMock();
     }
@@ -101,19 +70,13 @@ public class BuscaController {
     private void atualizarCriterios(String buscarPor) {
         cmbCriterio.getItems().clear();
         if ("Consulta".equals(buscarPor)) {
-<<<<<<< HEAD
-            cmbCriterio.getItems().addAll("Data", "Status");
-=======
             cmbCriterio.getItems().addAll("Paciente", "Médico", "Data e hora");
         } else if ("Médico".equals(buscarPor)) {
             cmbCriterio.getItems().addAll("Nome", "CPF", "Código Conselho");
->>>>>>> 96ad7c6 (Linked screens to data base)
         } else {
             cmbCriterio.getItems().addAll("Nome", "CPF");
         }
         cmbCriterio.setValue(cmbCriterio.getItems().get(0));
-<<<<<<< HEAD
-=======
         atualizarTermoPlaceholder();
     }
 
@@ -132,7 +95,6 @@ public class BuscaController {
             case "Médico" -> txtTermo.setPromptText("Nome do médico");
             default -> txtTermo.setPromptText("Digite para buscar...");
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void carregarDadosMock() {
@@ -150,45 +112,6 @@ public class BuscaController {
     public void onBuscar(ActionEvent event) {
         String termo = txtTermo.getText() == null ? "" : txtTermo.getText().trim().toLowerCase();
         String buscarPor = cmbBuscarPor.getValue();
-<<<<<<< HEAD
-
-        boxResultados.getChildren().clear();
-        int totalEncontrados = 0;
-
-        if ("Paciente".equals(buscarPor)) {
-            for (Patient p : pacientesMock) {
-                if (termo.isEmpty() || p.getName().toLowerCase().contains(termo) || p.getCPF().contains(termo)) {
-                    boxResultados.getChildren().add(criarLinhaResultado(p.getName(), "Paciente · CPF " + p.getCPF()));
-                    totalEncontrados++;
-                }
-            }
-        } else if ("Médico".equals(buscarPor)) {
-            for (Doctor d : medicosMock) {
-                if (termo.isEmpty() || d.getName().toLowerCase().contains(termo) || d.getCPF().contains(termo)) {
-                    boxResultados.getChildren().add(criarLinhaResultado("Dr. " + d.getName(), "CRM " + d.getCouncilCode()));
-                    totalEncontrados++;
-                }
-            }
-        } else {
-            // TODO: busca de consultas conectada ao ConsultationDAO/ConsultationServices
-        }
-
-        lblResultados.setText("Resultados da Busca (" + totalEncontrados + ")");
-
-        if (totalEncontrados == 0) {
-            Label vazio = new Label("Nenhum resultado encontrado para os filtros selecionados.");
-            vazio.getStyleClass().add("empty-state-title");
-            boxResultados.getChildren().add(vazio);
-        }
-    }
-
-    private VBox criarLinhaResultado(String titulo, String subtitulo) {
-        Label tituloLbl = new Label(titulo);
-        tituloLbl.getStyleClass().add("cell-title");
-        Label subtituloLbl = new Label(subtitulo);
-        subtituloLbl.getStyleClass().add("cell-subtitle");
-        return new VBox(2, tituloLbl, subtituloLbl);
-=======
         String criterio = cmbCriterio.getValue();
 
         boxResultados.getChildren().clear();
@@ -542,18 +465,13 @@ public class BuscaController {
             this.openLabel = openLabel;
             this.openAction = openAction;
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     // ===================== NAVEGAÇÃO ENTRE TELAS =====================
 
     @FXML
     public void goDashboard(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "dashboard.fxml");
-=======
         NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML

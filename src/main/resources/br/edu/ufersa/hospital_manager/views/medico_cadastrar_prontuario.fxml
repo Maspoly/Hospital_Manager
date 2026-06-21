@@ -2,15 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<<<<<<< HEAD
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-=======
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -18,7 +9,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
->>>>>>> 96ad7c6 (Linked screens to data base)
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -56,13 +46,8 @@
 
             <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
                 <Button text="📄  Meus Pacientes" styleClass="medico-nav-item" onAction="#goMeusPacientes" maxWidth="Infinity" />
-<<<<<<< HEAD
-                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item-active" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
-                <Button text="👤  Editar Dados Pessoais" styleClass="medico-nav-item" onAction="#goEditarDados" maxWidth="Infinity" />
-=======
                 <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
                 <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item-active" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
->>>>>>> 96ad7c6 (Linked screens to data base)
                 <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
@@ -74,73 +59,6 @@
 
     <!-- ===================== CONTENT ===================== -->
     <center>
-<<<<<<< HEAD
-        <VBox styleClass="medico-content-area" spacing="22">
-
-            <VBox spacing="4">
-                <Label text="Cadastrar Novo Prontuário" styleClass="medico-page-title" />
-                <Label text="Registre observação sobre a consulta do paciente" styleClass="medico-page-subtitle" />
-            </VBox>
-
-            <VBox styleClass="medico-surface-card" maxWidth="700">
-
-                <HBox styleClass="medico-form-header-strip" spacing="12" alignment="CENTER_LEFT">
-                    <StackPane styleClass="medico-form-header-icon-box">
-                        <Label text="📄" styleClass="medico-form-header-icon-glyph" />
-                    </StackPane>
-                    <Label text="Novo Prontuário" styleClass="medico-form-header-title" />
-                </HBox>
-
-                <VBox spacing="16">
-                    <padding>
-                        <Insets top="20" bottom="20" left="22" right="22" />
-                    </padding>
-
-                    <VBox spacing="6">
-                        <TextFlow>
-                            <Text text="Paciente " styleClass="medico-form-label" />
-                            <Text text="*" styleClass="medico-required-asterisk" />
-                        </TextFlow>
-                        <ComboBox fx:id="cmbPaciente" styleClass="medico-combo-input" maxWidth="Infinity"
-                                  promptText="Selecione um paciente" />
-                    </VBox>
-
-                    <VBox spacing="6">
-                        <TextFlow>
-                            <Text text="Data da consulta " styleClass="medico-form-label" />
-                            <Text text="*" styleClass="medico-required-asterisk" />
-                        </TextFlow>
-                        <DatePicker fx:id="dateConsulta" styleClass="medico-date-input" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="6">
-                        <TextFlow>
-                            <Text text="Observações Médicas " styleClass="medico-form-label" />
-                            <Text text="*" styleClass="medico-required-asterisk" />
-                        </TextFlow>
-                        <TextArea fx:id="txtObservacoes" styleClass="medico-textarea" prefHeight="110"
-                                  wrapText="true"
-                                  promptText="Digite as observações sobre a consulta, sintomas, diagnóstico, prescrições, etc." />
-                        <Label fx:id="lblContador" text="0 caracteres" styleClass="medico-char-counter" />
-                    </VBox>
-
-                    <HBox spacing="12" alignment="CENTER_LEFT">
-                        <Button text="💾  Salvar Prontuário" styleClass="medico-btn-save" onAction="#onSalvarProntuario" />
-                        <Button text="Cancelar" styleClass="medico-btn-cancel" onAction="#onCancelar" />
-                    </HBox>
-                </VBox>
-            </VBox>
-
-            <HBox styleClass="medico-tip-box" maxWidth="700">
-                <padding>
-                    <Insets top="10" bottom="10" left="14" right="14" />
-                </padding>
-                <Label styleClass="medico-tip-text" wrapText="true"
-                       text="Dica: Seja detalhado nas observações. Inclua sintomas relatados, exames físico realizados, diagnóstico, prescrições médicas e orientações ao paciente." />
-            </HBox>
-
-        </VBox>
-=======
         <HBox styleClass="medico-content-area" spacing="18">
 
             <VBox spacing="22" HBox.hgrow="ALWAYS">
@@ -227,6 +145,5 @@
             </VBox>
 
         </HBox>
->>>>>>> 96ad7c6 (Linked screens to data base)
     </center>
 </BorderPane>

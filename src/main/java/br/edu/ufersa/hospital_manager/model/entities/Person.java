@@ -92,7 +92,7 @@ public abstract class Person {
     }
 
     public Address getAddress() {
-        return this.address;
+        return address;
     }
 
     public String getPasswordHash() {

@@ -89,10 +89,7 @@
                     </GridPane>
 
                     <Button text="Buscar" styleClass="btn-accent" maxWidth="Infinity" onAction="#onBuscar" />
-<<<<<<< HEAD
-=======
                     <Label text="Os critérios mudam conforme o tipo de busca. Clique em um resultado para ver detalhes e abrir a tela relacionada." styleClass="empty-state-title" wrapText="true" />
->>>>>>> 96ad7c6 (Linked screens to data base)
                 </VBox>
 
                 <VBox styleClass="surface-card" spacing="10" VBox.vgrow="ALWAYS">
@@ -100,11 +97,7 @@
                         <Insets top="18" bottom="18" left="22" right="22" />
                     </padding>
                     <Label fx:id="lblResultados" text="Resultados da Busca (0)" styleClass="panel-title" />
-<<<<<<< HEAD
-                    <VBox fx:id="boxResultados" spacing="8" VBox.vgrow="ALWAYS" alignment="CENTER">
-=======
                     <VBox fx:id="boxResultados" spacing="10" VBox.vgrow="ALWAYS" alignment="TOP_LEFT">
->>>>>>> 96ad7c6 (Linked screens to data base)
                         <Label text="Faça uma busca para ver os resultados." styleClass="empty-state-title" />
                     </VBox>
                 </VBox>

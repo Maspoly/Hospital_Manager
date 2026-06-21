@@ -6,9 +6,6 @@ public class Patient extends Person {
         super(name, cpf, address);
     }
 
-<<<<<<< HEAD
-}
-=======
     public Patient(String name, String cpf, Address address, String password) {
         super(name, cpf, address, password);
     }
@@ -18,4 +15,3 @@ public class Patient extends Person {
     }
 
 }
->>>>>>> 96ad7c6 (Linked screens to data base)

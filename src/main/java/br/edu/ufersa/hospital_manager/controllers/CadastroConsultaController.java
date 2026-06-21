@@ -1,15 +1,5 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-import br.edu.ufersa.hospital_manager.model.DAO.*;
-import br.edu.ufersa.hospital_manager.model.entities.*;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.util.StringConverter;
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
@@ -34,7 +22,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.util.StringConverter;
 
->>>>>>> 96ad7c6 (Linked screens to data base)
 public class CadastroConsultaController {
 
     // ── Campos do formulário ──────────────────────────────────────────────────
@@ -49,19 +36,9 @@ public class CadastroConsultaController {
     @FXML private Label lblUserName;
     @FXML private Label lblUserRole;
 
-<<<<<<< HEAD
-    // Acesso direto aos DAOs:
-    // - ConsultationService.scheduleConsultation() bloqueia datas passadas,
-    //   mas aqui queremos salvar com qualquer status (inclusive COMPLETED/CANCELED).
-    // - DoctorService e PatientService não expõem listAll(), então usamos os DAOs.
-    private final ConsultationDAO consultationDAO = new ConsultationDAO();
-    private final DoctorDAO       doctorDAO       = new DoctorDAO();
-    private final PatientDAO      patientDAO      = new PatientDAO();
-=======
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final PatientServiceProxy patientService = new PatientServiceProxy();
->>>>>>> 96ad7c6 (Linked screens to data base)
 
     // ── Inicialização ─────────────────────────────────────────────────────────
     @FXML
@@ -75,11 +52,7 @@ public class CadastroConsultaController {
 
     private void carregarPacientes() {
         try {
-<<<<<<< HEAD
-            List<Patient> lista = patientDAO.listAll();
-=======
             List<Patient> lista = patientService.listAll();
->>>>>>> 96ad7c6 (Linked screens to data base)
             fldPaciente.setItems(FXCollections.observableArrayList(lista));
         } catch (SQLException e) {
             mostrarErro("Erro ao carregar pacientes: " + e.getMessage());
@@ -95,11 +68,7 @@ public class CadastroConsultaController {
 
     private void carregarMedicos() {
         try {
-<<<<<<< HEAD
-            List<Doctor> lista = doctorDAO.listAll();
-=======
             List<Doctor> lista = doctorService.listAll();
->>>>>>> 96ad7c6 (Linked screens to data base)
             fldMedico.setItems(FXCollections.observableArrayList(lista));
         } catch (SQLException e) {
             mostrarErro("Erro ao carregar médicos: " + e.getMessage());
@@ -150,11 +119,7 @@ public class CadastroConsultaController {
                     dateTime,
                     fldStatus.getValue()
             );
-<<<<<<< HEAD
-            consultationDAO.create(consulta); // persiste e seta o ID gerado
-=======
                 consultationService.createConsultation(consulta); // persiste e seta o ID gerado
->>>>>>> 96ad7c6 (Linked screens to data base)
 
             NavigationHelper.showInfo("Sucesso", "Consulta agendada com sucesso!");
             NavigationHelper.goTo((javafx.scene.Node) event.getSource(), "consultas.fxml");
@@ -211,11 +176,7 @@ public class CadastroConsultaController {
     }
 
     // ── Navegação da sidebar ──────────────────────────────────────────────────
-<<<<<<< HEAD
-    @FXML private void onDashboard(ActionEvent e)  { NavigationHelper.goTo((javafx.scene.Node) e.getSource(), "dashboard.fxml"); }
-=======
     @FXML private void onDashboard(ActionEvent e)  { NavigationHelper.goTo((javafx.scene.Node) e.getSource(), "Dashboard.fxml"); }
->>>>>>> 96ad7c6 (Linked screens to data base)
     @FXML private void onMedicos(ActionEvent e)    { NavigationHelper.goTo((javafx.scene.Node) e.getSource(), "medicos.fxml"); }
     @FXML private void onPacientes(ActionEvent e)  { NavigationHelper.goTo((javafx.scene.Node) e.getSource(), "pacientes.fxml"); }
     @FXML private void onConsultas(ActionEvent e)  { NavigationHelper.goTo((javafx.scene.Node) e.getSource(), "consultas.fxml"); }

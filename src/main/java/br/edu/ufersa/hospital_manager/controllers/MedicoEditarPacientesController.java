@@ -3,8 +3,6 @@ package br.edu.ufersa.hospital_manager.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
@@ -12,7 +10,6 @@ import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
->>>>>>> 96ad7c6 (Linked screens to data base)
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -21,20 +18,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-<<<<<<< HEAD
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.layout.StackPane;
-
-import br.edu.ufersa.hospital_manager.model.entities.Address;
-import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-import br.edu.ufersa.hospital_manager.model.services.MedicalRecordService;
-=======
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 public class MedicoEditarPacientesController {
 
@@ -61,21 +47,13 @@ public class MedicoEditarPacientesController {
 
     private final List<Patient> pacientesMock = new ArrayList<>();
     private Patient pacienteSelecionado;
-<<<<<<< HEAD
-    private final MedicalRecordService medicalRecordService = new MedicalRecordService();
-=======
     private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
     private final PatientServiceProxy patientService = new PatientServiceProxy();
->>>>>>> 96ad7c6 (Linked screens to data base)
 
     @FXML
     public void initialize() {
         configurarDadosMedico();
-<<<<<<< HEAD
-        carregarDadosMock();
-=======
         carregarDados();
->>>>>>> 96ad7c6 (Linked screens to data base)
         renderizarLista(pacientesMock);
         lblTotalPacientesStrip.setText("Total de Pacientes: " + pacientesMock.size());
 
@@ -83,19 +61,6 @@ public class MedicoEditarPacientesController {
     }
 
     private void configurarDadosMedico() {
-<<<<<<< HEAD
-        lblIniciais.setText("J");
-        lblNomeMedico.setText("Dr. João Lourenço");
-        lblCrmMedico.setText("CRM-12345");
-    }
-
-    private void carregarDadosMock() {
-        Address endereco1 = new Address("Rua das Flores", "50", "Centro", "Mossoró", "RN");
-        pacientesMock.add(new Patient("Maria Santos", "11122233344", endereco1));
-
-        Address endereco2 = new Address("Av. Central", "200", "Centro", "Mossoró", "RN");
-        pacientesMock.add(new Patient("João Oliveira", "55566677788", endereco2));
-=======
         if (ServiceRoleContext.getCurrentUser() instanceof Doctor) {
             Doctor medico = (Doctor) ServiceRoleContext.getCurrentUser();
             lblIniciais.setText(extrairIniciais(medico.getName()));
@@ -120,7 +85,6 @@ public class MedicoEditarPacientesController {
             Address endereco2 = new Address("Av. Central", "200", "Centro", "Mossoró", "RN");
             pacientesMock.add(new Patient("João Oliveira", "55566677788", endereco2));
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     private void filtrarPacientes(String termo) {
@@ -283,15 +247,6 @@ public class MedicoEditarPacientesController {
     }
 
     @FXML
-<<<<<<< HEAD
-    public void goCadastrarProntuario(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
-    }
-
-    @FXML
-    public void goEditarDados(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "medico_editar_pacientes.fxml", "medico.css");
-=======
     public void goMinhasConsultas(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_consultas.fxml", "medico.css");
     }
@@ -299,7 +254,6 @@ public class MedicoEditarPacientesController {
     @FXML
     public void goCadastrarProntuario(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     @FXML
@@ -309,9 +263,6 @@ public class MedicoEditarPacientesController {
 
     @FXML
     public void onSair(ActionEvent event) {
-<<<<<<< HEAD
-        NavigationHelper.goTo((Node) event.getSource(), "login_medico.fxml", "medico.css");
-=======
         ServiceRoleContext.clear();
         NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
@@ -332,6 +283,5 @@ public class MedicoEditarPacientesController {
         }
 
         return iniciais.length() > 0 ? iniciais.toString() : "D";
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 }

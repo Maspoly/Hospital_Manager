@@ -1,16 +1,5 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-<<<<<<< HEAD
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
-import java.net.URL;
-import java.util.ResourceBundle;
-=======
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -30,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
->>>>>>> 96ad7c6 (Linked screens to data base)
 
 /**
  * Controller do Dashboard — Clínica Dr. Luiz
@@ -63,13 +51,10 @@ public class DashboardController implements Initializable {
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
 
-<<<<<<< HEAD
-=======
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final PatientServiceProxy patientService = new PatientServiceProxy();
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
 
->>>>>>> 96ad7c6 (Linked screens to data base)
     // ─────────────────────────────────────────────────────────
     // Inicialização
     // ─────────────────────────────────────────────────────────
@@ -85,16 +70,11 @@ public class DashboardController implements Initializable {
      * Em produção, substitua pelos dados da sessão/autenticação.
      */
     private void carregarDadosUsuario() {
-<<<<<<< HEAD
-        String nomeUsuario = "Administrador"; // Recuperar da sessão
-        String cargoUsuario = "Gerente";      // Recuperar da sessão
-=======
         Person usuario = ServiceRoleContext.getCurrentUser();
         ServiceRole role = ServiceRoleContext.getCurrentRole();
 
         String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
         String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
->>>>>>> 96ad7c6 (Linked screens to data base)
 
         lblWelcome.setText("Bem-vindo, " + nomeUsuario + "!");
         lblUserName.setText(nomeUsuario);
@@ -106,10 +86,6 @@ public class DashboardController implements Initializable {
      * Substitua pelas chamadas reais ao serviço/repositório.
      */
     private void carregarMetricas() {
-<<<<<<< HEAD
-        // TODO: injetar serviços e buscar dados do banco
-=======
->>>>>>> 96ad7c6 (Linked screens to data base)
         int totalMedicos          = buscarTotalMedicos();
         int totalPacientes        = buscarTotalPacientes();
         int consultasHoje         = buscarConsultasHoje();
@@ -121,30 +97,6 @@ public class DashboardController implements Initializable {
         lblConsultasPendentes.setText(String.valueOf(consultasPendentes));
     }
 
-<<<<<<< HEAD
-    // ─────────────────────────────────────────────────────────
-    // Stubs de serviço (substitua pela integração real)
-    // ─────────────────────────────────────────────────────────
-
-    private int buscarTotalMedicos() {
-        // Exemplo: return medicoService.contarTodos();
-        return 1;
-    }
-
-    private int buscarTotalPacientes() {
-        // Exemplo: return pacienteService.contarTodos();
-        return 2;
-    }
-
-    private int buscarConsultasHoje() {
-        // Exemplo: return consultaService.contarHoje(LocalDate.now());
-        return 0;
-    }
-
-    private int buscarConsultasPendentes() {
-        // Exemplo: return consultaService.contarPendentes();
-        return 0;
-=======
     private int buscarTotalMedicos() {
         try {
             return doctorService.listAll().size();
@@ -187,7 +139,6 @@ public class DashboardController implements Initializable {
         } catch (SQLException exception) {
             return 0;
         }
->>>>>>> 96ad7c6 (Linked screens to data base)
     }
 
     // ─────────────────────────────────────────────────────────
