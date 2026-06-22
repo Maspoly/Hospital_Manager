@@ -1,5 +1,6 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,11 +22,18 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -64,11 +72,11 @@ public class MedicoPacientesController {
     @FXML
     private VBox boxProntuarios;
 
-    // Dados mock
     private final ObservableList<Patient> pacientesDisponiveis = FXCollections.observableArrayList();
     private final FilteredList<Patient> pacientesFiltrados = new FilteredList<>(pacientesDisponiveis, patient -> true);
     private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
     private Patient pacienteSelecionado;
+    private MedicalRecord recordAtual;
 
     @FXML
     public void initialize() {
@@ -200,6 +208,7 @@ public class MedicoPacientesController {
 
     private void onPacienteSelecionado(Patient patient) {
         boxProntuarios.getChildren().clear();
+        recordAtual = null;
 
         if (patient == null) {
             mostrarEstadoVazio();
@@ -209,45 +218,169 @@ public class MedicoPacientesController {
 
         try {
             MedicalRecord record = medicalRecordService.findByPatient(patient);
+            recordAtual = record;
             
             if (record == null) {
-                Label vazio = new Label("Nenhum prontuário cadastrado para " + patient.getName() + ".");
-                vazio.getStyleClass().add("medico-empty-state-title");
-                boxProntuarios.getChildren().add(vazio);
-                boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+                mostrarSemProntuario(patient);
                 lblProntuariosSelecionados.setText("0");
             } else {
-                Label titulo = new Label("Prontuário de " + patient.getName());
-                titulo.getStyleClass().add("medico-panel-title");
-                
-                Label editor = new Label("Editado por: " + nomeDoEditor(record));
-                editor.getStyleClass().add("medico-record-editor");
-
-                Label data = new Label("Última edição: " + formatarData(record.getDate()));
-                data.getStyleClass().add("medico-record-date");
-
-                Label observacaoTitulo = new Label("Observação clínica");
-                observacaoTitulo.getStyleClass().add("medico-record-section-title");
-
-                Label observacao = new Label(record.getObservation());
-                observacao.getStyleClass().add("medico-record-observation");
-                observacao.setWrapText(true);
-
-                VBox card = new VBox(8, titulo, editor, data, observacaoTitulo, observacao);
-                card.getStyleClass().add("medico-record-card");
-                card.setPadding(new Insets(18, 18, 18, 18));
-
-                boxProntuarios.getChildren().add(card);
-                boxProntuarios.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+                mostrarProntuario(patient, record);
                 lblProntuariosSelecionados.setText("1");
             }
         } catch (Exception e) {
-            Label erro = new Label("Erro ao carregar prontuário: " + e.getMessage());
-            erro.getStyleClass().add("medico-empty-state-title");
-            boxProntuarios.getChildren().add(erro);
-            boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+            mostrarErroProntuario(e.getMessage());
             lblProntuariosSelecionados.setText("0");
         }
+    }
+
+    private void mostrarSemProntuario(Patient patient) {
+        boxProntuarios.getChildren().clear();
+        boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Label titulo = new Label("Nenhum prontuário cadastrado");
+        titulo.getStyleClass().add("medico-panel-title");
+
+        Label mensagem = new Label("O paciente " + patient.getName() + " ainda não possui prontuário.");
+        mensagem.getStyleClass().add("medico-empty-state-title");
+        mensagem.setWrapText(true);
+
+        Button btnCriar = new Button("📝  Criar Prontuário");
+        btnCriar.getStyleClass().add("medico-btn-save");
+        btnCriar.setOnAction(e -> abrirCadastroProntuario(patient));
+
+        VBox content = new VBox(12, titulo, mensagem, btnCriar);
+        content.setAlignment(Pos.CENTER);
+        boxProntuarios.getChildren().add(content);
+        boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+    }
+
+    private void mostrarProntuario(Patient patient, MedicalRecord record) {
+        boxProntuarios.getChildren().clear();
+        boxProntuarios.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+
+        Label titulo = new Label("Prontuário de " + patient.getName());
+        titulo.getStyleClass().add("medico-panel-title");
+        
+        Label editor = new Label("Editado por: " + nomeDoEditor(record));
+        editor.getStyleClass().add("medico-record-editor");
+
+        Label data = new Label("Última edição: " + formatarData(record.getDate()));
+        data.getStyleClass().add("medico-record-date");
+
+        Label observacaoTitulo = new Label("Observação clínica");
+        observacaoTitulo.getStyleClass().add("medico-record-section-title");
+
+        Label observacao = new Label(record.getObservation());
+        observacao.getStyleClass().add("medico-record-observation");
+        observacao.setWrapText(true);
+
+        // Botões de ação
+        Button btnEditar = new Button("✏️  Editar Prontuário");
+        btnEditar.getStyleClass().add("medico-btn-save");
+        btnEditar.setOnAction(e -> abrirEdicaoProntuario(patient, record));
+
+        Button btnNovo = new Button("📝  Novo Prontuário");
+        btnNovo.getStyleClass().add("medico-btn-save");
+        btnNovo.setStyle("-fx-background-color: #059669;");
+        btnNovo.setOnAction(e -> abrirCadastroProntuario(patient));
+
+        HBox botoes = new HBox(12, btnEditar, btnNovo);
+        botoes.setPadding(new Insets(8, 0, 0, 0));
+
+        VBox card = new VBox(8, titulo, editor, data, observacaoTitulo, observacao, botoes);
+        card.getStyleClass().add("medico-record-card");
+        card.setPadding(new Insets(18, 18, 18, 18));
+
+        boxProntuarios.getChildren().add(card);
+        boxProntuarios.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+    }
+
+    private void mostrarErroProntuario(String mensagem) {
+        boxProntuarios.getChildren().clear();
+        boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+
+        Label erro = new Label("Erro ao carregar prontuário: " + mensagem);
+        erro.getStyleClass().add("medico-empty-state-title");
+        boxProntuarios.getChildren().add(erro);
+        boxProntuarios.setAlignment(javafx.geometry.Pos.CENTER);
+    }
+
+    private void abrirCadastroProntuario(Patient patient) {
+        NavigationHelper.goToWithData(
+            txtBuscarPaciente, 
+            "medico_cadastrar_prontuario.fxml", 
+            "medico.css",
+            "pacienteSelecionado", 
+            patient
+        );
+    }
+
+    private void abrirEdicaoProntuario(Patient patient, MedicalRecord record) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Editar Prontuário");
+        dialog.setHeaderText("Atualize a observação clínica de " + patient.getName());
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Button btnOk = (Button) pane.lookupButton(ButtonType.OK);
+        btnOk.setText("Salvar Alterações");
+        btnOk.getStyleClass().add("btn-accent");
+
+        Button btnCancel = (Button) pane.lookupButton(ButtonType.CANCEL);
+        btnCancel.getStyleClass().add("btn-ghost");
+
+        // Campo de observação
+        Label lblObservacao = new Label("Observação clínica:");
+        lblObservacao.getStyleClass().add("medico-form-label");
+
+        TextArea txtObservacao = new TextArea(record.getObservation());
+        txtObservacao.getStyleClass().add("medico-textarea");
+        txtObservacao.setPrefRowCount(6);
+        txtObservacao.setWrapText(true);
+        txtObservacao.setPromptText("Digite a nova observação clínica...");
+
+        // Contador de caracteres
+        Label lblContador = new Label(txtObservacao.getLength() + " caracteres");
+        lblContador.setStyle("-fx-text-fill: #9ca3af; -fx-font-size: 11.5px;");
+
+        txtObservacao.textProperty().addListener((obs, oldVal, newVal) -> {
+            lblContador.setText(newVal.length() + " caracteres");
+        });
+
+        // Layout
+        VBox content = new VBox(8, lblObservacao, txtObservacao, lblContador);
+        content.setPadding(new Insets(16, 20, 8, 20));
+        content.setPrefWidth(500);
+
+        pane.setContent(content);
+        pane.getStylesheets().add(getClass().getResource("/br/edu/ufersa/hospital_manager/css/medico.css").toExternalForm());
+
+        dialog.showAndWait().ifPresent(result -> {
+            if (result != ButtonType.OK) {
+                return;
+            }
+
+            String novaObservacao = txtObservacao.getText().trim();
+            if (novaObservacao.isEmpty()) {
+                NavigationHelper.showError("A observação não pode estar vazia.");
+                return;
+            }
+
+            try {
+                record.setObservation(novaObservacao);
+                medicalRecordService.updateMedicalRecord(record);
+                
+                // Atualiza a exibição
+                onPacienteSelecionado(patient);
+                
+                NavigationHelper.showInfo("Sucesso", "Prontuário atualizado com sucesso!");
+            } catch (SQLException e) {
+                NavigationHelper.showError("Erro ao salvar prontuário: " + e.getMessage());
+            } catch (RuntimeException e) {
+                NavigationHelper.showError(e.getMessage());
+            }
+        });
     }
 
     private String formatarCpf(String cpf) {
@@ -271,7 +404,7 @@ public class MedicoPacientesController {
         glyph.setStyle("-fx-font-size: 20px; -fx-text-fill: #c1c5cc;");
         icone.getChildren().addAll(circulo, glyph);
 
-        Label texto = new Label("Selecione um paciente acima para visualizar seus prontuários");
+        Label texto = new Label("Selecione um paciente para visualizar seus prontuários");
         texto.getStyleClass().add("medico-empty-state-title");
 
         boxProntuarios.getChildren().addAll(icone, texto);
@@ -340,7 +473,8 @@ public class MedicoPacientesController {
     }
 
     private String nomeDoEditor(MedicalRecord record) {
-        if (record == null || record.getDoctor() == null || record.getDoctor().getName() == null || record.getDoctor().getName().isBlank()) {
+        if (record == null || record.getDoctor() == null || 
+            record.getDoctor().getName() == null || record.getDoctor().getName().isBlank()) {
             return "Médico não informado";
         }
 

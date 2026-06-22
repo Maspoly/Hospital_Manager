@@ -1,9 +1,11 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -28,8 +30,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-
-public class MedicoCadastrarProntuarioController {
+public class MedicoCadastrarProntuarioController implements DadosRecebivel {
 
     @FXML
     private Label lblIniciais;
@@ -65,6 +66,9 @@ public class MedicoCadastrarProntuarioController {
     private Doctor medicoLogado;
     private Patient pacienteSelecionado;
 
+    // Dados recebidos via NavigationHelper
+    private Patient pacientePreSelecionado;
+
     @FXML
     public void initialize() {
         configurarDadosMedico();
@@ -73,6 +77,18 @@ public class MedicoCadastrarProntuarioController {
         configurarBuscaPaciente();
         configurarContadorCaracteres();
         dateConsulta.setValue(LocalDate.now());
+
+        // Se veio um paciente pré-selecionado, seleciona ele
+        if (pacientePreSelecionado != null) {
+            selecionarPaciente(pacientePreSelecionado);
+        }
+    }
+
+    @Override
+    public void receberDados(String key, Object value) {
+        if ("pacienteSelecionado".equals(key) && value instanceof Patient) {
+            this.pacientePreSelecionado = (Patient) value;
+        }
     }
 
     private void configurarDadosMedico() {
@@ -178,6 +194,25 @@ public class MedicoCadastrarProntuarioController {
         );
     }
 
+    private void selecionarPaciente(Patient patient) {
+        // Procura o paciente na lista disponível
+        for (Patient p : pacientesDisponiveis) {
+            if (p.getId() == patient.getId()) {
+                lstPacientes.getSelectionModel().select(p);
+                lstPacientes.scrollTo(p);
+                pacienteSelecionado = p;
+                lblPacienteSelecionado.setText(p.getName());
+                return;
+            }
+        }
+
+        // Se não encontrou, adiciona e seleciona
+        pacientesDisponiveis.add(patient);
+        lstPacientes.getSelectionModel().select(patient);
+        pacienteSelecionado = patient;
+        lblPacienteSelecionado.setText(patient.getName());
+    }
+
     @FXML
     public void onSalvarProntuario(ActionEvent event) {
         Patient paciente = pacienteSelecionado;
@@ -193,6 +228,7 @@ public class MedicoCadastrarProntuarioController {
         }
 
         try {
+            // Verifica se paciente já tem prontuário
             try {
                 MedicalRecord existing = medicalRecordService.findByPatient(paciente);
                 if (existing != null) {
@@ -207,7 +243,7 @@ public class MedicoCadastrarProntuarioController {
             medicalRecordService.registerMedicalRecord(record);
 
             NavigationHelper.showInfo("Prontuário Salvo", "Prontuário de \"" + paciente.getName() + "\" registrado com sucesso.");
-            limparFormulario();
+            NavigationHelper.goTo((Node) event.getSource(), "medico_pacientes.fxml", "medico.css");
         } catch (Exception e) {
             NavigationHelper.showError("Erro ao salvar prontuário: " + e.getMessage());
         }
@@ -215,15 +251,7 @@ public class MedicoCadastrarProntuarioController {
 
     @FXML
     public void onCancelar(ActionEvent event) {
-        limparFormulario();
-    }
-
-    private void limparFormulario() {
-        lstPacientes.getSelectionModel().clearSelection();
-        pacienteSelecionado = null;
-        lblPacienteSelecionado.setText("Nenhum paciente selecionado");
-        dateConsulta.setValue(LocalDate.now());
-        txtObservacoes.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "medico_pacientes.fxml", "medico.css");
     }
 
     // ===================== NAVEGAÇÃO ENTRE TELAS =====================

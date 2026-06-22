@@ -2,10 +2,8 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
+
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="br.edu.ufersa.hospital_manager.controllers.DashboardController"
@@ -37,6 +35,9 @@
                 <Button fx:id="btnPacientes" text="Pacientes"
                         styleClass="nav-item"
                         maxWidth="Infinity" onAction="#onPacientes"/>
+                <Button fx:id="btnGerentes" text="Gerentes"
+                        styleClass="nav-item"
+                        maxWidth="Infinity" onAction="#onGerentes"/>
                 <Button fx:id="btnConsultas" text="Consultas"
                         styleClass="nav-item"
                         maxWidth="Infinity" onAction="#onConsultas"/>
@@ -64,7 +65,7 @@
 
     <!-- CONTEÚDO PRINCIPAL -->
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
             <VBox styleClass="content-area" spacing="24">
 
                 <!-- Boas-vindas -->
@@ -88,7 +89,7 @@
                             <Label text="👨‍⚕️" styleClass="stat-icon-glyph"/>
                         </StackPane>
                         <Label text="Total de Médicos" styleClass="stat-label"/>
-                        <Label fx:id="lblTotalMedicos" text="1" styleClass="stat-value"/>
+                        <Label fx:id="lblTotalMedicos" text="0" styleClass="stat-value"/>
                     </VBox>
 
                     <!-- Total de Pacientes -->
@@ -97,16 +98,16 @@
                             <Label text="👥" styleClass="stat-icon-glyph"/>
                         </StackPane>
                         <Label text="Total de Pacientes" styleClass="stat-label"/>
-                        <Label fx:id="lblTotalPacientes" text="2" styleClass="stat-value"/>
+                        <Label fx:id="lblTotalPacientes" text="0" styleClass="stat-value"/>
                     </VBox>
 
-                    <!-- Consultas Hoje -->
+                    <!-- Total de Gerentes -->
                     <VBox styleClass="stat-card" GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="8">
                         <StackPane styleClass="stat-icon-badge, stat-icon-purple" minWidth="46" minHeight="46" maxWidth="46" maxHeight="46">
-                            <Label text="📅" styleClass="stat-icon-glyph"/>
+                            <Label text="👔" styleClass="stat-icon-glyph"/>
                         </StackPane>
-                        <Label text="Consultas Hoje" styleClass="stat-label"/>
-                        <Label fx:id="lblConsultasHoje" text="0" styleClass="stat-value"/>
+                        <Label text="Total de Gerentes" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalGerentes" text="0" styleClass="stat-value"/>
                     </VBox>
 
                     <!-- Consultas Pendentes -->

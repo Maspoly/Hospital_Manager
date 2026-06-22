@@ -1,11 +1,12 @@
 package br.edu.ufersa.hospital_manager.model.services;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.ManagerDAO;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 
-public class ManagerService implements FindServices<Manager> {
+public class ManagerService implements ManagerServiceContract {
     private ManagerDAO managerDAO;
 
     public ManagerService() {
@@ -16,7 +17,12 @@ public class ManagerService implements FindServices<Manager> {
 
     // Registers a new manager.
     // CPF must be unique.
+    @Override
     public void registerManager(Manager manager) throws SQLException {
+        if (manager == null) {
+            throw new RuntimeException("Manager cannot be null.");
+        }
+
         if (managerDAO.readByCPF(manager.getCPF()) != null) {
             throw new RuntimeException("A manager with this CPF already exists.");
         }
@@ -25,6 +31,7 @@ public class ManagerService implements FindServices<Manager> {
     }
 
     // Removes a manager from the system.
+    @Override
     public void removeManager(Manager manager) throws SQLException {
         if (manager == null) {
             throw new RuntimeException("Manager cannot be null.");
@@ -38,6 +45,7 @@ public class ManagerService implements FindServices<Manager> {
     }
 
     // Updates manager information.
+    @Override
     public void updateManager(Manager manager) throws SQLException {
         if (manager == null) {
             throw new RuntimeException("Manager cannot be null.");
@@ -74,5 +82,10 @@ public class ManagerService implements FindServices<Manager> {
             throw new RuntimeException("Name cannot be null or empty.");
         }
         return managerDAO.readByName(name);
+    }
+
+    @Override
+    public ArrayList<Manager> listAll() throws SQLException {
+        return managerDAO.listAll();
     }
 }

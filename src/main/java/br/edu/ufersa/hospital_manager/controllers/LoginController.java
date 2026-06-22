@@ -152,12 +152,18 @@ public class LoginController {
         };
     }
 
-    private void navegarParaPapel(ServiceRole role) {
-        if (role == ServiceRole.DOCTOR) {
-            NavigationHelper.goTo(btnEntrar, "medico_pacientes.fxml", "medico.css");
-            return;
-        }
-
-        NavigationHelper.goTo(btnEntrar, "Dashboard.fxml");
+private void navegarParaPapel(ServiceRole role) {
+    if (role == ServiceRole.DOCTOR) {
+        NavigationHelper.goTo(btnEntrar, "medico_pacientes.fxml", "medico.css");
+        return;
     }
+    
+    if (role == ServiceRole.PATIENT) {
+        NavigationHelper.goTo(btnEntrar, "paciente_dashboard.fxml", "paciente.css");
+        return;
+    }
+
+    // MANAGER ou fallback
+    NavigationHelper.goTo(btnEntrar, "Dashboard.fxml");
+}
 }

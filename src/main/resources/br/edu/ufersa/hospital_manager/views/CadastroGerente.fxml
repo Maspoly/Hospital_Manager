@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.CadastroGerenteController"
+            stylesheets="@../css/style.css">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230">
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onDashboard"/>
+                <Button text="Médicos"    styleClass="nav-item"        maxWidth="Infinity" onAction="#onMedicos"/>
+                <Button text="Pacientes"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onPacientes"/>
+                <Button text="Gerentes"   styleClass="nav-item-active" maxWidth="Infinity" onAction="#onGerentes"/>
+                <Button text="Consultas"  styleClass="nav-item"        maxWidth="Infinity" onAction="#onConsultas"/>
+                <Button text="Busca"      styleClass="nav-item"        maxWidth="Infinity" onAction="#onBusca"/>
+                <Button text="Relatórios" styleClass="nav-item"        maxWidth="Infinity" onAction="#onRelatorios"/>
+            </VBox>
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox styleClass="content-area" spacing="24">
+
+                <VBox spacing="4">
+                    <Label text="Cadastrar Gerente" styleClass="page-title"/>
+                    <Label text="Preencha os dados do novo gerente da clínica" styleClass="page-subtitle"/>
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="0">
+                    <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+
+                    <!-- Dados pessoais -->
+                    <Label text="Dados pessoais" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Nome completo *" styleClass="form-label"/>
+                        <TextField fx:id="fldNome" promptText="Ex.: João Silva" styleClass="text-input"/>
+                    </VBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CPF *" styleClass="form-label"/>
+                            <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Senha *" styleClass="form-label"/>
+                        <PasswordField fx:id="fldSenha" promptText="••••••••" styleClass="text-input"/>
+                    </VBox>
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 24 0;">
+                        <Label text="Confirmar senha *" styleClass="form-label"/>
+                        <PasswordField fx:id="fldConfirmarSenha" promptText="••••••••" styleClass="text-input"/>
+                    </VBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="panel-title"/>
+                    <Separator style="-fx-padding: 10 0 18 0;"/>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Rua *" styleClass="form-label"/>
+                            <TextField fx:id="fldRua" promptText="Av. Principal" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" prefWidth="120">
+                            <Label text="Número *" styleClass="form-label"/>
+                            <TextField fx:id="fldNumero" promptText="100" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="form-label"/>
+                            <TextField fx:id="fldBairro" promptText="Centro" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="form-label"/>
+                            <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="text-input"/>
+                        </VBox>
+                        <VBox spacing="6" prefWidth="80">
+                            <Label text="Estado *" styleClass="form-label"/>
+                            <TextField fx:id="fldEstado" promptText="RN" styleClass="text-input"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 13px; -fx-wrap-text: true;"
+                           visible="false" managed="false"/>
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="btn-ghost" onAction="#onCancelar"/>
+                        <Button text="Salvar gerente" styleClass="btn-accent" onAction="#onSalvar"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

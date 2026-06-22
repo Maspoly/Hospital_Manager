@@ -1,6 +1,8 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -34,7 +36,6 @@ public final class NavigationHelper {
 
             FXMLLoader loader = new FXMLLoader(
                     NavigationHelper.class.getResource(VIEWS_PATH + fxmlFileName)
-            
             );
             Parent root = loader.load();
             Scene scene = new Scene(root, width, height);
@@ -52,7 +53,44 @@ public final class NavigationHelper {
         }
     }
 
-    // Navegação a partir de um StackPane (para LoginMedicoController)
+    /**
+     * Navega para outra tela passando dados para o controller de destino.
+     * Os dados são armazenados no controller através de um mapa.
+     */
+    public static void goToWithData(Node fromNode, String fxmlFileName, String cssFileName, String key, Object value) {
+        try {
+            Stage stage = (Stage) fromNode.getScene().getWindow();
+            boolean keepFullScreen = stage.isFullScreen();
+            double width = stage.getScene() != null ? stage.getScene().getWidth() : stage.getWidth();
+            double height = stage.getScene() != null ? stage.getScene().getHeight() : stage.getHeight();
+
+            FXMLLoader loader = new FXMLLoader(
+                    NavigationHelper.class.getResource(VIEWS_PATH + fxmlFileName)
+            );
+            Parent root = loader.load();
+
+            // Obtém o controller e passa os dados
+            Object controller = loader.getController();
+            if (controller instanceof DadosRecebivel) {
+                ((DadosRecebivel) controller).receberDados(key, value);
+            }
+
+            Scene scene = new Scene(root, width, height);
+            scene.getStylesheets().add(
+                    NavigationHelper.class.getResource(CSS_BASE_PATH + cssFileName).toExternalForm()
+            );
+
+            stage.setScene(scene);
+            stage.setFullScreen(keepFullScreen);
+            stage.setFullScreenExitHint("");
+            stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Não foi possível abrir a tela solicitada.\n" + e.getMessage());
+        }
+    }
+
+    // Navegação a partir de um StackPane
     public static void goTo(StackPane rootPane, String fxmlFileName) {
         goTo(rootPane, fxmlFileName, "style.css");
     }

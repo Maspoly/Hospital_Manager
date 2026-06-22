@@ -41,7 +41,6 @@ public class MedicalRecordServiceProxy implements MedicalRecordServiceContract {
 
     @Override
     public MedicalRecord findByPatient(Patient patient) throws SQLException {
-        ensureDoctorAccess("access medical records");
         return medicalRecordService.findByPatient(patient);
     }
 

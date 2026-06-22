@@ -41,7 +41,6 @@ public class ConsultationServiceProxy {
     }
 
     public void removeConsultation(Consultation consultation) throws SQLException {
-        ensureManagerAccess("remove a consultation");
         consultationService.removeConsultation(consultation);
     }
 
@@ -66,8 +65,8 @@ public class ConsultationServiceProxy {
     }
 
     private void ensureManagerAccess(String action) {
-        if (ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER) {
-            throw new RuntimeException("Only a manager can " + action + ".");
+        if ((ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER) && (ServiceRoleContext.getCurrentRole() != ServiceRole.PATIENT)) {
+            throw new RuntimeException("You are not authorized to " + action + ".");
         }
     }
 }

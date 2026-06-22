@@ -9,6 +9,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
@@ -20,14 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-/**
- * Controller do Dashboard — Clínica Dr. Luiz
- *
- * Responsabilidades:
- *  - Inicializar os dados de resumo (médicos, pacientes, consultas).
- *  - Controlar a navegação entre as seções via sidebar.
- *  - Atualizar a saudação do usuário logado.
- */
 public class DashboardController implements Initializable {
 
     // ── Labels de boas-vindas ──────────────────────────────────
@@ -36,7 +29,7 @@ public class DashboardController implements Initializable {
     // ── Labels de métricas ────────────────────────────────────
     @FXML private Label lblTotalMedicos;
     @FXML private Label lblTotalPacientes;
-    @FXML private Label lblConsultasHoje;
+    @FXML private Label lblTotalGerentes;
     @FXML private Label lblConsultasPendentes;
 
     // ── Labels do usuário logado ──────────────────────────────
@@ -47,12 +40,14 @@ public class DashboardController implements Initializable {
     @FXML private Button btnDashboard;
     @FXML private Button btnMedicos;
     @FXML private Button btnPacientes;
+    @FXML private Button btnGerentes;
     @FXML private Button btnConsultas;
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
 
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final PatientServiceProxy patientService = new PatientServiceProxy();
+    private final ManagerServiceProxy managerService = new ManagerServiceProxy();
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
 
     // ─────────────────────────────────────────────────────────
@@ -67,7 +62,6 @@ public class DashboardController implements Initializable {
 
     /**
      * Preenche os dados do usuário logado na sidebar.
-     * Em produção, substitua pelos dados da sessão/autenticação.
      */
     private void carregarDadosUsuario() {
         Person usuario = ServiceRoleContext.getCurrentUser();
@@ -83,25 +77,33 @@ public class DashboardController implements Initializable {
 
     /**
      * Carrega as métricas do dashboard.
-     * Substitua pelas chamadas reais ao serviço/repositório.
      */
     private void carregarMetricas() {
-        int totalMedicos          = buscarTotalMedicos();
-        int totalPacientes        = buscarTotalPacientes();
-        int consultasHoje         = buscarConsultasHoje();
-        int consultasPendentes    = buscarConsultasPendentes();
+        int totalMedicos = buscarTotalMedicos();
+        int totalPacientes = buscarTotalPacientes();
+        int totalGerentes = buscarTotalGerentes();
+        int consultasPendentes = buscarConsultasPendentes();
 
-        lblTotalMedicos.setText(String.valueOf(totalMedicos));
-        lblTotalPacientes.setText(String.valueOf(totalPacientes));
-        lblConsultasHoje.setText(String.valueOf(consultasHoje));
-        lblConsultasPendentes.setText(String.valueOf(consultasPendentes));
+        // Verifica se os Labels não são null antes de setar texto
+        if (lblTotalMedicos != null) {
+            lblTotalMedicos.setText(String.valueOf(totalMedicos));
+        }
+        if (lblTotalPacientes != null) {
+            lblTotalPacientes.setText(String.valueOf(totalPacientes));
+        }
+        if (lblTotalGerentes != null) {
+            lblTotalGerentes.setText(String.valueOf(totalGerentes));
+        }
+        if (lblConsultasPendentes != null) {
+            lblConsultasPendentes.setText(String.valueOf(consultasPendentes));
+        }
     }
 
     private int buscarTotalMedicos() {
         try {
             return doctorService.listAll().size();
         } catch (SQLException exception) {
-            return 1;
+            return 0;
         }
     }
 
@@ -109,21 +111,15 @@ public class DashboardController implements Initializable {
         try {
             return patientService.listAll().size();
         } catch (SQLException exception) {
-            return 2;
+            return 0;
         }
     }
 
-    private int buscarConsultasHoje() {
+    private int buscarTotalGerentes() {
         try {
-            int total = 0;
-            for (Consultation consultation : consultationService.listAll()) {
-                if (consultation.getDateTime().toLocalDate().equals(LocalDate.now())) {
-                    total++;
-                }
-            }
-            return total;
+            return managerService.listAll().size();
         } catch (SQLException exception) {
-            return 0;
+            return 1; // Pelo menos o admin padrão
         }
     }
 
@@ -148,7 +144,6 @@ public class DashboardController implements Initializable {
     @FXML
     private void onDashboard() {
         setNavAtivo(btnDashboard);
-        // Já estamos no dashboard — nenhuma ação extra necessária
     }
 
     @FXML
@@ -161,6 +156,12 @@ public class DashboardController implements Initializable {
     private void onPacientes() {
         setNavAtivo(btnPacientes);
         navegarPara("/br/edu/ufersa/hospital_manager/views/pacientes.fxml");
+    }
+
+    @FXML
+    private void onGerentes() {
+        setNavAtivo(btnGerentes);
+        navegarPara("/br/edu/ufersa/hospital_manager/views/gerentes.fxml");
     }
 
     @FXML
@@ -185,39 +186,27 @@ public class DashboardController implements Initializable {
     // Utilitários de navegação
     // ─────────────────────────────────────────────────────────
 
-    /**
-     * Marca o botão selecionado como ativo e remove o estilo dos demais.
-     */
     private void setNavAtivo(Button botaoAtivo) {
         Button[] todos = {
             btnDashboard, btnMedicos, btnPacientes,
-            btnConsultas, btnBusca, btnRelatorios
+            btnGerentes, btnConsultas, btnBusca, btnRelatorios
         };
         for (Button btn : todos) {
-            btn.getStyleClass().remove("nav-btn-active");
+            if (btn != null) {
+                btn.getStyleClass().remove("nav-btn-active");
+            }
         }
-        if (!botaoAtivo.getStyleClass().contains("nav-btn-active")) {
+        if (botaoAtivo != null && !botaoAtivo.getStyleClass().contains("nav-btn-active")) {
             botaoAtivo.getStyleClass().add("nav-btn-active");
         }
     }
 
-    /**
-     * Carrega outro FXML na área central.
-     * Adapte conforme a arquitetura de navegação do seu projeto
-     * (ex.: injetar um controlador-raiz, usar um ScreenManager, etc.).
-     *
-     * @param fxmlPath caminho relativo ao classpath do arquivo FXML
-     */
     private void navegarPara(String fxmlPath) {
         try {
-            // Exemplo de navegação com troca de cena:
-            
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) btnDashboard.getScene().getWindow();
             stage.getScene().setRoot(root);
-
-            System.out.println("Navegando para: " + fxmlPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
