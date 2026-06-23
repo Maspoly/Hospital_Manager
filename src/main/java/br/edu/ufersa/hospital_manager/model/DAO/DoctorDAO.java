@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.util.Connector;
+import br.edu.ufersa.hospital_manager.util.PersonFactory;
 
 public class DoctorDAO implements BaseDAO<Doctor> {
 
@@ -75,7 +76,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
         while (rs.next()) {
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor = new Doctor(
+            Doctor doctor = PersonFactory.createDoctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,
@@ -119,7 +120,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor = new Doctor(
+            Doctor doctor = PersonFactory.createDoctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,
@@ -147,7 +148,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor = new Doctor(
+            Doctor doctor = PersonFactory.createDoctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,
@@ -175,7 +176,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor = new Doctor(
+            Doctor doctor = PersonFactory.createDoctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,
@@ -203,7 +204,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor =  new Doctor(
+            Doctor doctor =  PersonFactory.createDoctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,

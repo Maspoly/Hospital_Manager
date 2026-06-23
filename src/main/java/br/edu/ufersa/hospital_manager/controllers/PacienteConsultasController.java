@@ -1,9 +1,16 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import br.edu.ufersa.hospital_manager.model.entities.Consultation;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
+import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +21,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.input.MouseEvent;
-
-import br.edu.ufersa.hospital_manager.model.entities.*;
-import br.edu.ufersa.hospital_manager.model.services.*;
 
 public class PacienteConsultasController {
 
@@ -53,8 +57,8 @@ public class PacienteConsultasController {
 
     private Patient pacienteLogado;
 
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
 
     private final ObservableList<Consultation> consultasObservable = FXCollections.observableArrayList();
     private boolean usingDatabase = true;

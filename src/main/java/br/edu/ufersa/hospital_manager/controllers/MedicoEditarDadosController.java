@@ -11,15 +11,13 @@ import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import br.edu.ufersa.hospital_manager.util.PasswordUtils;
-import javafx.collections.FXCollections;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 public class MedicoEditarDadosController {
 
@@ -48,7 +46,7 @@ public class MedicoEditarDadosController {
     @FXML private Label lblErro;
 
     private Doctor medicoLogado;
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
 
     @FXML
     public void initialize() {

@@ -6,17 +6,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ufersa.hospital_manager.model.entities.Consultation;
+import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
+import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-
-import br.edu.ufersa.hospital_manager.model.entities.*;
-import br.edu.ufersa.hospital_manager.model.services.*;
-
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 public class PacienteDashboardController {
 
@@ -45,9 +51,9 @@ public class PacienteDashboardController {
 
     private Patient pacienteLogado;
 
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
-    private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
+    private final MedicalRecordServiceProxy medicalRecordService = (MedicalRecordServiceProxy) ProxyFactory.createProxy("MEDICAL_RECORD");
 
     @FXML
     public void initialize() {

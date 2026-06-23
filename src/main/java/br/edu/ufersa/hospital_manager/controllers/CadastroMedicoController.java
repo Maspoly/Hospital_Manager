@@ -8,6 +8,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.services.AddressServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -36,8 +37,8 @@ public class CadastroMedicoController {
     @FXML private Label lblUserName;
     @FXML private Label lblUserRole;
 
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
-    private final AddressServiceProxy addressService = new AddressServiceProxy();
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
+    private final AddressServiceProxy addressService = (AddressServiceProxy) ProxyFactory.createProxy("ADDRESS");
 
     // ── Inicialização ─────────────────────────────────────────────────────────
     @FXML

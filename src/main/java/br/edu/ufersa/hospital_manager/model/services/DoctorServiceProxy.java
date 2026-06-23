@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 
-public class DoctorServiceProxy implements DoctorServiceContract {
+public class DoctorServiceProxy implements DoctorServiceContract, IsServiceProxy {
     private final DoctorServiceContract doctorService;
 
-    public DoctorServiceProxy() {
-        this.doctorService = new DoctorService();
+    public DoctorServiceProxy(DoctorServiceContract doctorService) {
+        this.doctorService = doctorService;
     }
 
     @Override
@@ -57,6 +57,12 @@ public class DoctorServiceProxy implements DoctorServiceContract {
     private void ensureManagerAccess(String action) {
         if (ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER) {
             throw new RuntimeException("Only a manager can " + action + ".");
+        }
+    }
+
+    private void ensureDoctorAccess(String action) {
+        if (ServiceRoleContext.getCurrentRole() != ServiceRole.DOCTOR && ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER) {
+            throw new RuntimeException("You are not authorized to " + action + ".");
         }
     }
 }

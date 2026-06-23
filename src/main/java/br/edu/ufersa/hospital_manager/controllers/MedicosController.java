@@ -10,14 +10,13 @@ import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -27,12 +26,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MedicosController {
@@ -70,7 +68,7 @@ public class MedicosController {
     @FXML
     private TableColumn<Doctor, Void> colAcoes;
 
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
     private final ObservableList<Doctor> medicos = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
 

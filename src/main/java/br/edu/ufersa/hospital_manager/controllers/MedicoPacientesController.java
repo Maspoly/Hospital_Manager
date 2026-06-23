@@ -18,6 +18,7 @@ import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -35,8 +36,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -79,7 +80,7 @@ public class MedicoPacientesController {
 
     private final ObservableList<Patient> pacientesDisponiveis = FXCollections.observableArrayList();
     private final FilteredList<Patient> pacientesFiltrados = new FilteredList<>(pacientesDisponiveis, patient -> true);
-    private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
+    private final MedicalRecordServiceProxy medicalRecordService = (MedicalRecordServiceProxy) ProxyFactory.createProxy("MEDICAL_RECORD");
     private Patient pacienteSelecionado;
     private MedicalRecord recordAtual;
 
@@ -142,7 +143,7 @@ public class MedicoPacientesController {
         Map<Long, Patient> pacientesUnicos = new LinkedHashMap<>();
 
         try {
-            ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+            ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
             for (Consultation consultation : consultationService.findByDoctor(medico)) {
                 if (consultaAtiva(consultation) && consultation.getPatient() != null) {
                     pacientesUnicos.putIfAbsent(consultation.getPatient().getId(), consultation.getPatient());

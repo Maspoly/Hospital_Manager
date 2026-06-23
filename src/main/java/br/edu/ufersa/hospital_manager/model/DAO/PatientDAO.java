@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.util.Connector;
+import br.edu.ufersa.hospital_manager.util.PersonFactory;
 
 public class PatientDAO implements BaseDAO<Patient> {
 
@@ -35,13 +36,7 @@ public class PatientDAO implements BaseDAO<Patient> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    address,
-                    rs.getString("password"),
-                    true
-            );
+            Patient patient = PersonFactory.createPatient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             patient.setId(rs.getLong("id"));
             return patient;
@@ -112,7 +107,7 @@ public class PatientDAO implements BaseDAO<Patient> {
         while (rs.next()) {
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
+            Patient patient = PersonFactory.createPatient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             patient.setId(rs.getLong("id"));
             patients.add(patient);
@@ -132,7 +127,7 @@ public class PatientDAO implements BaseDAO<Patient> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
+            Patient patient = PersonFactory.createPatient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             patient.setId(rs.getLong("id"));
             return patient;
@@ -152,7 +147,7 @@ public class PatientDAO implements BaseDAO<Patient> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
+            Patient patient = PersonFactory.createPatient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
 
             patient.setId(rs.getLong("id"));
             return patient;

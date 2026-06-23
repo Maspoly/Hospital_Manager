@@ -17,6 +17,7 @@ import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,7 +33,6 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -83,10 +83,10 @@ public class ConsultasController {
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
 
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+
     private final ObservableList<Consultation> consultas = FXCollections.observableArrayList();
     private final ObservableList<Object> resultados = FXCollections.observableArrayList();
     private Object itemSelecionado;

@@ -7,6 +7,7 @@ import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import br.edu.ufersa.hospital_manager.util.PasswordUtils;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -29,7 +30,7 @@ public class LoginMedicoController {
     @FXML
     private Label lblVoltarGerente;
 
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
 
     @FXML
     public void onEntrarClick(ActionEvent event) {

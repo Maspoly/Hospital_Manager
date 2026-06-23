@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
-public class PatientServiceProxy {
+public class PatientServiceProxy implements IsServiceProxy {
     private final PatientService patientService;
 
-    public PatientServiceProxy() {
-        this.patientService = new PatientService();
+    public PatientServiceProxy(PatientService patientService) {
+        this.patientService = patientService;
     }
 
     public void registerPatient(Patient patient) throws SQLException {

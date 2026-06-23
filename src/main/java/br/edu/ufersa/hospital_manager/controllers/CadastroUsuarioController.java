@@ -8,6 +8,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.services.AddressServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -33,8 +34,8 @@ public class CadastroUsuarioController {
     @FXML private PasswordField fldConfirmarSenha;
     @FXML private Label lblErro;
 
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    private final AddressServiceProxy addressService = new AddressServiceProxy();
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+    private final AddressServiceProxy addressService = (AddressServiceProxy) ProxyFactory.createProxy("ADDRESS");
 
     // ── Inicialização ─────────────────────────────────────────────────────────
     @FXML

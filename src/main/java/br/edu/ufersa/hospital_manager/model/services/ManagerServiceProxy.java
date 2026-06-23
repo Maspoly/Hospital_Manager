@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 
-public class ManagerServiceProxy implements ManagerServiceContract {
+public class ManagerServiceProxy implements ManagerServiceContract, IsServiceProxy {
     private final ManagerServiceContract managerService;
 
-    public ManagerServiceProxy() {
-        this.managerService = new ManagerService();
+    public ManagerServiceProxy(ManagerServiceContract managerService) {
+        this.managerService = managerService;
     }
 
     @Override

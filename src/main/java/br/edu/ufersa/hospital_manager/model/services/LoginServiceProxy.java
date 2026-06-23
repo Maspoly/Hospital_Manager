@@ -5,11 +5,11 @@ import java.util.Map;
 
 import br.edu.ufersa.hospital_manager.model.entities.Person;
 
-public class LoginServiceProxy implements LoginServiceContract {
+public class LoginServiceProxy implements LoginServiceContract, IsServiceProxy {
     private final LoginServiceContract loginService;
 
-    public LoginServiceProxy() {
-        this.loginService = new LoginService();
+    public LoginServiceProxy(LoginServiceContract loginService) {
+        this.loginService = loginService;
     }
 
     @Override

@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.LoginServiceContract;
-import br.edu.ufersa.hospital_manager.model.services.LoginServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,7 +40,7 @@ public class LoginController {
     @FXML
     private PasswordField txtSenha;
 
-    private final LoginServiceContract loginService = new LoginServiceProxy();
+    private final LoginServiceContract loginService = (LoginServiceContract) ProxyFactory.createProxy("LOGIN");
 
     @FXML
     public void onEntrarClick() {

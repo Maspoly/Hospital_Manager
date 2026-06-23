@@ -11,10 +11,10 @@ import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import br.edu.ufersa.hospital_manager.util.PasswordUtils;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -43,7 +43,7 @@ public class PerfilGerenteController {
     @FXML private Label lblUserRole;
 
     private Manager gerenteLogado;
-    private final ManagerServiceProxy managerService = new ManagerServiceProxy();
+    private final ManagerServiceProxy managerService = (ManagerServiceProxy) ProxyFactory.createProxy("MANAGER");
 
     @FXML
     public void initialize() {

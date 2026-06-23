@@ -10,6 +10,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,7 +60,7 @@ public class GerentesController {
     @FXML
     private TableColumn<Manager, Void> colAcoes;
 
-    private final ManagerServiceProxy managerService = new ManagerServiceProxy();
+    private final ManagerServiceProxy managerService = (ManagerServiceProxy) ProxyFactory.createProxy("MANAGER");
     private final ObservableList<Manager> gerentes = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
 
