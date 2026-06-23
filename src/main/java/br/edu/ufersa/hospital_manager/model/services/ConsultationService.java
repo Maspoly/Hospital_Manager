@@ -50,6 +50,10 @@ public class ConsultationService {
             consultation.setStatus("SCHEDULED");
         }
 
+        if (consultationDAO.readByDoctorAndDateTime(consultation.getDoctor(), consultation.getDateTime()) != null) {
+            throw new RuntimeException("Doctor already has a consultation at this time.");
+        }
+
         consultationDAO.create(consultation);
     }
 
