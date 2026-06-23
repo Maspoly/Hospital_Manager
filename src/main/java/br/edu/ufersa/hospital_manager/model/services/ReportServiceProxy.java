@@ -8,11 +8,11 @@ import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Report;
 
-public class ReportServiceProxy {
+public class ReportServiceProxy implements IsServiceProxy {
     private final ReportService reportService;
 
-    public ReportServiceProxy() {
-        this.reportService = new ReportService();
+    public ReportServiceProxy(ReportService reportService) {
+        this.reportService = reportService;
     }
 
     public Report generateDoctorReport(Doctor doctor, LocalDateTime start, LocalDateTime end) throws SQLException {

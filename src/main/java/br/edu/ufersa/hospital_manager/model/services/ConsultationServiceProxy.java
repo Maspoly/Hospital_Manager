@@ -8,11 +8,11 @@ import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
-public class ConsultationServiceProxy {
+public class ConsultationServiceProxy implements IsServiceProxy {
     private final ConsultationService consultationService;
 
-    public ConsultationServiceProxy() {
-        this.consultationService = new ConsultationService();
+    public ConsultationServiceProxy(ConsultationService consultationService) {
+        this.consultationService = consultationService;
     }
 
     public void createConsultation(Consultation consultation) throws SQLException {

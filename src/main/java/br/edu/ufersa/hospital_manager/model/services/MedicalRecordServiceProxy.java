@@ -8,11 +8,11 @@ import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
-public class MedicalRecordServiceProxy implements MedicalRecordServiceContract {
+public class MedicalRecordServiceProxy implements MedicalRecordServiceContract, IsServiceProxy {
     private final MedicalRecordServiceContract medicalRecordService;
 
-    public MedicalRecordServiceProxy() {
-        this.medicalRecordService = new MedicalRecordService();
+    public MedicalRecordServiceProxy(MedicalRecordServiceContract medicalRecordService) {
+        this.medicalRecordService = medicalRecordService;
     }
 
     @Override

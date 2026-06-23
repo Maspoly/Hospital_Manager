@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 import br.edu.ufersa.hospital_manager.util.Connector;
+import br.edu.ufersa.hospital_manager.util.PersonFactory;
 
 public class ManagerDAO implements BaseDAO<Manager> {
 
@@ -72,13 +73,7 @@ public class ManagerDAO implements BaseDAO<Manager> {
         while (rs.next()) {
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    address,
-                    rs.getString("password"),
-                    true
-            );
+            Manager manager = PersonFactory.createManager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             manager.setId(rs.getLong("id"));
             managers.add(manager);
@@ -112,13 +107,7 @@ public class ManagerDAO implements BaseDAO<Manager> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    address,
-                    rs.getString("password"),
-                    true
-            );
+            Manager manager = PersonFactory.createManager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             manager.setId(rs.getLong("id"));
             return manager;
@@ -138,13 +127,7 @@ public class ManagerDAO implements BaseDAO<Manager> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    address,
-                    rs.getString("password"),
-                    true
-            );
+            Manager manager = PersonFactory.createManager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             manager.setId(rs.getLong("id"));
             return manager;
@@ -164,13 +147,7 @@ public class ManagerDAO implements BaseDAO<Manager> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Manager manager = new Manager(
-                    rs.getString("name"),
-                    rs.getString("cpf"),
-                    address,
-                    rs.getString("password"),
-                    true
-            );
+            Manager manager = PersonFactory.createManager(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
 
             manager.setId(rs.getLong("id"));
             return manager;

@@ -10,6 +10,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -29,7 +30,7 @@ public class MedicoConsultasController {
     @FXML private Label lblConsultasEncontradas;
     @FXML private VBox boxConsultas;
 
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
     private Doctor medicoLogado;
 
     @FXML

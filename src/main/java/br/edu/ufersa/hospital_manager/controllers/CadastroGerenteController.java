@@ -7,7 +7,7 @@ import java.util.List;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
-import br.edu.ufersa.hospital_manager.util.PasswordUtils;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -36,7 +36,7 @@ public class CadastroGerenteController {
     @FXML private Label lblUserName;
     @FXML private Label lblUserRole;
 
-    private final ManagerServiceProxy managerService = new ManagerServiceProxy();
+    private final ManagerServiceProxy managerService = (ManagerServiceProxy) ProxyFactory.createProxy("MANAGER");
 
     // ── Inicialização ─────────────────────────────────────────────────────────
     @FXML

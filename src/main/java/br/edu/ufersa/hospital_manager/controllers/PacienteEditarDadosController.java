@@ -4,6 +4,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ufersa.hospital_manager.model.entities.Address;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
+import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.PasswordUtils;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,10 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-
-import br.edu.ufersa.hospital_manager.model.entities.*;
-import br.edu.ufersa.hospital_manager.model.services.*;
-import br.edu.ufersa.hospital_manager.util.PasswordUtils;
 
 public class PacienteEditarDadosController {
 
@@ -64,7 +68,7 @@ public class PacienteEditarDadosController {
 
     private Patient pacienteLogado;
 
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
 
     @FXML
     public void initialize() {

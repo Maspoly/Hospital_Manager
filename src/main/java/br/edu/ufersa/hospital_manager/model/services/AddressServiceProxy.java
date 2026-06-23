@@ -4,11 +4,11 @@ import java.sql.SQLException;
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 
-public class AddressServiceProxy {
+public class AddressServiceProxy implements IsServiceProxy {
     private final AddressService addressService;
 
-    public AddressServiceProxy() {
-        this.addressService = new AddressService();
+    public AddressServiceProxy(AddressService addressService) {
+        this.addressService = addressService;
     }
 
     public void create(Address address) throws SQLException {

@@ -10,12 +10,13 @@ import br.edu.ufersa.hospital_manager.model.entities.Report;
 import br.edu.ufersa.hospital_manager.model.services.ReportServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 public class MedicoRelatoriosController {
 
@@ -39,7 +40,7 @@ public class MedicoRelatoriosController {
     @FXML private Label lblCrmMedico;
 
     private Doctor medicoLogado;
-    private final ReportServiceProxy reportService = new ReportServiceProxy();
+    private final ReportServiceProxy reportService = (ReportServiceProxy) ProxyFactory.createProxy("REPORT");
 
     @FXML
     public void initialize() {

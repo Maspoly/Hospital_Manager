@@ -17,6 +17,7 @@ import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -52,8 +53,8 @@ public class PacienteAgendarConsultaController {
     @FXML private Label lblNomePaciente;
     @FXML private Label lblCpfPaciente;
 
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
 
     private Patient pacienteLogado;
     private Doctor medicoSelecionado = null;

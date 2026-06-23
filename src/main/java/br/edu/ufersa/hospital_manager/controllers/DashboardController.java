@@ -2,13 +2,9 @@ package br.edu.ufersa.hospital_manager.controllers;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
-import br.edu.ufersa.hospital_manager.model.entities.Doctor;
-import br.edu.ufersa.hospital_manager.model.entities.Manager;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
@@ -16,6 +12,7 @@ import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -53,10 +50,10 @@ public class DashboardController implements Initializable {
     @FXML private Button btnRelatorios;
     @FXML private Button btnSair;
 
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    private final ManagerServiceProxy managerService = new ManagerServiceProxy();
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+    private final ManagerServiceProxy managerService = (ManagerServiceProxy) ProxyFactory.createProxy("MANAGER");
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
 
     // ─────────────────────────────────────────────────────────
     // Inicialização

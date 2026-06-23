@@ -1,8 +1,6 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

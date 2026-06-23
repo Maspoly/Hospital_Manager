@@ -10,6 +10,7 @@ import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -47,8 +48,8 @@ public class MedicoEditarPacientesController {
 
     private final List<Patient> pacientesMock = new ArrayList<>();
     private Patient pacienteSelecionado;
-    private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
+    private final MedicalRecordServiceProxy medicalRecordService = (MedicalRecordServiceProxy) ProxyFactory.createProxy("MEDICAL_RECORD");
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
 
     @FXML
     public void initialize() {

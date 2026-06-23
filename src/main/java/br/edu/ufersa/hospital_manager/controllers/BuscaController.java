@@ -17,6 +17,7 @@ import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -60,9 +61,9 @@ public class BuscaController {
     @FXML
     private Label lblVisualizarPerfil;
 
-    private final PatientServiceProxy patientService = new PatientServiceProxy();
-    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final PatientServiceProxy patientService = (PatientServiceProxy) ProxyFactory.createProxy("PATIENT");
+    private final DoctorServiceProxy doctorService = (DoctorServiceProxy) ProxyFactory.createProxy("DOCTOR");
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
 
     // Dados mock para simular a busca
     private final List<Patient> pacientesMock = new ArrayList<>();

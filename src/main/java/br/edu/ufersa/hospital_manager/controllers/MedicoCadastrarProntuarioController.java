@@ -1,11 +1,9 @@
 package br.edu.ufersa.hospital_manager.controllers;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -18,6 +16,7 @@ import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.util.ProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -30,8 +29,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 public class MedicoCadastrarProntuarioController implements DadosRecebivel {
 
@@ -63,8 +62,8 @@ public class MedicoCadastrarProntuarioController implements DadosRecebivel {
     @FXML
     private Label lblPacienteSelecionado;
 
-    private final MedicalRecordServiceProxy medicalRecordService = new MedicalRecordServiceProxy();
-    private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final MedicalRecordServiceProxy medicalRecordService = (MedicalRecordServiceProxy) ProxyFactory.createProxy("MEDICAL_RECORD");
+    private final ConsultationServiceProxy consultationService = (ConsultationServiceProxy) ProxyFactory.createProxy("CONSULTATION");
     private final ObservableList<Patient> pacientesDisponiveis = FXCollections.observableArrayList();
     private final FilteredList<Patient> pacientesFiltrados = new FilteredList<>(pacientesDisponiveis, patient -> true);
     private Doctor medicoLogado;
