@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
@@ -19,25 +19,33 @@ import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
+import javafx.scene.layout.VBox;
 
 public class PacienteAgendarConsultaController {
 
+    private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
+
     // ── Campos do formulário ──────────────────────────────────────────────────
-    @FXML private ComboBox<Doctor> cmbMedico;
-    @FXML private ComboBox<String> cmbEspecialidade;
+    @FXML private Label lblMedicoSelecionado;
     @FXML private DatePicker dateData;
     @FXML private ComboBox<String> cmbHora;
     @FXML private TextArea txtObservacoes;
     @FXML private Label lblErro;
+
+    // ── Componentes de busca ──────────────────────────────────────────────────
+    @FXML private TextField txtBuscarMedico;
+    @FXML private ListView<Doctor> lstMedicos;
 
     // ── Labels do perfil ─────────────────────────────────────────────────────
     @FXML private Label lblIniciais;
@@ -48,9 +56,11 @@ public class PacienteAgendarConsultaController {
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
 
     private Patient pacienteLogado;
+    private Doctor medicoSelecionado = null;
     
-    // Listas para controle da busca
-    private ObservableList<Doctor> allDoctors = FXCollections.observableArrayList();
+    // Listas de médicos
+    private final ObservableList<Doctor> medicosDisponiveis = FXCollections.observableArrayList();
+    private final FilteredList<Doctor> medicosFiltrados = new FilteredList<>(medicosDisponiveis, doctor -> true);
 
     // ── Inicialização ─────────────────────────────────────────────────────────
     @FXML
@@ -58,7 +68,8 @@ public class PacienteAgendarConsultaController {
         carregarDadosPaciente();
         carregarMedicos();
         carregarHorarios();
-        configurarBuscaMedicosEmTempoReal();
+        configurarListaMedicos();
+        configurarBuscaMedico();
         dateData.setValue(LocalDate.now().plusDays(1));
     }
 
@@ -81,81 +92,67 @@ public class PacienteAgendarConsultaController {
     private void carregarMedicos() {
         try {
             List<Doctor> medicos = doctorService.listAll();
-            allDoctors.setAll(medicos);
-            
-            // Inicialmente mostra todos os médicos
-            cmbMedico.setItems(allDoctors);
-
-            cmbMedico.setConverter(new StringConverter<>() {
-                @Override
-                public String toString(Doctor doctor) {
-                    return doctor == null ? "" : "Dr. " + doctor.getName() + " — " + doctor.getCouncilCode();
-                }
-                @Override
-                public Doctor fromString(String string) {
-                    return null;
-                }
-            });
-
-            cmbMedico.setPromptText("Digite para buscar médico...");
-
+            medicosDisponiveis.setAll(medicos);
+            lstMedicos.setItems(medicosFiltrados);
         } catch (SQLException e) {
             mostrarErro("Erro ao carregar médicos: " + e.getMessage());
         }
     }
 
-    // ── CONFIGURAÇÃO DA BUSCA EM TEMPO REAL ──────────────────────────────────
+    private void configurarListaMedicos() {
+        lstMedicos.setPlaceholder(new Label("Nenhum médico encontrado."));
+        lstMedicos.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Doctor doctor, boolean empty) {
+                super.updateItem(doctor, empty);
 
-    private void configurarBuscaMedicosEmTempoReal() {
-        cmbMedico.setEditable(true);
-        
-        TextField editor = cmbMedico.getEditor();
-        editor.textProperty().addListener((obs, oldVal, newVal) -> {
-            // Salva o valor selecionado atual
-            Doctor currentSelection = cmbMedico.getValue();
-            
-            // Aplica o filtro
-            aplicarFiltro(newVal);
-            
-            // Tenta restaurar a seleção se o item ainda estiver na lista
-            if (currentSelection != null && cmbMedico.getItems().contains(currentSelection)) {
-                cmbMedico.setValue(currentSelection);
-            } else if (cmbMedico.getItems().size() > 0) {
-                // Se o item selecionado não está mais na lista, limpa a seleção
-                cmbMedico.setValue(null);
+                if (empty || doctor == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                Label nome = new Label("Dr. " + doctor.getName());
+                nome.getStyleClass().add("paciente-patient-cell-name");
+
+                Label crm = new Label("CRM: " + doctor.getCouncilCode());
+                crm.getStyleClass().add("paciente-patient-cell-detail");
+
+                VBox conteudo = new VBox(2, nome, crm);
+                conteudo.getStyleClass().add("paciente-patient-cell");
+
+                setText(null);
+                setGraphic(conteudo);
             }
         });
-        
-        cmbMedico.setOnAction(event -> {
-            Doctor selected = cmbMedico.getValue();
-            if (selected != null) {
-                cmbMedico.getEditor().setText("Dr. " + selected.getName() + " — " + selected.getCouncilCode());
+
+        // Quando clicar em um médico, seleciona ele
+        lstMedicos.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                medicoSelecionado = newVal;
+                lblMedicoSelecionado.setText("Dr. " + newVal.getName() + " — " + newVal.getCouncilCode());
+                lblMedicoSelecionado.setStyle("-fx-text-fill: #1d4ed8; -fx-font-weight: bold;");
             }
         });
     }
 
-    private void aplicarFiltro(String termo) {
-        if (termo == null || termo.trim().isEmpty()) {
-            // Mostra todos os médicos
-            cmbMedico.setItems(allDoctors);
-            return;
-        }
-        
-        String searchTerm = termo.trim().toLowerCase();
-        
-        List<Doctor> filtered = allDoctors.stream()
-                .filter(d -> d.getName().toLowerCase().contains(searchTerm) ||
-                            d.getCouncilCode().toLowerCase().contains(searchTerm))
-                .collect(Collectors.toList());
-        
-        // Cria uma nova lista com os resultados filtrados
-        ObservableList<Doctor> filteredList = FXCollections.observableArrayList(filtered);
-        cmbMedico.setItems(filteredList);
-        
-        // Mostrar o dropdown automaticamente se houver resultados
-        if (!filtered.isEmpty()) {
-            cmbMedico.show();
-        }
+    private void configurarBuscaMedico() {
+        txtBuscarMedico.textProperty().addListener((obs, oldVal, newVal) -> {
+            String termo = newVal == null ? "" : newVal.trim().toLowerCase(Locale.ROOT);
+            
+            medicosFiltrados.setPredicate(doctor -> {
+                if (termo.isBlank()) {
+                    return true;
+                }
+                
+                boolean nomeOk = doctor.getName() != null && 
+                               doctor.getName().toLowerCase(Locale.ROOT).contains(termo);
+                boolean crmOk = doctor.getCouncilCode() != null && 
+                              doctor.getCouncilCode().toLowerCase(Locale.ROOT).contains(termo);
+                
+                return nomeOk || crmOk;
+            });
+        });
     }
 
     private void carregarHorarios() {
@@ -177,8 +174,7 @@ public class PacienteAgendarConsultaController {
         if (!validar()) return;
 
         try {
-            Doctor medicoSelecionado = cmbMedico.getValue();
-            LocalTime hora = LocalTime.parse(cmbHora.getValue(), DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime hora = LocalTime.parse(cmbHora.getValue(), FORMATO_HORA);
             LocalDateTime dataHora = LocalDateTime.of(dateData.getValue(), hora);
             
             Consultation consulta = new Consultation(
@@ -210,8 +206,8 @@ public class PacienteAgendarConsultaController {
     private boolean validar() {
         List<String> erros = new ArrayList<>();
 
-        if (cmbMedico.getValue() == null) {
-            erros.add("Selecione um médico.");
+        if (medicoSelecionado == null) {
+            erros.add("Selecione um médico na lista lateral.");
         }
         if (dateData.getValue() == null) {
             erros.add("Selecione a data da consulta.");

@@ -14,15 +14,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,7 +31,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class MedicosController {
@@ -82,9 +80,6 @@ public class MedicosController {
         configurarLinkPerfil();
     }
 
-    /**
-     * Preenche os dados do usuário logado na sidebar.
-     */
     private void carregarDadosUsuario() {
         Person usuario = ServiceRoleContext.getCurrentUser();
         ServiceRole role = ServiceRoleContext.getCurrentRole();
@@ -172,10 +167,14 @@ public class MedicosController {
         NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 
+    @FXML
+    public void onNovoMedico(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "CadastroMedico.fxml");
+    }
+
     // ===================== MÉTODOS INTERNOS =====================
 
     private void configurarColunas() {
-        // Coluna NOME: nome em destaque + endereço como subtítulo
         colNome.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(""));
         colNome.setCellFactory(col -> new TableCell<Doctor, String>() {
             @Override
@@ -269,6 +268,8 @@ public class MedicosController {
         return String.format("R$ %.2f", valor).replace(".", ",");
     }
 
+    // ===================== EDIÇÃO COMPLETA =====================
+
     private void onEditarMedico(Doctor doctor) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Médico");
@@ -278,46 +279,116 @@ public class MedicosController {
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         ((Button) pane.lookupButton(ButtonType.OK)).setText("Salvar alterações");
 
-        Address address = doctor.getAddress();
-        TextField nome = field(doctor.getName());
-        TextField cpf = field(doctor.getCPF());
-        TextField rua = field(address.getStreet());
-        TextField numero = field(address.getNumber());
-        TextField bairro = field(address.getNeighborhood());
-        TextField cidade = field(address.getCity());
-        TextField estado = field(address.getState());
-        TextField crm = field(doctor.getCouncilCode());
-        TextField valor = field(String.valueOf(doctor.getConsultationValue()));
+        // ===== DADOS PESSOAIS =====
+        TextField nome = new TextField(doctor.getName());
+        nome.setPromptText("Nome completo");
+        nome.getStyleClass().add("edit-dialog-field");
 
+        TextField cpf = new TextField(doctor.getCPF());
+        cpf.setPromptText("CPF (apenas números)");
+        cpf.getStyleClass().add("edit-dialog-field");
+
+        // ===== ENDEREÇO =====
+        Address address = doctor.getAddress();
+        TextField rua = new TextField(address.getStreet());
+        rua.setPromptText("Rua");
+        rua.getStyleClass().add("edit-dialog-field");
+
+        TextField numero = new TextField(address.getNumber());
+        numero.setPromptText("Número");
+        numero.getStyleClass().add("edit-dialog-field");
+
+        TextField bairro = new TextField(address.getNeighborhood());
+        bairro.setPromptText("Bairro");
+        bairro.getStyleClass().add("edit-dialog-field");
+
+        TextField cidade = new TextField(address.getCity());
+        cidade.setPromptText("Cidade");
+        cidade.getStyleClass().add("edit-dialog-field");
+
+        TextField estado = new TextField(address.getState());
+        estado.setPromptText("UF (ex: RN)");
+        estado.getStyleClass().add("edit-dialog-field");
+
+        // ===== DADOS PROFISSIONAIS =====
+        TextField crm = new TextField(doctor.getCouncilCode());
+        crm.setPromptText("CRM (apenas números)");
+        crm.getStyleClass().add("edit-dialog-field");
+
+        TextField valor = new TextField(String.valueOf(doctor.getConsultationValue()));
+        valor.setPromptText("Valor da consulta (ex: 150.00)");
+        valor.getStyleClass().add("edit-dialog-field");
+
+        // ===== SENHA =====
+        PasswordField novaSenha = new PasswordField();
+        novaSenha.setPromptText("Digite a nova senha (opcional)");
+        novaSenha.getStyleClass().add("edit-dialog-field");
+
+        PasswordField confirmarSenha = new PasswordField();
+        confirmarSenha.setPromptText("Confirme a nova senha");
+        confirmarSenha.getStyleClass().add("edit-dialog-field");
+
+        Label lblSenhaErro = new Label();
+        lblSenhaErro.setStyle("-fx-text-fill: #dc2626; -fx-font-size: 11px;");
+        lblSenhaErro.setVisible(false);
+        lblSenhaErro.setManaged(false);
+
+        // ===== GRIDS =====
         GridPane personalGrid = new GridPane();
         personalGrid.setHgap(12);
         personalGrid.setVgap(12);
-        personalGrid.addRow(0, label("Nome completo"), nome);
-        personalGrid.addRow(1, label("CPF"), cpf);
+        personalGrid.addRow(0, label("Nome completo *"), nome);
+        personalGrid.addRow(1, label("CPF *"), cpf);
+        GridPane.setColumnSpan(nome, 3);
+        GridPane.setColumnSpan(cpf, 3);
 
         GridPane addressGrid = new GridPane();
         addressGrid.setHgap(12);
         addressGrid.setVgap(12);
-        addressGrid.addRow(0, label("Rua"), rua, label("Número"), numero);
-        addressGrid.addRow(1, label("Bairro"), bairro, label("Cidade"), cidade);
-        addressGrid.addRow(2, label("Estado"), estado);
+        addressGrid.addRow(0, label("Rua *"), rua, label("Número *"), numero);
+        addressGrid.addRow(1, label("Bairro *"), bairro, label("Cidade *"), cidade);
+        addressGrid.addRow(2, label("Estado *"), estado);
+        GridPane.setColumnSpan(estado, 3);
 
         GridPane professionalGrid = new GridPane();
         professionalGrid.setHgap(12);
         professionalGrid.setVgap(12);
-        professionalGrid.addRow(0, label("CRM / Conselho"), crm);
-        professionalGrid.addRow(1, label("Valor da consulta (R$)"), valor);
+        professionalGrid.addRow(0, label("CRM / Conselho *"), crm);
+        professionalGrid.addRow(1, label("Valor da consulta (R$) *"), valor);
+        GridPane.setColumnSpan(crm, 3);
+        GridPane.setColumnSpan(valor, 3);
 
+        GridPane senhaGrid = new GridPane();
+        senhaGrid.setHgap(12);
+        senhaGrid.setVgap(8);
+        senhaGrid.addRow(0, label("Nova senha (opcional)"), novaSenha);
+        senhaGrid.addRow(1, label("Confirmar senha"), confirmarSenha);
+        senhaGrid.addRow(2, lblSenhaErro);
+        GridPane.setColumnSpan(novaSenha, 3);
+        GridPane.setColumnSpan(confirmarSenha, 3);
+        GridPane.setColumnSpan(lblSenhaErro, 3);
+
+        // ===== VALIDAÇÕES EM TEMPO REAL =====
+        novaSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        confirmarSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        // ===== LAYOUT =====
         VBox sections = new VBox(14,
                 section("Dados pessoais", personalGrid),
                 section("Endereço", addressGrid),
-                section("Dados profissionais", professionalGrid)
+                section("Dados profissionais", professionalGrid),
+                section("Alterar senha (opcional)", senhaGrid)
         );
         sections.setPadding(new Insets(2, 2, 0, 2));
 
         VBox header = new VBox(4,
                 dialogTitle("Editar Médico"),
-                dialogSubtitle("Mantenha apenas os dados realmente usados pelo sistema.")
+                dialogSubtitle("Preencha todos os campos obrigatórios (*) para atualizar os dados.")
         );
 
         VBox content = new VBox(18, header, sections, footer(pane));
@@ -331,21 +402,75 @@ public class MedicosController {
 
         pane.setContent(backdrop);
         pane.getStylesheets().add(getClass().getResource("/br/edu/ufersa/hospital_manager/css/style.css").toExternalForm());
+
         dialog.showAndWait().ifPresent(result -> {
             if (result != ButtonType.OK) {
                 return;
             }
 
             try {
+                // Validar campos obrigatórios
+                if (nome.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O nome completo é obrigatório.");
+                    return;
+                }
+                if (cpf.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O CPF é obrigatório.");
+                    return;
+                }
+                if (rua.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A rua é obrigatória.");
+                    return;
+                }
+                if (numero.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O número é obrigatório.");
+                    return;
+                }
+                if (bairro.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O bairro é obrigatório.");
+                    return;
+                }
+                if (cidade.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A cidade é obrigatória.");
+                    return;
+                }
+                if (estado.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O estado é obrigatório.");
+                    return;
+                }
+                if (crm.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O CRM é obrigatório.");
+                    return;
+                }
+                if (valor.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O valor da consulta é obrigatório.");
+                    return;
+                }
+
+                // Atualizar dados
                 doctor.setName(nome.getText().trim());
                 doctor.setCPF(cpf.getText().trim().replaceAll("[^0-9]", ""));
                 doctor.getAddress().setStreet(rua.getText().trim());
                 doctor.getAddress().setNumber(numero.getText().trim());
                 doctor.getAddress().setNeighborhood(bairro.getText().trim());
                 doctor.getAddress().setCity(cidade.getText().trim());
-                doctor.getAddress().setState(estado.getText().trim());
+                doctor.getAddress().setState(estado.getText().trim().toUpperCase());
                 doctor.setCouncilCode(crm.getText().trim().replaceAll("[^0-9]", ""));
                 doctor.setConsultationValue(Float.parseFloat(valor.getText().trim().replace(",", ".")));
+
+                // Verifica se a senha foi preenchida
+                String senha = novaSenha.getText().trim();
+                if (!senha.isEmpty()) {
+                    if (senha.length() < 6) {
+                        NavigationHelper.showError("A senha deve ter no mínimo 6 caracteres.");
+                        return;
+                    }
+                    if (!senha.equals(confirmarSenha.getText().trim())) {
+                        NavigationHelper.showError("As senhas não conferem.");
+                        return;
+                    }
+                    doctor.setPassword(senha);
+                }
 
                 if (usingDatabase) {
                     doctorService.updateDoctor(doctor);
@@ -353,10 +478,40 @@ public class MedicosController {
 
                 tableMedicos.refresh();
                 NavigationHelper.showInfo("Editar Médico", "Dados de \"" + doctor.getName() + "\" atualizados com sucesso.");
+            } catch (NumberFormatException e) {
+                NavigationHelper.showError("Valor da consulta inválido. Use formato: 150.00");
             } catch (RuntimeException | SQLException exception) {
                 NavigationHelper.showError(exception.getMessage());
             }
         });
+    }
+
+    private void validarSenha(PasswordField senha, PasswordField confirmar, Label lblErro) {
+        String s = senha.getText().trim();
+        String c = confirmar.getText().trim();
+
+        if (s.isEmpty() && c.isEmpty()) {
+            lblErro.setVisible(false);
+            lblErro.setManaged(false);
+            return;
+        }
+
+        if (s.length() < 6 && !s.isEmpty()) {
+            lblErro.setText("A senha deve ter no mínimo 6 caracteres.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        if (!s.equals(c) && !s.isEmpty()) {
+            lblErro.setText("As senhas não conferem.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        lblErro.setVisible(false);
+        lblErro.setManaged(false);
     }
 
     private void onExcluirMedico(Doctor doctor) {
@@ -378,11 +533,7 @@ public class MedicosController {
         }
     }
 
-    private TextField field(String value) {
-        TextField field = new TextField(value);
-        field.getStyleClass().add("edit-dialog-field");
-        return field;
-    }
+    // ===================== HELPERS DO DIÁLOGO =====================
 
     private Label label(String text) {
         Label label = new Label(text);
@@ -423,10 +574,5 @@ public class MedicosController {
         HBox footer = new HBox(10, cancelButton, saveButton);
         footer.getStyleClass().add("edit-dialog-footer");
         return new VBox(footer);
-    }
-
-    @FXML
-    public void onNovoMedico(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "CadastroMedico.fxml");
     }
 }

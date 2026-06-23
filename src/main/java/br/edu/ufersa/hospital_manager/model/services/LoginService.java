@@ -41,6 +41,12 @@ public class LoginService implements LoginServiceContract {
 
         LinkedHashMap<ServiceRole, Person> matchedUsers = new LinkedHashMap<>();
 
+        // Os DAOs do projeto retornam null quando o CPF não é encontrado naquela
+        // tabela (NÃO lançam SQLException). Por isso cada busca checa null
+        // explicitamente antes de acessar o objeto — assim a ausência em uma
+        // tabela não impede a checagem nas demais, e nenhuma delas quebra o método
+        // com NullPointerException.
+
         Manager manager = managerDAO.readByCPF(normalizedCpf);
         if (manager != null && PasswordUtils.matches(password, manager.getPasswordHash())) {
             matchedUsers.put(ServiceRole.MANAGER, manager);

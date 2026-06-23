@@ -49,7 +49,7 @@ public class ConsultationService {
         if (consultation.getStatus() == null || consultation.getStatus().isBlank()) {
             consultation.setStatus("SCHEDULED");
         }
-
+        
         if (consultationDAO.readByDoctorAndDateTime(consultation.getDoctor(), consultation.getDateTime()) != null) {
             throw new RuntimeException("Doctor already has a consultation at this time.");
         }

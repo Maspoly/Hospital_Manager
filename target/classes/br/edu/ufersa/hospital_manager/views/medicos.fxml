@@ -79,11 +79,11 @@
                         <javafx.scene.control.TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="colNome" text="NOME" prefWidth="220" />
-                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="150" />
-                        <TableColumn fx:id="colConselho" text="CÓDIGO CONSELHO" prefWidth="150" />
-                        <TableColumn fx:id="colValor" text="VALOR CONSULTA" prefWidth="150" />
-                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="120" />
+                        <TableColumn fx:id="colNome" text="NOME" prefWidth="180" />
+                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="130" />
+                        <TableColumn fx:id="colConselho" text="CÓDIGO CONSELHO" prefWidth="140" />
+                        <TableColumn fx:id="colValor" text="VALOR CONSULTA" prefWidth="120" />
+                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="160" />
                     </columns>
                     <placeholder>
                         <Label text="Nenhum médico cadastrado. Clique em &quot;+ Novo Médico&quot; para começar." />

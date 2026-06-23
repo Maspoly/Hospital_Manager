@@ -5,9 +5,11 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -59,10 +61,10 @@
 
     <!-- ===================== CONTENT ===================== -->
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true" 
-                    style="-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0;">
-            
-            <VBox spacing="22" styleClass="paciente-content-area">
+        <HBox styleClass="paciente-content-area" spacing="18">
+
+            <!-- Formulário principal -->
+            <VBox spacing="22" HBox.hgrow="ALWAYS">
 
                 <VBox spacing="4">
                     <Label text="Agendar Consulta" styleClass="paciente-page-title" />
@@ -77,18 +79,16 @@
                     <Label text="Dados da Consulta" styleClass="paciente-panel-title" />
                     <Separator style="-fx-padding: 10 0 18 0;" />
 
-                    <!-- Médico - COM BUSCA EM TEMPO REAL -->
+                    <!-- Médico selecionado -->
                     <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                        <Label text="Médico *" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="cmbMedico" promptText="Digite para buscar médico..." 
-                                  styleClass="paciente-combo-input" maxWidth="Infinity" editable="true" />
-                    </VBox>
-
-                    <!-- Especialidade -->
-                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                        <Label text="Especialidade" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="cmbEspecialidade" promptText="Selecione uma especialidade..." 
-                                  styleClass="paciente-combo-input" maxWidth="Infinity" />
+                        <Label text="Médico selecionado" styleClass="paciente-form-label" />
+                        <HBox styleClass="paciente-info-box" spacing="10" alignment="CENTER_LEFT">
+                            <padding>
+                                <Insets top="10" bottom="10" left="12" right="12" />
+                            </padding>
+                            <Label text="👨‍⚕️" styleClass="paciente-info-title" />
+                            <Label fx:id="lblMedicoSelecionado" text="Nenhum médico selecionado" styleClass="paciente-info-text" wrapText="true" />
+                        </HBox>
                     </VBox>
 
                     <!-- Data e Hora -->
@@ -132,6 +132,24 @@
                 </HBox>
 
             </VBox>
-        </ScrollPane>
+
+            <!-- Painel lateral com lista de médicos -->
+            <VBox styleClass="paciente-surface-card" spacing="14" prefWidth="320" maxWidth="320">
+                <padding>
+                    <Insets top="18" right="16" bottom="18" left="16" />
+                </padding>
+
+                <VBox spacing="4">
+                    <Label text="Médicos disponíveis" styleClass="paciente-panel-title" />
+                    <Label text="Clique em um médico para selecioná-lo" styleClass="paciente-empty-state-title" wrapText="true" />
+                </VBox>
+
+                <TextField fx:id="txtBuscarMedico" styleClass="paciente-search-input" 
+                           promptText="Buscar por nome ou CRM..." maxWidth="Infinity" />
+
+                <ListView fx:id="lstMedicos" styleClass="paciente-patient-list" VBox.vgrow="ALWAYS" prefHeight="420" />
+            </VBox>
+
+        </HBox>
     </center>
 </BorderPane>

@@ -3,7 +3,6 @@ package br.edu.ufersa.hospital_manager.controllers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
@@ -20,18 +19,20 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class PacientesController {
 
@@ -80,9 +81,6 @@ public class PacientesController {
         configurarLinkPerfil();
     }
 
-    /**
-     * Preenche os dados do usuário logado na sidebar.
-     */
     private void carregarDadosUsuario() {
         Person usuario = ServiceRoleContext.getCurrentUser();
         ServiceRole role = ServiceRoleContext.getCurrentRole();
@@ -105,9 +103,6 @@ public class PacientesController {
         }
     }
 
-    /**
-     * Navega para a tela de perfil do usuário logado
-     */
     @FXML
     private void onVisualizarPerfil(MouseEvent event) {
         Person usuario = ServiceRoleContext.getCurrentUser();
@@ -118,7 +113,6 @@ public class PacientesController {
             return;
         }
 
-        // Usa o próprio label como referência para navegação
         switch (role) {
             case MANAGER:
                 NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
@@ -136,7 +130,6 @@ public class PacientesController {
     }
 
     private void configurarColunas() {
-
         colNome.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getName())
         );
@@ -152,7 +145,6 @@ public class PacientesController {
             return new javafx.beans.property.SimpleStringProperty(texto);
         });
 
-        // Coluna de prontuários: link clicável "N prontuários"
         colProntuarios.setCellFactory(col -> new TableCell<Patient, Void>() {
             private final Label link = new Label();
 
@@ -217,13 +209,10 @@ public class PacientesController {
 
     private List<Patient> criarPacientesMock() {
         List<Patient> dados = new ArrayList<>();
-
         Address endereco1 = new Address("Rua das Flores", "50", "Centro", "Mossoró", "RN");
         dados.add(new Patient("Maria Santos", "11122233344", endereco1));
-
         Address endereco2 = new Address("Av. Central", "200", "Centro", "Mossoró", "RN");
         dados.add(new Patient("João Oliveira", "55566677788", endereco2));
-
         return dados;
     }
 
@@ -254,70 +243,222 @@ public class PacientesController {
         }
     }
 
+    // ===================== EDIÇÃO COMPLETA =====================
+
     private void onEditarPaciente(Patient patient) {
         if (patient == null) return;
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Paciente");
-        dialog.setHeaderText("Atualize os dados de " + patient.getName());
+        dialog.setHeaderText(null);
 
-        ButtonType salvar = new ButtonType("Salvar", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(salvar, ButtonType.CANCEL);
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        ((Button) pane.lookupButton(ButtonType.OK)).setText("Salvar alterações");
 
-        // Campos do formulário
-        TextField nomeField = new TextField(patient.getName());
-        nomeField.setPromptText("Nome completo");
+        // ===== DADOS PESSOAIS =====
+        TextField nome = new TextField(patient.getName());
+        nome.setPromptText("Nome completo");
+        nome.getStyleClass().add("edit-dialog-field");
 
-        TextField cpfField = new TextField(patient.getCPF());
-        cpfField.setPromptText("CPF");
-        cpfField.setEditable(false); // CPF não pode ser alterado
+        TextField cpf = new TextField(patient.getCPF());
+        cpf.setPromptText("CPF (apenas números)");
+        cpf.getStyleClass().add("edit-dialog-field");
 
-        // Layout do GridPane
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 20, 10, 20));
+        // ===== ENDEREÇO =====
+        Address address = patient.getAddress();
+        TextField rua = new TextField(address.getStreet());
+        rua.setPromptText("Rua");
+        rua.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("Nome:"), 0, 0);
-        grid.add(nomeField, 1, 0);
-        GridPane.setHgrow(nomeField, Priority.ALWAYS);
+        TextField numero = new TextField(address.getNumber());
+        numero.setPromptText("Número");
+        numero.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("CPF:"), 0, 1);
-        grid.add(cpfField, 1, 1);
-        GridPane.setHgrow(cpfField, Priority.ALWAYS);
+        TextField bairro = new TextField(address.getNeighborhood());
+        bairro.setPromptText("Bairro");
+        bairro.getStyleClass().add("edit-dialog-field");
 
-        dialog.getDialogPane().setContent(grid);
+        TextField cidade = new TextField(address.getCity());
+        cidade.setPromptText("Cidade");
+        cidade.getStyleClass().add("edit-dialog-field");
 
-        // Estilizar botões
-        Button btnOk = (Button) dialog.getDialogPane().lookupButton(salvar);
-        btnOk.getStyleClass().add("btn-accent");
-        
-        Button btnCancel = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
-        btnCancel.getStyleClass().add("btn-ghost");
+        TextField estado = new TextField(address.getState());
+        estado.setPromptText("UF (ex: RN)");
+        estado.getStyleClass().add("edit-dialog-field");
 
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isEmpty() || result.get() != salvar) {
-            return;
-        }
+        // ===== SENHA =====
+        PasswordField novaSenha = new PasswordField();
+        novaSenha.setPromptText("Digite a nova senha (opcional)");
+        novaSenha.getStyleClass().add("edit-dialog-field");
 
-        try {
-            String novoNome = nomeField.getText().trim();
-            if (novoNome.isEmpty()) {
-                NavigationHelper.showError("O nome não pode estar vazio.");
+        PasswordField confirmarSenha = new PasswordField();
+        confirmarSenha.setPromptText("Confirme a nova senha");
+        confirmarSenha.getStyleClass().add("edit-dialog-field");
+
+        Label lblSenhaErro = new Label();
+        lblSenhaErro.setStyle("-fx-text-fill: #dc2626; -fx-font-size: 11px;");
+        lblSenhaErro.setVisible(false);
+        lblSenhaErro.setManaged(false);
+
+        // ===== GRIDS =====
+        GridPane personalGrid = new GridPane();
+        personalGrid.setHgap(12);
+        personalGrid.setVgap(12);
+        personalGrid.addRow(0, label("Nome completo *"), nome);
+        personalGrid.addRow(1, label("CPF *"), cpf);
+        GridPane.setColumnSpan(nome, 3);
+        GridPane.setColumnSpan(cpf, 3);
+
+        GridPane addressGrid = new GridPane();
+        addressGrid.setHgap(12);
+        addressGrid.setVgap(12);
+        addressGrid.addRow(0, label("Rua *"), rua, label("Número *"), numero);
+        addressGrid.addRow(1, label("Bairro *"), bairro, label("Cidade *"), cidade);
+        addressGrid.addRow(2, label("Estado *"), estado);
+        GridPane.setColumnSpan(estado, 3);
+
+        GridPane senhaGrid = new GridPane();
+        senhaGrid.setHgap(12);
+        senhaGrid.setVgap(8);
+        senhaGrid.addRow(0, label("Nova senha (opcional)"), novaSenha);
+        senhaGrid.addRow(1, label("Confirmar senha"), confirmarSenha);
+        senhaGrid.addRow(2, lblSenhaErro);
+        GridPane.setColumnSpan(novaSenha, 3);
+        GridPane.setColumnSpan(confirmarSenha, 3);
+        GridPane.setColumnSpan(lblSenhaErro, 3);
+
+        // ===== VALIDAÇÕES EM TEMPO REAL =====
+        novaSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        confirmarSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        // ===== LAYOUT =====
+        VBox sections = new VBox(14,
+                section("Dados pessoais", personalGrid),
+                section("Endereço", addressGrid),
+                section("Alterar senha (opcional)", senhaGrid)
+        );
+        sections.setPadding(new Insets(2, 2, 0, 2));
+
+        VBox header = new VBox(4,
+                dialogTitle("Editar Paciente"),
+                dialogSubtitle("Preencha todos os campos obrigatórios (*) para atualizar os dados.")
+        );
+
+        VBox content = new VBox(18, header, sections, footer(pane));
+        content.setPadding(new Insets(24));
+        content.setPrefWidth(720);
+        content.getStyleClass().add("edit-dialog-card");
+
+        StackPane backdrop = new StackPane(content);
+        backdrop.setPadding(new Insets(22));
+        backdrop.getStyleClass().add("edit-dialog-backdrop");
+
+        pane.setContent(backdrop);
+        pane.getStylesheets().add(getClass().getResource("/br/edu/ufersa/hospital_manager/css/style.css").toExternalForm());
+
+        dialog.showAndWait().ifPresent(result -> {
+            if (result != ButtonType.OK) {
                 return;
             }
 
-            patient.setName(novoNome);
+            try {
+                // Validar campos obrigatórios
+                if (nome.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O nome completo é obrigatório.");
+                    return;
+                }
+                if (cpf.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O CPF é obrigatório.");
+                    return;
+                }
+                if (rua.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A rua é obrigatória.");
+                    return;
+                }
+                if (numero.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O número é obrigatório.");
+                    return;
+                }
+                if (bairro.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O bairro é obrigatório.");
+                    return;
+                }
+                if (cidade.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A cidade é obrigatória.");
+                    return;
+                }
+                if (estado.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O estado é obrigatório.");
+                    return;
+                }
 
-            if (usingDatabase) {
-                patientService.updatePatient(patient);
+                // Atualizar dados
+                patient.setName(nome.getText().trim());
+                patient.setCPF(cpf.getText().trim().replaceAll("[^0-9]", ""));
+                patient.getAddress().setStreet(rua.getText().trim());
+                patient.getAddress().setNumber(numero.getText().trim());
+                patient.getAddress().setNeighborhood(bairro.getText().trim());
+                patient.getAddress().setCity(cidade.getText().trim());
+                patient.getAddress().setState(estado.getText().trim().toUpperCase());
+
+                // Verifica se a senha foi preenchida
+                String senha = novaSenha.getText().trim();
+                if (!senha.isEmpty()) {
+                    if (senha.length() < 6) {
+                        NavigationHelper.showError("A senha deve ter no mínimo 6 caracteres.");
+                        return;
+                    }
+                    if (!senha.equals(confirmarSenha.getText().trim())) {
+                        NavigationHelper.showError("As senhas não conferem.");
+                        return;
+                    }
+                    patient.setPassword(senha);
+                }
+
+                if (usingDatabase) {
+                    patientService.updatePatient(patient);
+                }
+
+                tablePacientes.refresh();
+                NavigationHelper.showInfo("Editar Paciente", "Dados de \"" + patient.getName() + "\" atualizados com sucesso.");
+            } catch (RuntimeException | SQLException exception) {
+                NavigationHelper.showError(exception.getMessage());
             }
+        });
+    }
 
-            tablePacientes.refresh();
-            NavigationHelper.showInfo("Editar Paciente", "Dados de \"" + patient.getName() + "\" atualizados com sucesso.");
-        } catch (RuntimeException | SQLException exception) {
-            NavigationHelper.showError(exception.getMessage());
+    private void validarSenha(PasswordField senha, PasswordField confirmar, Label lblErro) {
+        String s = senha.getText().trim();
+        String c = confirmar.getText().trim();
+
+        if (s.isEmpty() && c.isEmpty()) {
+            lblErro.setVisible(false);
+            lblErro.setManaged(false);
+            return;
         }
+
+        if (s.length() < 6 && !s.isEmpty()) {
+            lblErro.setText("A senha deve ter no mínimo 6 caracteres.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        if (!s.equals(c) && !s.isEmpty()) {
+            lblErro.setText("As senhas não conferem.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        lblErro.setVisible(false);
+        lblErro.setManaged(false);
     }
 
     private void onExcluirPaciente(Patient patient) {
@@ -337,6 +478,49 @@ public class PacientesController {
                 NavigationHelper.showError("Erro ao excluir paciente: " + exception.getMessage());
             }
         }
+    }
+
+    // ===================== HELPERS DO DIÁLOGO =====================
+
+    private Label label(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-field-label");
+        return label;
+    }
+
+    private Label dialogTitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-title");
+        return label;
+    }
+
+    private Label dialogSubtitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-subtitle");
+        return label;
+    }
+
+    private VBox section(String title, GridPane grid) {
+        VBox box = new VBox(12, sectionTitle(title), grid);
+        box.getStyleClass().add("edit-dialog-section");
+        return box;
+    }
+
+    private Label sectionTitle(String title) {
+        Label label = new Label(title);
+        label.getStyleClass().add("edit-dialog-section-title");
+        return label;
+    }
+
+    private VBox footer(DialogPane pane) {
+        Button saveButton = (Button) pane.lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) pane.lookupButton(ButtonType.CANCEL);
+        saveButton.getStyleClass().add("btn-accent");
+        cancelButton.getStyleClass().add("btn-ghost");
+
+        HBox footer = new HBox(10, cancelButton, saveButton);
+        footer.getStyleClass().add("edit-dialog-footer");
+        return new VBox(footer);
     }
 
     @FXML

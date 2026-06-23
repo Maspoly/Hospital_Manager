@@ -40,7 +40,7 @@
                 <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
-             <!-- Rodapé com perfil -->
+            <!-- Rodapé com perfil -->
             <VBox styleClass="sidebar-footer">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="👤" styleClass="stat-icon-glyph"/>
@@ -51,7 +51,7 @@
                     </VBox>
                 </HBox>
                 <!-- Link para visualizar perfil -->
-                <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil"
                        styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
             </VBox>
             <VBox styleClass="medico-logout-box">
@@ -79,11 +79,11 @@
                         <javafx.scene.control.TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="colNome" text="NOME" prefWidth="180" />
-                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="140" />
-                        <TableColumn fx:id="colEndereco" text="ENDEREÇO" prefWidth="220" />
-                        <TableColumn fx:id="colProntuarios" text="PRONTUÁRIOS" prefWidth="120" />
-                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="100" />
+                        <TableColumn fx:id="colNome" text="NOME" prefWidth="160" />
+                        <TableColumn fx:id="colCpf" text="CPF" prefWidth="130" />
+                        <TableColumn fx:id="colEndereco" text="ENDEREÇO" prefWidth="200" />
+                        <TableColumn fx:id="colProntuarios" text="PRONTUÁRIOS" prefWidth="100" />
+                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="200" />
                     </columns>
                     <placeholder>
                         <Label text="Nenhum paciente cadastrado. Clique em &quot;+ Novo Paciente&quot; para começar." />

@@ -19,7 +19,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +29,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class GerentesController {
 
@@ -71,9 +75,6 @@ public class GerentesController {
         carregarDados();
     }
 
-    /**
-     * Preenche os dados do usuário logado na sidebar.
-     */
     private void carregarDadosUsuario() {
         Person usuario = ServiceRoleContext.getCurrentUser();
         ServiceRole role = ServiceRoleContext.getCurrentRole();
@@ -220,10 +221,8 @@ public class GerentesController {
 
     private List<Manager> carregarDadosMock() {
         List<Manager> dados = new ArrayList<>();
-
         Address endereco1 = new Address("Av. Principal", "100", "Centro", "Mossoró", "RN");
         dados.add(new Manager("Administrador", "00000000000", endereco1));
-
         return dados;
     }
 
@@ -235,50 +234,122 @@ public class GerentesController {
                 + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
     }
 
+    // ===================== EDIÇÃO COMPLETA =====================
+
     private void onEditarGerente(Manager manager) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Gerente");
-        dialog.setHeaderText("Atualize os dados de " + manager.getName());
+        dialog.setHeaderText(null);
 
-        ButtonType salvar = new ButtonType("Salvar", ButtonType.OK.getButtonData());
-        dialog.getDialogPane().getButtonTypes().addAll(salvar, ButtonType.CANCEL);
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        ((Button) pane.lookupButton(ButtonType.OK)).setText("Salvar alterações");
 
-        TextField nomeField = new TextField(manager.getName());
-        TextField cpfField = new TextField(manager.getCPF());
+        // ===== DADOS PESSOAIS =====
+        TextField nome = new TextField(manager.getName());
+        nome.setPromptText("Nome completo");
+        nome.getStyleClass().add("edit-dialog-field");
 
+        TextField cpf = new TextField(manager.getCPF());
+        cpf.setPromptText("CPF (apenas números)");
+        cpf.getStyleClass().add("edit-dialog-field");
+
+        // ===== ENDEREÇO =====
         Address address = manager.getAddress();
-        TextField ruaField = new TextField(address.getStreet() != null ? address.getStreet() : "");
-        TextField numeroField = new TextField(address.getNumber() != null ? address.getNumber() : "");
-        TextField bairroField = new TextField(address.getNeighborhood() != null ? address.getNeighborhood() : "");
-        TextField cidadeField = new TextField(address.getCity() != null ? address.getCity() : "");
-        TextField estadoField = new TextField(address.getState() != null ? address.getState() : "");
+        TextField rua = new TextField(address.getStreet());
+        rua.setPromptText("Rua");
+        rua.getStyleClass().add("edit-dialog-field");
 
-        GridPane grid = new GridPane();
-        grid.setHgap(12);
-        grid.setVgap(12);
-        grid.setPadding(new Insets(16, 24, 8, 24));
+        TextField numero = new TextField(address.getNumber());
+        numero.setPromptText("Número");
+        numero.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("Nome:"), 0, 0);
-        grid.add(nomeField, 1, 0);
-        GridPane.setColumnSpan(nomeField, 3);
+        TextField bairro = new TextField(address.getNeighborhood());
+        bairro.setPromptText("Bairro");
+        bairro.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("CPF:"), 0, 1);
-        grid.add(cpfField, 1, 1);
+        TextField cidade = new TextField(address.getCity());
+        cidade.setPromptText("Cidade");
+        cidade.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("Rua:"), 0, 2);
-        grid.add(ruaField, 1, 2);
-        grid.add(new Label("Número:"), 2, 2);
-        grid.add(numeroField, 3, 2);
+        TextField estado = new TextField(address.getState());
+        estado.setPromptText("UF (ex: RN)");
+        estado.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("Bairro:"), 0, 3);
-        grid.add(bairroField, 1, 3);
-        grid.add(new Label("Cidade:"), 2, 3);
-        grid.add(cidadeField, 3, 3);
+        // ===== SENHA =====
+        PasswordField novaSenha = new PasswordField();
+        novaSenha.setPromptText("Digite a nova senha (opcional)");
+        novaSenha.getStyleClass().add("edit-dialog-field");
 
-        grid.add(new Label("Estado:"), 0, 4);
-        grid.add(estadoField, 1, 4);
+        PasswordField confirmarSenha = new PasswordField();
+        confirmarSenha.setPromptText("Confirme a nova senha");
+        confirmarSenha.getStyleClass().add("edit-dialog-field");
 
-        dialog.getDialogPane().setContent(grid);
+        Label lblSenhaErro = new Label();
+        lblSenhaErro.setStyle("-fx-text-fill: #dc2626; -fx-font-size: 11px;");
+        lblSenhaErro.setVisible(false);
+        lblSenhaErro.setManaged(false);
+
+        // ===== GRIDS =====
+        GridPane personalGrid = new GridPane();
+        personalGrid.setHgap(12);
+        personalGrid.setVgap(12);
+        personalGrid.addRow(0, label("Nome completo *"), nome);
+        personalGrid.addRow(1, label("CPF *"), cpf);
+        GridPane.setColumnSpan(nome, 3);
+        GridPane.setColumnSpan(cpf, 3);
+
+        GridPane addressGrid = new GridPane();
+        addressGrid.setHgap(12);
+        addressGrid.setVgap(12);
+        addressGrid.addRow(0, label("Rua *"), rua, label("Número *"), numero);
+        addressGrid.addRow(1, label("Bairro *"), bairro, label("Cidade *"), cidade);
+        addressGrid.addRow(2, label("Estado *"), estado);
+        GridPane.setColumnSpan(estado, 3);
+
+        GridPane senhaGrid = new GridPane();
+        senhaGrid.setHgap(12);
+        senhaGrid.setVgap(8);
+        senhaGrid.addRow(0, label("Nova senha (opcional)"), novaSenha);
+        senhaGrid.addRow(1, label("Confirmar senha"), confirmarSenha);
+        senhaGrid.addRow(2, lblSenhaErro);
+        GridPane.setColumnSpan(novaSenha, 3);
+        GridPane.setColumnSpan(confirmarSenha, 3);
+        GridPane.setColumnSpan(lblSenhaErro, 3);
+
+        // ===== VALIDAÇÕES EM TEMPO REAL =====
+        novaSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        confirmarSenha.textProperty().addListener((obs, oldVal, newVal) -> {
+            validarSenha(novaSenha, confirmarSenha, lblSenhaErro);
+        });
+
+        // ===== LAYOUT =====
+        VBox sections = new VBox(14,
+                section("Dados pessoais", personalGrid),
+                section("Endereço", addressGrid),
+                section("Alterar senha (opcional)", senhaGrid)
+        );
+        sections.setPadding(new Insets(2, 2, 0, 2));
+
+        VBox header = new VBox(4,
+                dialogTitle("Editar Gerente"),
+                dialogSubtitle("Preencha todos os campos obrigatórios (*) para atualizar os dados.")
+        );
+
+        VBox content = new VBox(18, header, sections, footer(pane));
+        content.setPadding(new Insets(24));
+        content.setPrefWidth(720);
+        content.getStyleClass().add("edit-dialog-card");
+
+        StackPane backdrop = new StackPane(content);
+        backdrop.setPadding(new Insets(22));
+        backdrop.getStyleClass().add("edit-dialog-backdrop");
+
+        pane.setContent(backdrop);
+        pane.getStylesheets().add(getClass().getResource("/br/edu/ufersa/hospital_manager/css/style.css").toExternalForm());
 
         dialog.showAndWait().ifPresent(result -> {
             if (result != ButtonType.OK) {
@@ -286,14 +357,58 @@ public class GerentesController {
             }
 
             try {
-                manager.setName(nomeField.getText().trim());
-                manager.setCPF(cpfField.getText().trim().replaceAll("[^0-9]", ""));
+                // Validar campos obrigatórios
+                if (nome.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O nome completo é obrigatório.");
+                    return;
+                }
+                if (cpf.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O CPF é obrigatório.");
+                    return;
+                }
+                if (rua.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A rua é obrigatória.");
+                    return;
+                }
+                if (numero.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O número é obrigatório.");
+                    return;
+                }
+                if (bairro.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O bairro é obrigatório.");
+                    return;
+                }
+                if (cidade.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("A cidade é obrigatória.");
+                    return;
+                }
+                if (estado.getText().trim().isEmpty()) {
+                    NavigationHelper.showError("O estado é obrigatório.");
+                    return;
+                }
 
-                manager.getAddress().setStreet(ruaField.getText().trim());
-                manager.getAddress().setNumber(numeroField.getText().trim());
-                manager.getAddress().setNeighborhood(bairroField.getText().trim());
-                manager.getAddress().setCity(cidadeField.getText().trim());
-                manager.getAddress().setState(estadoField.getText().trim());
+                // Atualizar dados
+                manager.setName(nome.getText().trim());
+                manager.setCPF(cpf.getText().trim().replaceAll("[^0-9]", ""));
+                manager.getAddress().setStreet(rua.getText().trim());
+                manager.getAddress().setNumber(numero.getText().trim());
+                manager.getAddress().setNeighborhood(bairro.getText().trim());
+                manager.getAddress().setCity(cidade.getText().trim());
+                manager.getAddress().setState(estado.getText().trim().toUpperCase());
+
+                // Verifica se a senha foi preenchida
+                String senha = novaSenha.getText().trim();
+                if (!senha.isEmpty()) {
+                    if (senha.length() < 6) {
+                        NavigationHelper.showError("A senha deve ter no mínimo 6 caracteres.");
+                        return;
+                    }
+                    if (!senha.equals(confirmarSenha.getText().trim())) {
+                        NavigationHelper.showError("As senhas não conferem.");
+                        return;
+                    }
+                    manager.setPassword(senha);
+                }
 
                 if (usingDatabase) {
                     managerService.updateManager(manager);
@@ -305,6 +420,34 @@ public class GerentesController {
                 NavigationHelper.showError(exception.getMessage());
             }
         });
+    }
+
+    private void validarSenha(PasswordField senha, PasswordField confirmar, Label lblErro) {
+        String s = senha.getText().trim();
+        String c = confirmar.getText().trim();
+
+        if (s.isEmpty() && c.isEmpty()) {
+            lblErro.setVisible(false);
+            lblErro.setManaged(false);
+            return;
+        }
+
+        if (s.length() < 6 && !s.isEmpty()) {
+            lblErro.setText("A senha deve ter no mínimo 6 caracteres.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        if (!s.equals(c) && !s.isEmpty()) {
+            lblErro.setText("As senhas não conferem.");
+            lblErro.setVisible(true);
+            lblErro.setManaged(true);
+            return;
+        }
+
+        lblErro.setVisible(false);
+        lblErro.setManaged(false);
     }
 
     private void onExcluirGerente(Manager manager) {
@@ -325,5 +468,48 @@ public class GerentesController {
                 NavigationHelper.showError("Erro ao excluir gerente: " + exception.getMessage());
             }
         }
+    }
+
+    // ===================== HELPERS DO DIÁLOGO =====================
+
+    private Label label(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-field-label");
+        return label;
+    }
+
+    private Label dialogTitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-title");
+        return label;
+    }
+
+    private Label dialogSubtitle(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("edit-dialog-subtitle");
+        return label;
+    }
+
+    private VBox section(String title, GridPane grid) {
+        VBox box = new VBox(12, sectionTitle(title), grid);
+        box.getStyleClass().add("edit-dialog-section");
+        return box;
+    }
+
+    private Label sectionTitle(String title) {
+        Label label = new Label(title);
+        label.getStyleClass().add("edit-dialog-section-title");
+        return label;
+    }
+
+    private VBox footer(DialogPane pane) {
+        Button saveButton = (Button) pane.lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) pane.lookupButton(ButtonType.CANCEL);
+        saveButton.getStyleClass().add("btn-accent");
+        cancelButton.getStyleClass().add("btn-ghost");
+
+        HBox footer = new HBox(10, cancelButton, saveButton);
+        footer.getStyleClass().add("edit-dialog-footer");
+        return new VBox(footer);
     }
 }
