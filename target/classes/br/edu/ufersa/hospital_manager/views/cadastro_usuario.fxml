@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0"
+           styleClass="root-background"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="br.edu.ufersa.hospital_manager.controllers.CadastroUsuarioController"
+           stylesheets="@../css/style.css">
+
+    <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background: transparent; -fx-background-color: transparent;" 
+                hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+        <content>
+            <VBox alignment="CENTER" spacing="22.0" style="-fx-padding: 30 20 30 20;">
+
+                <!-- ===== Cabeçalho ===== -->
+                <VBox alignment="CENTER" spacing="8.0">
+                    <StackPane>
+                        <Circle radius="30.0" styleClass="login-logo-circle" />
+                        <Label text="⚕" styleClass="login-logo-icon" />
+                    </StackPane>
+                    <Label text="Clínica Dr. Luiz" styleClass="login-title">
+                        <font>
+                            <Font name="System Bold" size="21.0" />
+                        </font>
+                    </Label>
+                    <Label text="Cadastro de Novo Paciente" styleClass="login-subtitle" />
+                </VBox>
+
+                <!-- ===== Cartão de cadastro ===== -->
+                <VBox maxWidth="420.0" spacing="16.0" styleClass="login-card">
+                    <padding>
+                        <Insets bottom="28.0" left="28.0" right="28.0" top="26.0" />
+                    </padding>
+
+                    <Label text="Preencha seus dados" styleClass="login-card-title" />
+
+                    <!-- Nome -->
+                    <VBox spacing="6.0">
+                        <Label text="Nome completo *" styleClass="field-label" />
+                        <TextField fx:id="fldNome" promptText="Digite seu nome completo" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- CPF -->
+                    <VBox spacing="6.0">
+                        <Label text="CPF *" styleClass="field-label" />
+                        <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="login-card-title" style="-fx-font-size: 14px; -fx-padding: 4 0 0 0;" />
+
+                    <!-- Rua -->
+                    <VBox spacing="6.0">
+                        <Label text="Rua *" styleClass="field-label" />
+                        <TextField fx:id="fldRua" promptText="Digite o nome da rua" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Número e Bairro -->
+                    <HBox spacing="12.0">
+                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                            <Label text="Número *" styleClass="field-label" />
+                            <TextField fx:id="fldNumero" promptText="Número" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="field-label" />
+                            <TextField fx:id="fldBairro" promptText="Bairro" styleClass="text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Cidade e Estado -->
+                    <HBox spacing="12.0">
+                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="field-label" />
+                            <TextField fx:id="fldCidade" promptText="Cidade" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                            <Label text="Estado *" styleClass="field-label" />
+                            <TextField fx:id="fldEstado" promptText="UF" styleClass="text-input" maxWidth="60.0" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Senha -->
+                    <VBox spacing="6.0">
+                        <Label text="Senha *" styleClass="field-label" />
+                        <PasswordField fx:id="fldSenha" promptText="Digite sua senha (mínimo 6 caracteres)" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Confirmar Senha -->
+                    <VBox spacing="6.0">
+                        <Label text="Confirmar Senha *" styleClass="field-label" />
+                        <PasswordField fx:id="fldConfirmarSenha" promptText="Confirme sua senha" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Label de erro -->
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-wrap-text: true;"
+                           visible="false" managed="false" />
+
+                    <!-- Botões -->
+                    <HBox spacing="12.0" alignment="CENTER">
+                        <Button text="Cancelar" styleClass="btn-ghost" onAction="#onCancelar" />
+                        <Button text="Cadastrar" styleClass="btn-primary" onAction="#onSalvar" />
+                    </HBox>
+
+                    <!-- Link para voltar ao login -->
+                    <Label text="← Voltar para o login" styleClass="link-label" onMouseClicked="#onVoltarLogin" />
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</StackPane>

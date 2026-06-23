@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,7 +16,8 @@
 
 <BorderPane styleClass="paciente-app-root" prefHeight="700.0" prefWidth="1100.0"
             xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="br.edu.ufersa.hospital_manager.controllers.PacienteAgendarConsultaController">
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.PacienteAgendarConsultaController"
+            stylesheets="@../css/paciente.css">
 
     <!-- ===================== SIDEBAR ===================== -->
     <left>
@@ -57,65 +59,79 @@
 
     <!-- ===================== CONTENT ===================== -->
     <center>
-        <VBox styleClass="paciente-content-area" spacing="22">
+        <ScrollPane fitToWidth="true" fitToHeight="true" 
+                    style="-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0;">
+            
+            <VBox spacing="22" styleClass="paciente-content-area">
 
-            <VBox spacing="4">
-                <Label text="Agendar Consulta" styleClass="paciente-page-title" />
-                <Label text="Preencha os dados para agendar uma nova consulta" styleClass="paciente-page-subtitle" />
-            </VBox>
-
-            <VBox styleClass="paciente-surface-card" spacing="0" maxWidth="700">
-                <padding>
-                    <Insets top="24" right="28" bottom="28" left="28" />
-                </padding>
-
-                <Label text="Dados da Consulta" styleClass="paciente-panel-title" />
-                <Separator style="-fx-padding: 10 0 18 0;" />
-
-                <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                    <Label text="Médico *" styleClass="paciente-form-label" />
-                    <ComboBox fx:id="cmbMedico" promptText="Selecione um médico..." styleClass="paciente-combo-input" maxWidth="Infinity" />
+                <VBox spacing="4">
+                    <Label text="Agendar Consulta" styleClass="paciente-page-title" />
+                    <Label text="Preencha os dados para agendar uma nova consulta" styleClass="paciente-page-subtitle" />
                 </VBox>
 
-                <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                    <Label text="Especialidade" styleClass="paciente-form-label" />
-                    <ComboBox fx:id="cmbEspecialidade" promptText="Selecione uma especialidade..." styleClass="paciente-combo-input" maxWidth="Infinity" />
+                <VBox styleClass="paciente-surface-card" spacing="0" maxWidth="700">
+                    <padding>
+                        <Insets top="24" right="28" bottom="28" left="28" />
+                    </padding>
+
+                    <Label text="Dados da Consulta" styleClass="paciente-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <!-- Médico - COM BUSCA EM TEMPO REAL -->
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Médico *" styleClass="paciente-form-label" />
+                        <ComboBox fx:id="cmbMedico" promptText="Digite para buscar médico..." 
+                                  styleClass="paciente-combo-input" maxWidth="Infinity" editable="true" />
+                    </VBox>
+
+                    <!-- Especialidade -->
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Especialidade" styleClass="paciente-form-label" />
+                        <ComboBox fx:id="cmbEspecialidade" promptText="Selecione uma especialidade..." 
+                                  styleClass="paciente-combo-input" maxWidth="Infinity" />
+                    </VBox>
+
+                    <!-- Data e Hora -->
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Data *" styleClass="paciente-form-label" />
+                            <DatePicker fx:id="dateData" promptText="dd/mm/aaaa" styleClass="paciente-date-input" maxWidth="Infinity" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Hora *" styleClass="paciente-form-label" />
+                            <ComboBox fx:id="cmbHora" promptText="Selecione..." styleClass="paciente-combo-input" maxWidth="Infinity" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Observações -->
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Observações" styleClass="paciente-form-label" />
+                        <TextArea fx:id="txtObservacoes" promptText="Descreva o motivo da consulta, sintomas, etc." 
+                                  styleClass="paciente-textarea" prefRowCount="3" wrapText="true" />
+                    </VBox>
+
+                    <!-- Label de erro -->
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-wrap-text: true;"
+                           visible="false" managed="false" />
+
+                    <!-- Botões -->
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="paciente-btn-cancel" onAction="#onCancelar" />
+                        <Button text="Agendar Consulta" styleClass="paciente-btn-save" onAction="#onSalvar" />
+                    </HBox>
                 </VBox>
 
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Data *" styleClass="paciente-form-label" />
-                        <DatePicker fx:id="dateData" promptText="dd/mm/aaaa" styleClass="paciente-date-input" maxWidth="Infinity" />
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Hora *" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="cmbHora" promptText="Selecione..." styleClass="paciente-combo-input" maxWidth="Infinity" />
-                    </VBox>
+                <!-- Dica -->
+                <HBox styleClass="paciente-tip-box" maxWidth="700">
+                    <padding>
+                        <Insets top="10" bottom="10" left="14" right="14" />
+                    </padding>
+                    <Label styleClass="paciente-tip-text" wrapText="true"
+                           text="Dica: Escolha uma data com pelo menos 24 horas de antecedência. Você pode cancelar a consulta até 2 horas antes do horário agendado." />
                 </HBox>
 
-                <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                    <Label text="Observações" styleClass="paciente-form-label" />
-                    <TextArea fx:id="txtObservacoes" promptText="Descreva o motivo da consulta, sintomas, etc." styleClass="paciente-textarea" prefRowCount="3" wrapText="true" />
-                </VBox>
-
-                <Label fx:id="lblErro" text=""
-                       style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-wrap-text: true;"
-                       visible="false" managed="false" />
-
-                <HBox spacing="12" alignment="CENTER_RIGHT">
-                    <Button text="Cancelar" styleClass="paciente-btn-cancel" onAction="#onCancelar" />
-                    <Button text="Agendar Consulta" styleClass="paciente-btn-save" onAction="#onSalvar" />
-                </HBox>
             </VBox>
-
-            <HBox styleClass="paciente-tip-box" maxWidth="700">
-                <padding>
-                    <Insets top="10" bottom="10" left="14" right="14" />
-                </padding>
-                <Label styleClass="paciente-tip-text" wrapText="true"
-                       text="Dica: Escolha uma data com pelo menos 24 horas de antecedência. Você pode cancelar a consulta até 2 horas antes do horário agendado." />
-            </HBox>
-
-        </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>

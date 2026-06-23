@@ -29,6 +29,7 @@ import javafx.stage.StageStyle;
 
 public class LoginController {
     @FXML private Button btnEntrar;
+    @FXML private Button btnCadastrarUsuario;
 
     @FXML
     private StackPane rootPane;
@@ -68,6 +69,15 @@ public class LoginController {
         } catch (RuntimeException exception) {
             showAlert(AlertType.ERROR, "Erro", exception.getMessage());
         }
+    }
+
+    /**
+     * Ação do botão "Cadastrar novo usuário"
+     * Redireciona para a tela de cadastro de paciente
+     */
+    @FXML
+    public void onCadastrarUsuarioClick() {
+        NavigationHelper.goTo(btnCadastrarUsuario, "cadastro_usuario.fxml");
     }
 
     private void showAlert(AlertType type, String title, String message) {
@@ -152,18 +162,18 @@ public class LoginController {
         };
     }
 
-private void navegarParaPapel(ServiceRole role) {
-    if (role == ServiceRole.DOCTOR) {
-        NavigationHelper.goTo(btnEntrar, "medico_pacientes.fxml", "medico.css");
-        return;
-    }
-    
-    if (role == ServiceRole.PATIENT) {
-        NavigationHelper.goTo(btnEntrar, "paciente_dashboard.fxml", "paciente.css");
-        return;
-    }
+    private void navegarParaPapel(ServiceRole role) {
+        if (role == ServiceRole.DOCTOR) {
+            NavigationHelper.goTo(btnEntrar, "medico_pacientes.fxml", "medico.css");
+            return;
+        }
+        
+        if (role == ServiceRole.PATIENT) {
+            NavigationHelper.goTo(btnEntrar, "paciente_dashboard.fxml", "paciente.css");
+            return;
+        }
 
-    // MANAGER ou fallback
-    NavigationHelper.goTo(btnEntrar, "Dashboard.fxml");
-}
+        // MANAGER ou fallback
+        NavigationHelper.goTo(btnEntrar, "Dashboard.fxml");
+    }
 }
