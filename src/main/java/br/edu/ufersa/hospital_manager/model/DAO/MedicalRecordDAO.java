@@ -1,6 +1,5 @@
 package br.edu.ufersa.hospital_manager.model.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,32 +13,18 @@ import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.util.Connector;
 
 public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
-    
-    private Connection connection;
 
     public MedicalRecordDAO() {
         ensureNullableForeignKeys();
     }
 
     private void ensureNullableForeignKeys() {
-        try (Statement statement = getConnection().createStatement()) {
+        try (Statement statement = Connector.getConnection().createStatement()) {
             statement.executeUpdate("ALTER TABLE medical_records MODIFY doctor_id BIGINT NULL;");
             statement.executeUpdate("ALTER TABLE medical_records MODIFY patient_id BIGINT NULL;");
         } catch (SQLException exception) {
             // Keep startup resilient if the schema is already compatible or unavailable.
         }
-    }
-
-    private Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = Connector.getConnection();
-        }
-
-        if (connection == null) {
-            throw new SQLException("Database connection is not available.");
-        }
-
-        return connection;
     }
     
     public static final String INSERT_SQL = "INSERT INTO medical_records (date, observation, patient_id, doctor_id) VALUES (?, ?, ?, ?)";
@@ -53,7 +38,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void create(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
         ps.setDate(1, java.sql.Date.valueOf(entity.getDate()));
         ps.setString(2, entity.getObservation());
         if (entity.getPatient() == null) {
@@ -75,7 +60,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void delete(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(DELETE_SQL);
         ps.setLong(1, entity.getId());
         ps.executeUpdate();
 
@@ -83,7 +68,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public ArrayList<MedicalRecord> listAll() throws SQLException {
-        Statement ps = getConnection().createStatement();
+        Statement ps = Connector.getConnection().createStatement();
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
         ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
@@ -109,7 +94,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public MedicalRecord readById(long id) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_ID_SQL);
         ps.setLong(1, id);
         ResultSet rs = ps.executeQuery();
 
@@ -134,7 +119,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
 
     @Override
     public void update(MedicalRecord entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(UPDATE_SQL);
         ps.setDate(1, java.sql.Date.valueOf(entity.getDate()));
         ps.setString(2, entity.getObservation());
         if (entity.getPatient() == null) {
@@ -153,13 +138,13 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     }
 
     public void detachDoctor(Doctor doctor) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("UPDATE medical_records SET doctor_id = NULL WHERE doctor_id = ?;");
+        PreparedStatement ps = Connector.getConnection().prepareStatement("UPDATE medical_records SET doctor_id = NULL WHERE doctor_id = ?;");
         ps.setLong(1, doctor.getId());
         ps.executeUpdate();
     }
 
     public void detachPatient(Patient patient) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("UPDATE medical_records SET patient_id = NULL WHERE patient_id = ?;");
+        PreparedStatement ps = Connector.getConnection().prepareStatement("UPDATE medical_records SET patient_id = NULL WHERE patient_id = ?;");
         ps.setLong(1, patient.getId());
         ps.executeUpdate();
     }
@@ -181,7 +166,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     }
 
     public ArrayList<MedicalRecord> readByDate(LocalDate date) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DATE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_DATE_SQL);
         ps.setDate(1, java.sql.Date.valueOf(date));
         ResultSet rs = ps.executeQuery();
 
@@ -205,7 +190,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     }
 
     public MedicalRecord readByPatient(Patient oPatient) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_PATIENT_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_PATIENT_SQL);
         ps.setLong(1, oPatient.getId());
         ResultSet rs = ps.executeQuery();
 
@@ -229,7 +214,7 @@ public class MedicalRecordDAO implements BaseDAO<MedicalRecord> {
     }
 
     public ArrayList<MedicalRecord> readByDoctor(Doctor oDoctor) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DOCTOR_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_DOCTOR_SQL);
         ps.setLong(1, oDoctor.getId());
         ResultSet rs = ps.executeQuery();
 

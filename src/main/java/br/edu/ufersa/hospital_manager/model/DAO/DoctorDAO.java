@@ -1,6 +1,5 @@
 package br.edu.ufersa.hospital_manager.model.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,21 +12,7 @@ import br.edu.ufersa.hospital_manager.util.Connector;
 
 public class DoctorDAO implements BaseDAO<Doctor> {
 
-    private Connection connection;
-
     public DoctorDAO() {
-    }
-
-    private Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = Connector.getConnection();
-        }
-
-        if (connection == null) {
-            throw new SQLException("Database connection is not available.");
-        }
-
-        return connection;
     }
 
     public static final String INSERT_SQL = "INSERT INTO doctor (name, cpf, password, address_id, consultation_value, council_code) VALUES (?, ?, ?, ?, ?, ?);";
@@ -47,7 +32,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             addressDAO.create(entity.getAddress());
         }
 
-        PreparedStatement ps = getConnection().prepareStatement(
+        PreparedStatement ps = Connector.getConnection().prepareStatement(
                 INSERT_SQL,
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
@@ -71,17 +56,17 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     @Override
     public void delete(Doctor entity) throws SQLException {
         long addressId = entity.getAddress().getId();
-        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(DELETE_SQL);
         ps.setLong(1, entity.getId());
         ps.executeUpdate();
-        ps = getConnection().prepareStatement("DELETE FROM addresses WHERE id = ?;");
+        ps = Connector.getConnection().prepareStatement("DELETE FROM addresses WHERE id = ?;");
         ps.setLong(1, addressId);
         ps.executeUpdate();
     }
 
     @Override
     public ArrayList<Doctor> listAll() throws SQLException {
-        Statement ps = getConnection().createStatement();
+        Statement ps = Connector.getConnection().createStatement();
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
         ArrayList<Doctor> doctors = new ArrayList<>();
@@ -109,7 +94,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
     @Override
     public void update(Doctor entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(UPDATE_SQL);
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
@@ -124,7 +109,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
 
     @Override
     public Doctor readById(long id) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_ID_SQL);
 
         ps.setLong(1, id);
 
@@ -152,7 +137,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByCPF(String cpf) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_CPF_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_CPF_SQL);
 
         ps.setString(1, cpf);
 
@@ -180,7 +165,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByName(String name) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_NAME_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_NAME_SQL);
 
         ps.setString(1, "%" + name.toLowerCase() + "%");
 
@@ -208,7 +193,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
     }
 
     public Doctor readByCouncilCode(String councilCode) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_COUNCIL_CODE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_COUNCIL_CODE_SQL);
 
         ps.setString(1, councilCode);
 
@@ -218,7 +203,7 @@ public class DoctorDAO implements BaseDAO<Doctor> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Doctor doctor = new Doctor(
+            Doctor doctor =  new Doctor(
                     rs.getString("name"),
                     rs.getString("cpf"),
                     address,

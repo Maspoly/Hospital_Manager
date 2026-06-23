@@ -102,8 +102,4 @@ public abstract class Person {
     public long getId() {
         return id;
     }
-    public String getPassword() {
-        return passwordHash;
-    }
-    
 }

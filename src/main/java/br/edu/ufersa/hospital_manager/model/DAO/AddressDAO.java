@@ -1,6 +1,5 @@
 package br.edu.ufersa.hospital_manager.model.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,10 +8,8 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.util.Connector;
 
 public class AddressDAO {
-    private Connection connection;
 
     public AddressDAO() {
-        this.connection = Connector.getConnection();
     }
 
     public static final String INSERT_SQL =
@@ -22,7 +19,7 @@ public class AddressDAO {
             "SELECT * FROM addresses WHERE id = ?;";
 
     public void create(Address address) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(
+        PreparedStatement ps = Connector.getConnection().prepareStatement(
                 INSERT_SQL,
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
@@ -43,7 +40,7 @@ public class AddressDAO {
     }
 
     public Address readById(long id) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_ID_SQL);
         ps.setLong(1, id);
 
         ResultSet rs = ps.executeQuery();

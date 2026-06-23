@@ -1,6 +1,5 @@
 package br.edu.ufersa.hospital_manager.model.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,26 +20,12 @@ public class PatientDAO implements BaseDAO<Patient> {
     public static final String SELECT_BY_ID_SQL = "SELECT * FROM patient WHERE id = ?;";
     public static final String SELECT_BY_NAME_SQL = "SELECT * FROM patient WHERE LOWER(name) LIKE ?;";
 
-    private Connection connection;
-
     public PatientDAO() {
-    }
-
-    private Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = Connector.getConnection();
-        }
-
-        if (connection == null) {
-            throw new SQLException("Database connection is not available.");
-        }
-
-        return connection;
     }
 
     @Override
     public Patient readById(long id) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_ID_SQL);
 
         ps.setLong(1, id);
 
@@ -50,7 +35,13 @@ public class PatientDAO implements BaseDAO<Patient> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
+            Patient patient = new Patient(
+                    rs.getString("name"),
+                    rs.getString("cpf"),
+                    address,
+                    rs.getString("password"),
+                    true
+            );
 
             patient.setId(rs.getLong("id"));
             return patient;
@@ -61,7 +52,7 @@ public class PatientDAO implements BaseDAO<Patient> {
 
     @Override
     public void update(Patient entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(UPDATE_SQL);
 
         ps.setString(1, entity.getName());
         ps.setString(2, entity.getCPF());
@@ -80,7 +71,7 @@ public class PatientDAO implements BaseDAO<Patient> {
             addressDAO.create(entity.getAddress());
         }
 
-        PreparedStatement ps = getConnection().prepareStatement(
+        PreparedStatement ps = Connector.getConnection().prepareStatement(
                 INSERT_SQL,
                 PreparedStatement.RETURN_GENERATED_KEYS
         );
@@ -101,7 +92,7 @@ public class PatientDAO implements BaseDAO<Patient> {
 
     @Override
     public void delete(Patient entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(DELETE_SQL);
 
         ps.setLong(1, entity.getId());
 
@@ -110,7 +101,7 @@ public class PatientDAO implements BaseDAO<Patient> {
 
     @Override
     public ArrayList<Patient> listAll() throws SQLException {
-        Statement ps = getConnection().createStatement();
+        Statement ps = Connector.getConnection().createStatement();
 
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
@@ -121,7 +112,7 @@ public class PatientDAO implements BaseDAO<Patient> {
         while (rs.next()) {
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
+            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
 
             patient.setId(rs.getLong("id"));
             patients.add(patient);
@@ -131,7 +122,7 @@ public class PatientDAO implements BaseDAO<Patient> {
     }
 
     public Patient readByCPF(String cpf) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_CPF_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_CPF_SQL);
 
         ps.setString(1, cpf);
 
@@ -141,7 +132,7 @@ public class PatientDAO implements BaseDAO<Patient> {
             AddressDAO addressDAO = new AddressDAO();
             Address address = addressDAO.readById(rs.getLong("address_id"));
 
-            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"), true);
+            Patient patient = new Patient(rs.getString("name"), rs.getString("cpf"), address, rs.getString("password"));
 
             patient.setId(rs.getLong("id"));
             return patient;
@@ -151,7 +142,7 @@ public class PatientDAO implements BaseDAO<Patient> {
     }
 
     public Patient readByName(String name) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_NAME_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_NAME_SQL);
 
         ps.setString(1, "%" + name.toLowerCase() + "%");
 

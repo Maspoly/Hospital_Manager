@@ -7,17 +7,22 @@ import java.sql.SQLException;
 public class Connector {
     private final static String URL = "jdbc:mysql://localhost:3306/hospital_manager";
     private final static String USER = "root";
-    private final static String PASS = "root";
+    private final static String PASS = "192106";
     private static Connection connection = null;
+
+    private Connector() {
+        // Private constructor to prevent instantiation
+    }
 
     // Singleton pattern for database connection
     public static Connection getConnection(){
-        if (connection == null){
-            try{
+        try{
+            if (connection == null || connection.isClosed()){
                 connection = DriverManager.getConnection(URL, USER, PASS);
-            } catch (SQLException e){
-                connection = null;
             }
+        } catch (SQLException e){
+            e.printStackTrace();
+            connection = null;
         }
         return connection;
     }

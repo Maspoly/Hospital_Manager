@@ -1,6 +1,5 @@
 package br.edu.ufersa.hospital_manager.model.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,14 +25,12 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     public static final String  SELECT_BY_PATIENT_AND_DATE_TIME_SQL = "SELECT * FROM consultation WHERE patient_id = ? AND date_time = ?;";
     public static final String  SELECT_BY_DOCTOR_AND_DATE_TIME_SQL = "SELECT * FROM consultation WHERE doctor_id = ? AND date_time = ?;";
 
-    private Connection connection;
-
     public ConsultationDAO() {
         ensureNullableForeignKeys();
     }
 
     private void ensureNullableForeignKeys() {
-        try (Statement statement = getConnection().createStatement()) {
+        try (Statement statement = Connector.getConnection().createStatement()) {
             statement.executeUpdate("ALTER TABLE consultation MODIFY doctor_id BIGINT NULL;");
             statement.executeUpdate("ALTER TABLE consultation MODIFY patient_id BIGINT NULL;");
         } catch (SQLException exception) {
@@ -41,21 +38,9 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
         }
     }
 
-    private Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = Connector.getConnection();
-        }
-
-        if (connection == null) {
-            throw new SQLException("Database connection is not available.");
-        }
-
-        return connection;
-    }
-
     @Override
     public void create(Consultation entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
         if (entity.getPatient() == null) {
             ps.setNull(1, java.sql.Types.BIGINT);
         } else {
@@ -77,7 +62,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
 
     @Override
     public void delete(Consultation entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(DELETE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(DELETE_SQL);
 
         ps.setLong(1, entity.getId());
 
@@ -86,7 +71,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
 
     @Override
     public ArrayList<Consultation> listAll() throws SQLException {
-        Statement ps = getConnection().createStatement();
+        Statement ps = Connector.getConnection().createStatement();
         ResultSet rs = ps.executeQuery(SELECT_ALL_SQL);
 
         ArrayList<Consultation> consultations = new ArrayList<>();
@@ -107,7 +92,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
 
     @Override
     public Consultation readById(long id) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_ID_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_ID_SQL);
         ps.setLong(1, id);
         ResultSet rs = ps.executeQuery();
 
@@ -127,7 +112,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
 
     @Override
     public void update(Consultation entity) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(UPDATE_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(UPDATE_SQL);
         if (entity.getPatient() == null) {
             ps.setNull(1, java.sql.Types.BIGINT);
         } else {
@@ -146,19 +131,19 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public void detachDoctor(Doctor doctor) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("UPDATE consultation SET doctor_id = NULL WHERE doctor_id = ?;");
+        PreparedStatement ps = Connector.getConnection().prepareStatement("UPDATE consultation SET doctor_id = NULL WHERE doctor_id = ?;");
         ps.setLong(1, doctor.getId());
         ps.executeUpdate();
     }
 
     public void detachPatient(Patient patient) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("UPDATE consultation SET patient_id = NULL WHERE patient_id = ?;");
+        PreparedStatement ps = Connector.getConnection().prepareStatement("UPDATE consultation SET patient_id = NULL WHERE patient_id = ?;");
         ps.setLong(1, patient.getId());
         ps.executeUpdate();
     }
 
     public ArrayList<Consultation> readByPatient(Patient oPatient) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_PATIENT_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_PATIENT_SQL);
         ps.setLong(1, oPatient.getId());
         ResultSet rs = ps.executeQuery();
 
@@ -179,7 +164,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public ArrayList<Consultation> readByDoctor(Doctor oDoctor) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DOCTOR_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_DOCTOR_SQL);
         ps.setLong(1, oDoctor.getId());
         ResultSet rs = ps.executeQuery();
 
@@ -200,7 +185,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public ArrayList<Consultation> readByStatus(String status) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_STATUS_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_STATUS_SQL);
         ps.setString(1, status);
         ResultSet rs = ps.executeQuery();
 
@@ -221,7 +206,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public ArrayList<Consultation> readByDateTime(LocalDateTime dateTime) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DATE_TIME_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_DATE_TIME_SQL);
         ps.setObject(1, dateTime);
         ResultSet rs = ps.executeQuery();
 
@@ -242,7 +227,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public Consultation readByPatientAndDateTime(Patient oPatient, LocalDateTime dateTime) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_PATIENT_AND_DATE_TIME_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_PATIENT_AND_DATE_TIME_SQL);
         ps.setLong(1, oPatient.getId());
         ps.setObject(2, dateTime);
         ResultSet rs = ps.executeQuery();
@@ -262,7 +247,7 @@ public class ConsultationDAO implements BaseDAO<Consultation> {
     }
 
     public Consultation readByDoctorAndDateTime(Doctor oDoctor, LocalDateTime dateTime) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(SELECT_BY_DOCTOR_AND_DATE_TIME_SQL);
+        PreparedStatement ps = Connector.getConnection().prepareStatement(SELECT_BY_DOCTOR_AND_DATE_TIME_SQL);
         ps.setLong(1, oDoctor.getId());
         ps.setObject(2, dateTime);
         ResultSet rs = ps.executeQuery();
