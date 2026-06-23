@@ -139,3 +139,28 @@
     -fx-text-fill:#999999;
     color:#999999;
 }
+
+/* ---------- Sair (logout) ---------- */
+.medico-logout-box {
+    -fx-padding: 16 20 18 20;
+    padding: 16 20 18 20;
+}
+
+.medico-btn-logout {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+    -fx-cursor: hand;
+    cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 8;
+}
+
+.medico-btn-logout:hover {
+    -fx-underline: true;
+}

@@ -64,8 +64,8 @@ public class PatientServiceProxy {
     }
 
     private void ensureManagerAccess(String action) {
-        if (ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER) {
-            throw new RuntimeException("Only a manager can " + action + ".");
+        if (ServiceRoleContext.getCurrentRole() != ServiceRole.MANAGER && ServiceRoleContext.getCurrentRole() != ServiceRole.PATIENT) {
+            throw new RuntimeException("Only a manager or patient can " + action + ".");
         }
     }
 }

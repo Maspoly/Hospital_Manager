@@ -35,6 +35,7 @@
                 <Button text="Dashboard" styleClass="nav-item" onAction="#goDashboard" maxWidth="Infinity" />
                 <Button text="Médicos" styleClass="nav-item" onAction="#goMedicos" maxWidth="Infinity" />
                 <Button text="Pacientes" styleClass="nav-item" onAction="#goPacientes" maxWidth="Infinity" />
+                <Button text="Gerentes" styleClass="nav-item" onAction="#goGerentes" maxWidth="Infinity" />
                 <Button text="Consultas" styleClass="nav-item" onAction="#goConsultas" maxWidth="Infinity" />
                 <Button text="Busca" styleClass="nav-item-active" onAction="#goBusca" maxWidth="Infinity" />
                 <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
@@ -50,6 +51,12 @@
                         <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
                     </VBox>
                 </HBox>
+                <!-- Link para visualizar perfil -->
+                <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                       styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
+            </VBox>
+            <VBox styleClass="medico-logout-box">
+                <Button text="⏻  Sair" styleClass="medico-btn-logout" onAction="#onSair" maxWidth="Infinity" />
             </VBox>
         </VBox>
     </left>

@@ -4,22 +4,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
-import br.edu.ufersa.hospital_manager.model.entities.Address;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-import br.edu.ufersa.hospital_manager.model.entities.Person;
-import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.model.entities.*;
+import br.edu.ufersa.hospital_manager.model.services.*;
+import br.edu.ufersa.hospital_manager.util.PasswordUtils;
 
 public class PacienteEditarDadosController {
 
@@ -39,16 +34,15 @@ public class PacienteEditarDadosController {
     private TextField fldCpf;
 
     @FXML
-    private DatePicker fldDataNascimento;
+    private PasswordField fldSenhaAtual;
 
     @FXML
-    private ComboBox<String> fldSexo;
+    private PasswordField fldSenhaNova;
 
     @FXML
-    private TextField fldTelefone;
+    private PasswordField fldSenhaNovaConfirmar;
 
-    @FXML
-    private TextField fldEmail;
+    @FXML private Label lblVisualizarPerfil;
 
     @FXML
     private TextField fldRua;
@@ -66,18 +60,6 @@ public class PacienteEditarDadosController {
     private TextField fldEstado;
 
     @FXML
-    private ComboBox<String> fldTipoSanguineo;
-
-    @FXML
-    private ComboBox<String> fldConvenio;
-
-    @FXML
-    private TextArea fldAlergias;
-
-    @FXML
-    private TextArea fldObservacoes;
-
-    @FXML
     private Label lblErro;
 
     private Patient pacienteLogado;
@@ -86,24 +68,34 @@ public class PacienteEditarDadosController {
 
     @FXML
     public void initialize() {
-        configurarCombos();
         carregarPacienteLogado();
         preencherDados();
     }
 
-    private void configurarCombos() {
-        fldSexo.setItems(FXCollections.observableArrayList(
-                "Masculino", "Feminino", "Outro", "Prefiro não informar"
-        ));
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
 
-        fldTipoSanguineo.setItems(FXCollections.observableArrayList(
-                "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
-        ));
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
 
-        fldConvenio.setItems(FXCollections.observableArrayList(
-                "Particular", "Unimed", "Bradesco Saúde", "Amil",
-                "SulAmérica", "Hapvida", "NotreDame Intermédica", "Outro"
-        ));
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
     }
 
     /**
@@ -117,7 +109,6 @@ public class PacienteEditarDadosController {
             pacienteLogado = (Patient) usuario;
             atualizarDadosPaciente();
         } else {
-            // Fallback: tenta buscar pelo CPF mock (apenas para teste)
             try {
                 pacienteLogado = patientService.findByCPF("11122233344");
                 if (pacienteLogado != null) {
@@ -189,15 +180,39 @@ public class PacienteEditarDadosController {
 
             // Atualiza paciente
             pacienteLogado.setName(fldNome.getText().trim());
-            pacienteLogado.setAddress(endereco);
+
+            // Atualiza senha se fornecida
+            String senhaNova = fldSenhaNova.getText().trim();
+            if (!senhaNova.isEmpty()) {
+                // Verifica senha atual
+                String senhaAtual = fldSenhaAtual.getText().trim();
+                if (senhaAtual.isEmpty()) {
+                    mostrarErro("Digite sua senha atual para alterá-la.");
+                    return;
+                }
+
+                if (!PasswordUtils.matches(senhaAtual, pacienteLogado.getPasswordHash())) {
+                    mostrarErro("Senha atual incorreta.");
+                    return;
+                }
+
+                // Verifica se as senhas novas coincidem
+                String senhaNovaConfirmar = fldSenhaNovaConfirmar.getText().trim();
+                if (!senhaNova.equals(senhaNovaConfirmar)) {
+                    mostrarErro("As senhas novas não coincidem.");
+                    return;
+                }
+
+                pacienteLogado.setPassword(senhaNova);
+            }
 
             patientService.updatePatient(pacienteLogado);
 
             NavigationHelper.showInfo("Sucesso", "Dados atualizados com sucesso!");
-            
+
             // Atualiza os labels da sidebar após salvar
             atualizarDadosPaciente();
-            
+
             NavigationHelper.goTo((Node) event.getSource(), "paciente_dashboard.fxml", "paciente.css");
 
         } catch (RuntimeException e) {
@@ -222,12 +237,40 @@ public class PacienteEditarDadosController {
         if (fldCidade.getText().isBlank()) erros.add("Cidade é obrigatória.");
         if (fldEstado.getText().isBlank()) erros.add("Estado é obrigatório.");
 
+        // Validação de senha
+        String senhaNova = fldSenhaNova.getText().trim();
+        String senhaNovaConfirmar = fldSenhaNovaConfirmar.getText().trim();
+        String senhaAtual = fldSenhaAtual.getText().trim();
+
+        if (!senhaNova.isEmpty() || !senhaNovaConfirmar.isEmpty() || !senhaAtual.isEmpty()) {
+            if (senhaAtual.isEmpty()) {
+                erros.add("Digite sua senha atual para alterá-la.");
+            }
+            if (senhaNova.isEmpty()) {
+                erros.add("Digite a nova senha.");
+            }
+            if (senhaNovaConfirmar.isEmpty()) {
+                erros.add("Confirme a nova senha.");
+            }
+            if (!senhaNova.equals(senhaNovaConfirmar)) {
+                erros.add("As senhas novas não coincidem.");
+            }
+        }
+
         if (!erros.isEmpty()) {
             mostrarErro(String.join("\n", erros));
             return false;
         }
         ocultarErro();
         return true;
+    }
+
+    private String formatarCpf(String cpf) {
+        if (cpf == null || cpf.length() != 11) {
+            return cpf == null ? "" : cpf;
+        }
+        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "."
+                + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
     }
 
     private void mostrarErro(String mensagem) {
@@ -239,14 +282,6 @@ public class PacienteEditarDadosController {
     private void ocultarErro() {
         lblErro.setVisible(false);
         lblErro.setManaged(false);
-    }
-
-    private String formatarCpf(String cpf) {
-        if (cpf == null || cpf.length() != 11) {
-            return cpf == null ? "" : cpf;
-        }
-        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "."
-                + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
     }
 
     // ===================== NAVEGAÇÃO =====================

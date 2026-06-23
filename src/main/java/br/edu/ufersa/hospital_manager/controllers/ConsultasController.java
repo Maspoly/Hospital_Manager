@@ -11,12 +11,18 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -24,10 +30,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -54,14 +64,134 @@ public class ConsultasController {
     @FXML
     private TableColumn<Consultation, Void> colAcoes;
 
+    // ── Componentes de busca ──────────────────────────────────
+    @FXML private ComboBox<String> cmbTipoBusca;
+    @FXML private TextField txtBusca;
+    @FXML private ListView<Object> lstResultados;
+
+    // ── Labels do usuário logado ──────────────────────────────
+    @FXML private Label lblUserName;
+    @FXML private Label lblUserRole;
+    @FXML private Label lblVisualizarPerfil;
+
+    // ── Botões de navegação ───────────────────────────────────
+    @FXML private Button btnDashboard;
+    @FXML private Button btnMedicos;
+    @FXML private Button btnPacientes;
+    @FXML private Button btnGerentes;
+    @FXML private Button btnConsultas;
+    @FXML private Button btnBusca;
+    @FXML private Button btnRelatorios;
+
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
+    private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
+    private final PatientServiceProxy patientService = new PatientServiceProxy();
+    
     private final ObservableList<Consultation> consultas = FXCollections.observableArrayList();
+    private final ObservableList<Object> resultados = FXCollections.observableArrayList();
+    private Object itemSelecionado;
     private boolean usingDatabase = true;
 
     @FXML
     public void initialize() {
+        carregarDadosUsuario();
+        configurarLinkPerfil();
         configurarColunas();
+        configurarCombos();
+        configurarListaResultados();
         carregarDados();
+    }
+
+    /**
+     * Preenche os dados do usuário logado na sidebar.
+     */
+    private void carregarDadosUsuario() {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
+        String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
+
+        if (lblUserName != null) {
+            lblUserName.setText(nomeUsuario);
+        }
+        if (lblUserRole != null) {
+            lblUserRole.setText(cargoUsuario);
+        }
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
+    }
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
+
+    private void configurarCombos() {
+        cmbTipoBusca.setItems(FXCollections.observableArrayList(
+                "Todos",
+                "Médicos",
+                "Pacientes"
+        ));
+        cmbTipoBusca.setValue("Todos");
+        cmbTipoBusca.setPromptText("Selecione o tipo");
+    }
+
+    private void configurarListaResultados() {
+        lstResultados.setItems(resultados);
+        lstResultados.setPlaceholder(new Label("Nenhum resultado encontrado."));
+        lstResultados.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                if (item instanceof Doctor) {
+                    Doctor doctor = (Doctor) item;
+                    setText("👨‍⚕️ " + doctor.getName() + " - CRM " + doctor.getCouncilCode());
+                } else if (item instanceof Patient) {
+                    Patient patient = (Patient) item;
+                    setText("👤 " + patient.getName() + " - CPF " + formatarCpf(patient.getCPF()));
+                } else {
+                    setText(item.toString());
+                }
+            }
+        });
+
+        lstResultados.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            itemSelecionado = newVal;
+        });
     }
 
     private void configurarColunas() {
@@ -158,6 +288,101 @@ public class ConsultasController {
         return dados;
     }
 
+    // ===================== BUSCA DE MÉDICOS E PACIENTES =====================
+
+    @FXML
+    private void onBuscarMedicoPaciente(ActionEvent event) {
+        String termo = txtBusca.getText() == null ? "" : txtBusca.getText().trim().toLowerCase();
+        String tipo = cmbTipoBusca.getValue();
+
+        resultados.clear();
+
+        if (tipo == null) {
+            return;
+        }
+
+        if (tipo.equals("Todos") || tipo.equals("Médicos")) {
+            buscarMedicos(termo);
+        }
+
+        if (tipo.equals("Todos") || tipo.equals("Pacientes")) {
+            buscarPacientes(termo);
+        }
+
+        if (resultados.isEmpty()) {
+            NavigationHelper.showInfo("Busca", "Nenhum resultado encontrado para \"" + txtBusca.getText() + "\".");
+        }
+    }
+
+    private void buscarMedicos(String termo) {
+        try {
+            List<Doctor> medicos = doctorService.listAll();
+            for (Doctor doctor : medicos) {
+                if (termo.isEmpty() ||
+                    doctor.getName().toLowerCase().contains(termo) ||
+                    doctor.getCPF().contains(termo) ||
+                    doctor.getCouncilCode().contains(termo)) {
+                    resultados.add(doctor);
+                }
+            }
+        } catch (SQLException e) {
+            // Ignora erro
+        }
+    }
+
+    private void buscarPacientes(String termo) {
+        try {
+            List<Patient> pacientes = patientService.listAll();
+            for (Patient patient : pacientes) {
+                if (termo.isEmpty() ||
+                    patient.getName().toLowerCase().contains(termo) ||
+                    patient.getCPF().contains(termo)) {
+                    resultados.add(patient);
+                }
+            }
+        } catch (SQLException e) {
+            // Ignora erro
+        }
+    }
+
+    @FXML
+    private void onVerDetalhes(ActionEvent event) {
+        if (itemSelecionado == null) {
+            NavigationHelper.showInfo("Aviso", "Selecione um item na lista para ver os detalhes.");
+            return;
+        }
+
+        if (itemSelecionado instanceof Doctor) {
+            Doctor doctor = (Doctor) itemSelecionado;
+            Address addr = doctor.getAddress();
+            String detalhes = "Médico\n\n" +
+                    "Nome: Dr. " + doctor.getName() + "\n" +
+                    "CPF: " + formatarCpf(doctor.getCPF()) + "\n" +
+                    "CRM: " + doctor.getCouncilCode() + "\n" +
+                    "Valor da consulta: R$ " + String.format("%.2f", doctor.getConsultationValue()).replace(".", ",") + "\n" +
+                    "Endereço: " + addr.getStreet() + ", " + addr.getNumber() + " - " + addr.getCity() + "/" + addr.getState();
+            NavigationHelper.showInfo("Detalhes do Médico", detalhes);
+        } else if (itemSelecionado instanceof Patient) {
+            Patient patient = (Patient) itemSelecionado;
+            Address addr = patient.getAddress();
+            String detalhes = "Paciente\n\n" +
+                    "Nome: " + patient.getName() + "\n" +
+                    "CPF: " + formatarCpf(patient.getCPF()) + "\n" +
+                    "Endereço: " + addr.getStreet() + ", " + addr.getNumber() + " - " + addr.getCity() + "/" + addr.getState();
+            NavigationHelper.showInfo("Detalhes do Paciente", detalhes);
+        }
+    }
+
+    private String formatarCpf(String cpf) {
+        if (cpf == null || cpf.length() != 11) {
+            return cpf == null ? "" : cpf;
+        }
+        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "."
+                + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
+    }
+
+    // ===================== CRUD DE CONSULTAS =====================
+
     private void onEditarConsulta(Consultation consulta) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Consulta");
@@ -223,40 +448,51 @@ public class ConsultasController {
         }
     }
 
-    @FXML
-    public void onAgendarConsulta(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "CadastroConsulta.fxml");
-    }
-
     // ===================== NAVEGAÇÃO ENTRE TELAS =====================
 
     @FXML
     public void goDashboard(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
     }
 
     @FXML
     public void goMedicos(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medicos.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
     }
 
     @FXML
     public void goPacientes(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "pacientes.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
+    }
+
+    @FXML
+    public void goGerentes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
     }
 
     @FXML
     public void goConsultas(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "consultas.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
     }
 
     @FXML
     public void goBusca(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "busca.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
     }
 
     @FXML
     public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
+    }
+
+    @FXML
+    public void onAgendarConsulta(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "CadastroConsulta.fxml");
+    }
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 }

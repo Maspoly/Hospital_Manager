@@ -9,14 +9,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
 
-import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-import br.edu.ufersa.hospital_manager.model.entities.Person;
-import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
-import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.model.entities.*;
+import br.edu.ufersa.hospital_manager.model.services.*;
 
 public class PacienteProntuariosController {
 
@@ -31,6 +27,7 @@ public class PacienteProntuariosController {
     @FXML
     private Label lblCpfPaciente;
 
+    @FXML private Label lblVisualizarPerfil;
     @FXML
     private VBox boxProntuarios;
 
@@ -43,6 +40,32 @@ public class PacienteProntuariosController {
     public void initialize() {
         carregarPacienteLogado();
         carregarProntuarios();
+    }
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
     }
 
     /**

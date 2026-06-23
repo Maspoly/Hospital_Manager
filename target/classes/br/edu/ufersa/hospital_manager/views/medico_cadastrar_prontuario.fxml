@@ -41,6 +41,9 @@
                 <VBox spacing="1">
                     <Label fx:id="lblNomeMedico" text="Dr. João Lourenço" styleClass="medico-profile-name" />
                     <Label fx:id="lblCrmMedico" text="CRM-12345" styleClass="medico-profile-crm" />
+                    <!-- Link para visualizar perfil -->
+                    <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                           styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
                 </VBox>
             </HBox>
 

@@ -6,7 +6,9 @@ import java.util.List;
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -27,24 +30,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-
 public class MedicosController {
-// BOTOES DE NAVEGAÇÃO E AÇÕES  
-    @FXML
-    private Button btnNovoMedico;
 
     // ── Botões de navegação ───────────────────────────────────
     @FXML private Button btnDashboard;
     @FXML private Button btnMedicos;
     @FXML private Button btnPacientes;
+    @FXML private Button btnGerentes;
     @FXML private Button btnConsultas;
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
+    @FXML private Button btnNovoMedico;
 
+    // ── Labels do usuário logado ──────────────────────────────
+    @FXML private Label lblUserName;
+    @FXML private Label lblUserRole;
+    @FXML private Label lblVisualizarPerfil;
 
     @FXML
     private TableView<Doctor> tableMedicos;
@@ -72,48 +78,104 @@ public class MedicosController {
     public void initialize() {
         configurarColunas();
         carregarDados();
+        carregarDadosUsuario();
+        configurarLinkPerfil();
+    }
+
+    /**
+     * Preenche os dados do usuário logado na sidebar.
+     */
+    private void carregarDadosUsuario() {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
+        String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
+
+        lblUserName.setText(nomeUsuario);
+        lblUserRole.setText(cargoUsuario);
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
     }
 
     @FXML
-    private void onDashboard() {
-        setNavAtivo(btnDashboard);
-        navegarPara("/br/edu/ufersa/hospital_manager/views/Dashboard.fxml");
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
+
+    // ===================== NAVEGAÇÃO ENTRE TELAS =====================
+
+    @FXML
+    public void goDashboard(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
     }
 
     @FXML
-    private void onMedicos() {
-        setNavAtivo(btnMedicos);
-        // Já estamos no Medicos — nenhuma ação extra necessária
+    public void goMedicos(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
     }
 
     @FXML
-    private void onPacientes() {
-        setNavAtivo(btnPacientes);
-        navegarPara("/br/edu/ufersa/hospital_manager/views/pacientes.fxml");
+    public void goPacientes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
     }
 
     @FXML
-    private void onConsultas() {
-        setNavAtivo(btnConsultas);
-        navegarPara("/br/edu/ufersa/hospital_manager/views/consultas.fxml");
+    public void goGerentes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
     }
 
     @FXML
-    private void onBusca() {
-        setNavAtivo(btnBusca);
-        navegarPara("/br/edu/ufersa/hospital_manager/views/busca.fxml");
+    public void goConsultas(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
     }
 
     @FXML
-    private void onRelatorios() {
-        setNavAtivo(btnRelatorios);
-        navegarPara("/br/edu/ufersa/hospital_manager/views/relatorios.fxml");
+    public void goBusca(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
     }
 
+    @FXML
+    public void goRelatorios(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
+    }
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
+    }
+
+    // ===================== MÉTODOS INTERNOS =====================
 
     private void configurarColunas() {
-
-        // Coluna NOME: nome em destaque + endereço como subtítulo (igual ao Figma)
+        // Coluna NOME: nome em destaque + endereço como subtítulo
         colNome.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(""));
         colNome.setCellFactory(col -> new TableCell<Doctor, String>() {
             @Override
@@ -254,8 +316,8 @@ public class MedicosController {
         sections.setPadding(new Insets(2, 2, 0, 2));
 
         VBox header = new VBox(4,
-            dialogTitle("Editar Médico"),
-            dialogSubtitle("Mantenha apenas os dados realmente usados pelo sistema.")
+                dialogTitle("Editar Médico"),
+                dialogSubtitle("Mantenha apenas os dados realmente usados pelo sistema.")
         );
 
         VBox content = new VBox(18, header, sections, footer(pane));
@@ -365,86 +427,6 @@ public class MedicosController {
 
     @FXML
     public void onNovoMedico(ActionEvent event) {
-        // TODO: abrir formulário de cadastro conectado ao DoctorDAO/DoctorServices
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "CadastroMedico.fxml");
-    }
-
-    // ===================== NAVEGAÇÃO ENTRE TELAS =====================
-
-    @FXML
-    public void goDashboard(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
-    }
-
-    @FXML
-    public void goMedicos(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medicos.fxml");
-    }
-
-    @FXML
-    public void goPacientes(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "pacientes.fxml");
-    }
-
-    @FXML
-    public void goConsultas(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "consultas.fxml");
-    }
-
-    @FXML
-    public void goBusca(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "busca.fxml");
-    }
-
-    @FXML
-    public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
-    }
-
-    @FXML
-    public void onSair(ActionEvent event) {
-        ServiceRoleContext.clear();
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "login.fxml");
-    }
-        // ─────────────────────────────────────────────────────────
-    // Utilitários de navegação
-    // ─────────────────────────────────────────────────────────
-
-    /**
-     * Marca o botão selecionado como ativo e remove o estilo dos demais.
-     */
-    private void setNavAtivo(Button botaoAtivo) {
-        Button[] todos = {
-            btnDashboard, btnMedicos, btnPacientes,
-            btnConsultas, btnBusca, btnRelatorios
-        };
-        for (Button btn : todos) {
-            btn.getStyleClass().remove("nav-btn-active");
-        }
-        if (!botaoAtivo.getStyleClass().contains("nav-btn-active")) {
-            botaoAtivo.getStyleClass().add("nav-btn-active");
-        }
-    }
-
-    /**
-     * Carrega outro FXML na área central.
-     * Adapte conforme a arquitetura de navegação do seu projeto
-     * (ex.: injetar um controlador-raiz, usar um ScreenManager, etc.).
-     *
-     * @param fxmlPath caminho relativo ao classpath do arquivo FXML
-     */
-    private void navegarPara(String fxmlPath) {
-        try {
-            // Exemplo de navegação com troca de cena:
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = (Stage) btnDashboard.getScene().getWindow();
-            stage.getScene().setRoot(root);
-
-            System.out.println("Navegando para: " + fxmlPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationHelper.goTo((Node) event.getSource(), "CadastroMedico.fxml");
     }
 }

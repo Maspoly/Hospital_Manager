@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import br.edu.ufersa.hospital_manager.model.entities.*;
 import br.edu.ufersa.hospital_manager.model.services.*;
 
+import javafx.scene.input.MouseEvent;
 
 public class PacienteDashboardController {
 
@@ -29,7 +30,7 @@ public class PacienteDashboardController {
 
     @FXML
     private Label lblCpfPaciente;
-
+    @FXML private Label lblVisualizarPerfil;
     @FXML
     private Label lblTotalConsultas;
 
@@ -55,19 +56,39 @@ public class PacienteDashboardController {
         carregarProximasConsultas();
     }
 
-    /**
-     * Carrega o paciente logado a partir do ServiceRoleContext
-     */
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
     private void carregarPacienteLogado() {
         Person usuario = ServiceRoleContext.getCurrentUser();
         ServiceRole role = ServiceRoleContext.getCurrentRole();
 
-        // Verifica se o usuário logado é um Paciente
         if (usuario instanceof Patient && role == ServiceRole.PATIENT) {
             pacienteLogado = (Patient) usuario;
             atualizarDadosPaciente();
         } else {
-            // Fallback: tenta buscar pelo CPF mock (apenas para teste)
             try {
                 pacienteLogado = patientService.findByCPF("11122233344");
                 if (pacienteLogado != null) {
@@ -119,7 +140,6 @@ public class PacienteDashboardController {
         }
 
         try {
-            // Busca consultas do paciente
             List<Consultation> consultas = consultationService.findByPatient(pacienteLogado);
 
             int total = consultas.size();
@@ -134,7 +154,6 @@ public class PacienteDashboardController {
             lblTotalConsultas.setText(String.valueOf(total));
             lblConsultasAgendadas.setText(String.valueOf(agendadas));
 
-            // Busca prontuário do paciente
             try {
                 MedicalRecord record = medicalRecordService.findByPatient(pacienteLogado);
                 lblTotalProntuarios.setText(record != null ? "1" : "0");
@@ -176,33 +195,28 @@ public class PacienteDashboardController {
             boxProximasConsultas.setAlignment(javafx.geometry.Pos.TOP_LEFT);
 
             for (Consultation c : proximas) {
-                VBox item = criarItemConsulta(c);
+                VBox item = new VBox(2);
+                item.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-padding: 12 16 12 16; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-border-width: 1;");
+
+                String nomeMedico = c.getDoctor() != null ? "Dr. " + c.getDoctor().getName() : "Médico não informado";
+                Label medico = new Label(nomeMedico);
+                medico.getStyleClass().add("paciente-patient-name");
+                medico.setStyle("-fx-text-fill: #1f2937; -fx-font-size: 13.5px; -fx-font-weight: 600;");
+
+                Label dataHora = new Label(c.getDateTime().format(FORMATO_DATA_HORA));
+                dataHora.getStyleClass().add("paciente-patient-detail");
+                dataHora.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12px;");
+
+                Label status = new Label("Agendada");
+                status.setStyle("-fx-text-fill: #2563eb; -fx-font-size: 11px; -fx-font-weight: 600;");
+
+                item.getChildren().addAll(medico, dataHora, status);
                 boxProximasConsultas.getChildren().add(item);
             }
 
         } catch (Exception e) {
             mostrarEstadoVazio("Erro ao carregar consultas: " + e.getMessage());
         }
-    }
-
-    private VBox criarItemConsulta(Consultation c) {
-        VBox item = new VBox(2);
-        item.setStyle("-fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-padding: 12 16 12 16; -fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-border-width: 1;");
-
-        String nomeMedico = c.getDoctor() != null ? "Dr. " + c.getDoctor().getName() : "Médico não informado";
-        Label medico = new Label(nomeMedico);
-        medico.getStyleClass().add("paciente-patient-name");
-        medico.setStyle("-fx-text-fill: #1f2937; -fx-font-size: 13.5px; -fx-font-weight: 600;");
-
-        Label dataHora = new Label(c.getDateTime().format(FORMATO_DATA_HORA));
-        dataHora.getStyleClass().add("paciente-patient-detail");
-        dataHora.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12px;");
-
-        Label status = new Label("Agendada");
-        status.setStyle("-fx-text-fill: #2563eb; -fx-font-size: 11px; -fx-font-weight: 600;");
-
-        item.getChildren().addAll(medico, dataHora, status);
-        return item;
     }
 
     private void mostrarEstadoVazio(String mensagem) {
@@ -238,11 +252,6 @@ public class PacienteDashboardController {
     @FXML
     public void goConsultas(ActionEvent event) {
         NavigationHelper.goTo((Node) event.getSource(), "paciente_consultas.fxml", "paciente.css");
-    }
-
-    @FXML
-    public void goEditarDados(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "paciente_editar_dados.fxml", "paciente.css");
     }
 
     @FXML

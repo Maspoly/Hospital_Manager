@@ -41,7 +41,7 @@
                 <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
-            <!-- Rodapé -->
+            <!-- Rodapé com perfil -->
             <VBox styleClass="sidebar-footer">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="👤" styleClass="stat-icon-glyph"/>
@@ -51,6 +51,12 @@
                         <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
                     </VBox>
                 </HBox>
+                <!-- Link para visualizar perfil -->
+                <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                       styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
+            </VBox>
+            <VBox styleClass="medico-logout-box">
+                <Button text="⏻  Sair" styleClass="medico-btn-logout" onAction="#onSair" maxWidth="Infinity" />
             </VBox>
         </VBox>
     </left>

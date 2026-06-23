@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -34,12 +39,13 @@
                 <Button text="Dashboard" styleClass="nav-item" onAction="#goDashboard" maxWidth="Infinity" />
                 <Button text="Médicos" styleClass="nav-item" onAction="#goMedicos" maxWidth="Infinity" />
                 <Button text="Pacientes" styleClass="nav-item" onAction="#goPacientes" maxWidth="Infinity" />
+                <Button text="Gerentes" styleClass="nav-item" onAction="#goGerentes" maxWidth="Infinity" />
                 <Button text="Consultas" styleClass="nav-item-active" onAction="#goConsultas" maxWidth="Infinity" />
                 <Button text="Busca" styleClass="nav-item" onAction="#goBusca" maxWidth="Infinity" />
                 <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
             </VBox>
 
-            <!-- Rodapé -->
+             <!-- Rodapé com perfil -->
             <VBox styleClass="sidebar-footer">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="👤" styleClass="stat-icon-glyph"/>
@@ -49,41 +55,84 @@
                         <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
                     </VBox>
                 </HBox>
+                <!-- Link para visualizar perfil -->
+                <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                       styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
             </VBox>
         </VBox>
     </left>
 
     <!-- ===================== CONTENT ===================== -->
     <center>
-        <VBox styleClass="content-area" spacing="22">
+        <HBox styleClass="content-area" spacing="18" VBox.vgrow="ALWAYS">
 
-            <HBox alignment="CENTER_LEFT">
-                <VBox spacing="4">
-                    <Label text="Agendamento de Consultas" styleClass="page-title" />
-                    <Label text="Gerencie as consultas da clínica" styleClass="page-subtitle" />
+            <!-- Lista de consultas -->
+            <VBox spacing="22" HBox.hgrow="ALWAYS">
+
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="4">
+                        <Label text="Agendamento de Consultas" styleClass="page-title" />
+                        <Label text="Gerencie as consultas da clínica" styleClass="page-subtitle" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="+ Agendar Consulta" styleClass="btn-accent" onAction="#onAgendarConsulta" />
+                </HBox>
+
+                <VBox styleClass="surface-card" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tableConsultas" styleClass="data-table" VBox.vgrow="ALWAYS">
+                        <columnResizePolicy>
+                            <javafx.scene.control.TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                        <columns>
+                            <TableColumn fx:id="colDataHora" text="DATA/HORA" prefWidth="150" />
+                            <TableColumn fx:id="colPaciente" text="PACIENTE" prefWidth="200" />
+                            <TableColumn fx:id="colMedico" text="MÉDICO" prefWidth="200" />
+                            <TableColumn fx:id="colStatus" text="STATUS" prefWidth="130" />
+                            <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="120" />
+                        </columns>
+                        <placeholder>
+                            <Label text="Nenhuma consulta agendada. Clique em &quot;Agendar Consulta&quot; para começar." />
+                        </placeholder>
+                    </TableView>
                 </VBox>
-                <Region HBox.hgrow="ALWAYS" />
-                <Button text="+ Agendar Consulta" styleClass="btn-accent" onAction="#onAgendarConsulta" />
-            </HBox>
 
-            <VBox styleClass="surface-card" VBox.vgrow="ALWAYS">
-                <TableView fx:id="tableConsultas" styleClass="data-table" VBox.vgrow="ALWAYS">
-                    <columnResizePolicy>
-                        <javafx.scene.control.TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
-                    <columns>
-                        <TableColumn fx:id="colDataHora" text="DATA/HORA" prefWidth="150" />
-                        <TableColumn fx:id="colPaciente" text="PACIENTE" prefWidth="200" />
-                        <TableColumn fx:id="colMedico" text="MÉDICO" prefWidth="200" />
-                        <TableColumn fx:id="colStatus" text="STATUS" prefWidth="130" />
-                        <TableColumn fx:id="colAcoes" text="AÇÕES" prefWidth="120" />
-                    </columns>
-                    <placeholder>
-                        <Label text="Nenhuma consulta agendada. Clique em &quot;Agendar Consulta&quot; para começar." />
-                    </placeholder>
-                </TableView>
             </VBox>
 
-        </VBox>
+            <!-- Painel lateral de busca -->
+            <VBox styleClass="surface-card" spacing="14" prefWidth="320" maxWidth="320">
+                <padding>
+                    <Insets top="18" right="16" bottom="18" left="16" />
+                </padding>
+
+                <VBox spacing="4">
+                    <Label text="Buscar Médicos ou Pacientes" styleClass="panel-title" />
+                    <Label text="Pesquise e veja os detalhes rapidamente" styleClass="empty-state-title" wrapText="true" />
+                </VBox>
+
+                <!-- Tipo de busca -->
+                <VBox spacing="6">
+                    <Label text="Buscar por" styleClass="form-label" />
+                    <ComboBox fx:id="cmbTipoBusca" styleClass="combo-input" maxWidth="Infinity" />
+                </VBox>
+
+                <!-- Campo de busca -->
+                <TextField fx:id="txtBusca" styleClass="text-input" promptText="Digite o termo de busca..." maxWidth="Infinity" />
+
+                <!-- Botão buscar -->
+                <Button text="🔍 Buscar" styleClass="btn-accent" maxWidth="Infinity" onAction="#onBuscarMedicoPaciente" />
+
+                <Separator style="-fx-padding: 8 0 8 0;" />
+
+                <!-- Lista de resultados -->
+                <Label text="Resultados" styleClass="form-label" />
+                <ListView fx:id="lstResultados" styleClass="patient-list" VBox.vgrow="ALWAYS" prefHeight="250" />
+
+                <!-- Botões de ação -->
+                <HBox spacing="8" alignment="CENTER">
+                    <Button text="Ver Detalhes" styleClass="btn-accent" maxWidth="Infinity" onAction="#onVerDetalhes" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+
+        </HBox>
     </center>
 </BorderPane>

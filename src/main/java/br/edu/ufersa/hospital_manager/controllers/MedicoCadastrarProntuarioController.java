@@ -13,8 +13,10 @@ import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +31,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
 
 public class MedicoCadastrarProntuarioController implements DadosRecebivel {
 
@@ -56,6 +59,7 @@ public class MedicoCadastrarProntuarioController implements DadosRecebivel {
     @FXML
     private Label lblContador;
 
+    @FXML private Label lblVisualizarPerfil;
     @FXML
     private Label lblPacienteSelecionado;
 
@@ -83,7 +87,31 @@ public class MedicoCadastrarProntuarioController implements DadosRecebivel {
             selecionarPaciente(pacientePreSelecionado);
         }
     }
+    @FXML
+        private void onVisualizarPerfil(MouseEvent event) {
+            Person usuario = ServiceRoleContext.getCurrentUser();
+            ServiceRole role = ServiceRoleContext.getCurrentRole();
 
+            if (usuario == null || role == null) {
+                NavigationHelper.showError("Usuário não encontrado.");
+                return;
+            }
+
+            switch (role) {
+                case MANAGER:
+                    NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                    break;
+                case DOCTOR:
+                    NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                    break;
+                case PATIENT:
+                    NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                    break;
+                default:
+                    NavigationHelper.showError("Perfil não encontrado.");
+                    break;
+            }
+        }
     @Override
     public void receberDados(String key, Object value) {
         if ("pacienteSelecionado".equals(key) && value instanceof Patient) {

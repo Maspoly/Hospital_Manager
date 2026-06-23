@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.PerfilGerenteController"
+            stylesheets="@../css/style.css"
+            styleClass="app-root"
+            prefHeight="700.0"
+            prefWidth="1100.0">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="sidebar" BorderPane.alignment="CENTER">
+
+            <VBox styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="⚕" styleClass="logo-icon"/>
+                    <VBox spacing="2">
+                        <Label text="Clínica Dr. Luiz" styleClass="sidebar-brand"/>
+                        <Label text="Sistema de Gestão" styleClass="sidebar-brand-sub"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="nav-list" VBox.vgrow="ALWAYS">
+                <Button text="Dashboard" styleClass="nav-item" onAction="#goDashboard" maxWidth="Infinity" />
+                <Button text="Médicos" styleClass="nav-item" onAction="#goMedicos" maxWidth="Infinity" />
+                <Button text="Pacientes" styleClass="nav-item" onAction="#goPacientes" maxWidth="Infinity" />
+                <Button text="Gerentes" styleClass="nav-item" onAction="#goGerentes" maxWidth="Infinity" />
+                <Button text="Consultas" styleClass="nav-item" onAction="#goConsultas" maxWidth="Infinity" />
+                <Button text="Busca" styleClass="nav-item" onAction="#goBusca" maxWidth="Infinity" />
+                <Button text="Relatórios" styleClass="nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox styleClass="sidebar-footer">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="stat-icon-glyph"/>
+                    <VBox spacing="2">
+                        <Label text="Usuário" styleClass="sidebar-footer-label"/>
+                        <Label fx:id="lblUserName" text="Administrador" styleClass="sidebar-footer-name"/>
+                        <Label fx:id="lblUserRole" text="Gerente" styleClass="sidebar-footer-role"/>
+                    </VBox>
+                </HBox>
+                <Label text="👤 Visualizar Perfil" styleClass="sidebar-profile-link" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <VBox styleClass="content-area" spacing="24">
+
+                <VBox spacing="4">
+                    <Label text="Meu Perfil" styleClass="page-title" />
+                    <Label text="Visualize e edite suas informações pessoais" styleClass="page-subtitle" />
+                </VBox>
+
+                <VBox styleClass="surface-card" spacing="0" maxWidth="700">
+                    <padding>
+                        <Insets top="28" right="28" bottom="28" left="28" />
+                    </padding>
+
+                    <!-- Dados pessoais -->
+                    <Label text="Dados Pessoais" styleClass="panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Nome completo *" styleClass="form-label" />
+                        <TextField fx:id="fldNome" promptText="Seu nome completo" styleClass="text-input" />
+                    </VBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CPF" styleClass="form-label" />
+                            <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="text-input" editable="false" />
+                        </VBox>
+                    </HBox>
+
+
+                    <!-- Senha -->
+                    <Label text="Alterar Senha" styleClass="panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Senha atual" styleClass="form-label" />
+                            <PasswordField fx:id="fldSenhaAtual" promptText="Senha atual" styleClass="text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Nova senha" styleClass="form-label" />
+                            <PasswordField fx:id="fldSenhaNova" promptText="Nova senha" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Confirmar nova senha" styleClass="form-label" />
+                            <PasswordField fx:id="fldSenhaNovaConfirmar" promptText="Confirmar nova senha" styleClass="text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Rua *" styleClass="form-label" />
+                            <TextField fx:id="fldRua" promptText="Av. Principal" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="120">
+                            <Label text="Número *" styleClass="form-label" />
+                            <TextField fx:id="fldNumero" promptText="100" styleClass="text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="form-label" />
+                            <TextField fx:id="fldBairro" promptText="Centro" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="form-label" />
+                            <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="80">
+                            <Label text="Estado *" styleClass="form-label" />
+                            <TextField fx:id="fldEstado" promptText="RN" styleClass="text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 13px; -fx-wrap-text: true;"
+                           visible="false" managed="false" />
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="btn-ghost" onAction="#onCancelar" />
+                        <Button text="💾 Salvar Alterações" styleClass="btn-accent" onAction="#onSalvar" />
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="16">
+                    <VBox styleClass="mini-stat-card, mini-stat-blue" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                        <Label text="Dica: Mantenha seus dados sempre atualizados" styleClass="mini-stat-label-blue" wrapText="true" />
+                    </VBox>
+                    <VBox styleClass="mini-stat-card, mini-stat-green" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                        <Label text="Importante: O CPF não pode ser alterado" styleClass="mini-stat-label-green" wrapText="true" />
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

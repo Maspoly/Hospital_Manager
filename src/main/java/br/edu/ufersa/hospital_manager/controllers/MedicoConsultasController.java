@@ -6,11 +6,15 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class MedicoConsultasController {
@@ -20,6 +24,7 @@ public class MedicoConsultasController {
     @FXML private Label lblIniciais;
     @FXML private Label lblNomeMedico;
     @FXML private Label lblCrmMedico;
+    @FXML private Label lblVisualizarPerfil;
     @FXML private Label lblTotalConsultas;
     @FXML private Label lblConsultasEncontradas;
     @FXML private VBox boxConsultas;
@@ -30,7 +35,41 @@ public class MedicoConsultasController {
     @FXML
     public void initialize() {
         configurarDadosMedico();
+        configurarLinkPerfil();
         carregarConsultas();
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
+    }
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
     }
 
     private void configurarDadosMedico() {
@@ -115,28 +154,28 @@ public class MedicoConsultasController {
 
     @FXML
     public void goMeusPacientes(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medico_pacientes.fxml", "medico.css");
+        NavigationHelper.goTo((Node) event.getSource(), "medico_pacientes.fxml", "medico.css");
     }
 
     @FXML
     public void goMinhasConsultas(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medico_consultas.fxml", "medico.css");
+        NavigationHelper.goTo((Node) event.getSource(), "medico_consultas.fxml", "medico.css");
     }
 
     @FXML
     public void goCadastrarProntuario(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medico_cadastrar_prontuario.fxml", "medico.css");
+        NavigationHelper.goTo((Node) event.getSource(), "medico_cadastrar_prontuario.fxml", "medico.css");
     }
 
     @FXML
     public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medico_relatorios.fxml", "medico.css");
+        NavigationHelper.goTo((Node) event.getSource(), "medico_relatorios.fxml", "medico.css");
     }
 
     @FXML
     public void onSair(ActionEvent event) {
         ServiceRoleContext.clear();
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "login.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 
     private String extrairIniciais(String nome) {

@@ -35,6 +35,9 @@
                 <VBox spacing="1">
                     <Label fx:id="lblNomePaciente" text="Maria Santos" styleClass="paciente-profile-name" />
                     <Label fx:id="lblCpfPaciente" text="CPF: 111.222.333-44" styleClass="paciente-profile-cpf" />
+                    <!-- Link para visualizar perfil -->
+                    <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                           styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
                 </VBox>
             </HBox>
 
@@ -42,7 +45,6 @@
                 <Button text="📊  Dashboard" styleClass="paciente-nav-item-active" onAction="#goDashboard" maxWidth="Infinity" />
                 <Button text="📋  Meus Prontuários" styleClass="paciente-nav-item" onAction="#goProntuarios" maxWidth="Infinity" />
                 <Button text="📅  Minhas Consultas" styleClass="paciente-nav-item" onAction="#goConsultas" maxWidth="Infinity" />
-                <Button text="👤  Editar Dados" styleClass="paciente-nav-item" onAction="#goEditarDados" maxWidth="Infinity" />
             </VBox>
 
             <VBox styleClass="paciente-logout-box">

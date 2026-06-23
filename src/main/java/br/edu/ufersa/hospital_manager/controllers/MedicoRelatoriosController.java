@@ -5,14 +5,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.entities.Report;
 import br.edu.ufersa.hospital_manager.model.services.ReportServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
 
 public class MedicoRelatoriosController {
 
@@ -27,6 +30,7 @@ public class MedicoRelatoriosController {
     @FXML private Label lblConcluidas;
     @FXML private Label lblCanceladas;
     @FXML private Label lblRelatoriosEncontrados;
+    @FXML private Label lblVisualizarPerfil;
 
     @FXML private VBox boxRelatorios;
 
@@ -69,7 +73,31 @@ public class MedicoRelatoriosController {
         lblNomeMedico.setText("Dr. Médico");
         lblCrmMedico.setText("CRM-000000");
     }
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
 
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
     @FXML
     private void onGerarRelatorio(ActionEvent event) {
         atualizarRelatorio();

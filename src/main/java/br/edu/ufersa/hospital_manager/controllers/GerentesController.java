@@ -6,7 +6,9 @@ import java.util.List;
 
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ManagerServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
 import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +24,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -35,6 +38,11 @@ public class GerentesController {
     @FXML private Button btnConsultas;
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
+
+    // ── Labels do usuário logado ──────────────────────────────
+    @FXML private Label lblUserName;
+    @FXML private Label lblUserRole;
+    @FXML private Label lblVisualizarPerfil;
 
     @FXML
     private TableView<Manager> tableGerentes;
@@ -51,21 +59,114 @@ public class GerentesController {
     @FXML
     private TableColumn<Manager, Void> colAcoes;
 
-    @FXML
-    private Label lblUserName;
-
-    @FXML
-    private Label lblUserRole;
-
     private final ManagerServiceProxy managerService = new ManagerServiceProxy();
     private final ObservableList<Manager> gerentes = FXCollections.observableArrayList();
     private boolean usingDatabase = true;
 
     @FXML
     public void initialize() {
+        carregarDadosUsuario();
+        configurarLinkPerfil();
         configurarColunas();
         carregarDados();
     }
+
+    /**
+     * Preenche os dados do usuário logado na sidebar.
+     */
+    private void carregarDadosUsuario() {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
+        String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
+
+        lblUserName.setText(nomeUsuario);
+        lblUserRole.setText(cargoUsuario);
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
+    }
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
+
+    // ===================== NAVEGAÇÃO ENTRE TELAS =====================
+
+    @FXML
+    public void goDashboard(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
+    }
+
+    @FXML
+    public void goMedicos(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
+    }
+
+    @FXML
+    public void goPacientes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
+    }
+
+    @FXML
+    public void goGerentes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
+    }
+
+    @FXML
+    public void goConsultas(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
+    }
+
+    @FXML
+    public void goBusca(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
+    }
+
+    @FXML
+    public void goRelatorios(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
+    }
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
+    }
+
+    @FXML
+    public void onNovoGerente(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "CadastroGerente.fxml");
+    }
+
+    // ===================== MÉTODOS INTERNOS =====================
 
     private void configurarColunas() {
         colNome.setCellValueFactory(data ->
@@ -142,7 +243,6 @@ public class GerentesController {
         ButtonType salvar = new ButtonType("Salvar", ButtonType.OK.getButtonData());
         dialog.getDialogPane().getButtonTypes().addAll(salvar, ButtonType.CANCEL);
 
-        // Cria os campos do formulário
         TextField nomeField = new TextField(manager.getName());
         TextField cpfField = new TextField(manager.getCPF());
 
@@ -153,13 +253,11 @@ public class GerentesController {
         TextField cidadeField = new TextField(address.getCity() != null ? address.getCity() : "");
         TextField estadoField = new TextField(address.getState() != null ? address.getState() : "");
 
-        // Cria o GridPane
         GridPane grid = new GridPane();
         grid.setHgap(12);
         grid.setVgap(12);
         grid.setPadding(new Insets(16, 24, 8, 24));
 
-        // Adiciona os campos ao GridPane
         grid.add(new Label("Nome:"), 0, 0);
         grid.add(nomeField, 1, 0);
         GridPane.setColumnSpan(nomeField, 3);
@@ -227,53 +325,5 @@ public class GerentesController {
                 NavigationHelper.showError("Erro ao excluir gerente: " + exception.getMessage());
             }
         }
-    }
-
-    @FXML
-    public void onNovoGerente(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "CadastroGerente.fxml");
-    }
-
-    // ===================== NAVEGAÇÃO ENTRE TELAS =====================
-
-    @FXML
-    public void goDashboard(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
-    }
-
-    @FXML
-    public void goMedicos(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
-    }
-
-    @FXML
-    public void goPacientes(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
-    }
-
-    @FXML
-    public void goGerentes(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
-    }
-
-    @FXML
-    public void goConsultas(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
-    }
-
-    @FXML
-    public void goBusca(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
-    }
-
-    @FXML
-    public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
-    }
-
-    @FXML
-    public void onSair(ActionEvent event) {
-        ServiceRoleContext.clear();
-        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 }

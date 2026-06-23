@@ -8,12 +8,17 @@ import java.util.Optional;
 import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.MedicalRecordServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -25,6 +30,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 
 public class PacientesController {
@@ -52,10 +58,81 @@ public class PacientesController {
     @FXML
     private TableColumn<Patient, Void> colAcoes;
 
+    // ── Labels do usuário logado ──────────────────────────────
+    @FXML private Label lblUserName;
+    @FXML private Label lblUserRole;
+    @FXML private Label lblVisualizarPerfil;
+
+    // ── Botões de navegação ───────────────────────────────────
+    @FXML private Button btnDashboard;
+    @FXML private Button btnMedicos;
+    @FXML private Button btnPacientes;
+    @FXML private Button btnGerentes;
+    @FXML private Button btnConsultas;
+    @FXML private Button btnBusca;
+    @FXML private Button btnRelatorios;
+
     @FXML
     public void initialize() {
         configurarColunas();
         carregarDados();
+        carregarDadosUsuario();
+        configurarLinkPerfil();
+    }
+
+    /**
+     * Preenche os dados do usuário logado na sidebar.
+     */
+    private void carregarDadosUsuario() {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
+        String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
+
+        if (lblUserName != null) {
+            lblUserName.setText(nomeUsuario);
+        }
+        if (lblUserRole != null) {
+            lblUserRole.setText(cargoUsuario);
+        }
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
+    }
+
+    /**
+     * Navega para a tela de perfil do usuário logado
+     */
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        // Usa o próprio label como referência para navegação
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
     }
 
     private void configurarColunas() {
@@ -83,7 +160,7 @@ public class PacientesController {
                 link.getStyleClass().add("cell-link");
                 link.setOnMouseClicked(e -> onVerProntuarios(getTableRow().getItem()));
             }
-            /* 
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -92,11 +169,16 @@ public class PacientesController {
                     setGraphic(null);
                     return;
                 }
-                int quantidade = patient.getMedicalRecord() != null ? 1 : 0;
-                link.setText(quantidade + " prontuário" + (quantidade == 1 ? "" : "s"));
+                
+                try {
+                    MedicalRecord record = medicalRecordService.findByPatient(patient);
+                    int quantidade = record != null ? 1 : 0;
+                    link.setText(quantidade + " prontuário" + (quantidade == 1 ? "" : "s"));
+                } catch (Exception e) {
+                    link.setText("0 prontuários");
+                }
                 setGraphic(link);
             }
-                */
         });
 
         colAcoes.setCellFactory(col -> new TableCell<Patient, Void>() {
@@ -173,6 +255,8 @@ public class PacientesController {
     }
 
     private void onEditarPaciente(Patient patient) {
+        if (patient == null) return;
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Paciente");
         dialog.setHeaderText("Atualize os dados de " + patient.getName());
@@ -180,27 +264,50 @@ public class PacientesController {
         ButtonType salvar = new ButtonType("Salvar", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(salvar, ButtonType.CANCEL);
 
+        // Campos do formulário
         TextField nomeField = new TextField(patient.getName());
-        TextField cpfField = new TextField(patient.getCPF());
+        nomeField.setPromptText("Nome completo");
 
+        TextField cpfField = new TextField(patient.getCPF());
+        cpfField.setPromptText("CPF");
+        cpfField.setEditable(false); // CPF não pode ser alterado
+
+        // Layout do GridPane
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.addRow(0, new Label("Nome:"), nomeField);
-        grid.addRow(1, new Label("CPF:"), cpfField);
+        grid.setPadding(new Insets(20, 20, 10, 20));
+
+        grid.add(new Label("Nome:"), 0, 0);
+        grid.add(nomeField, 1, 0);
         GridPane.setHgrow(nomeField, Priority.ALWAYS);
+
+        grid.add(new Label("CPF:"), 0, 1);
+        grid.add(cpfField, 1, 1);
         GridPane.setHgrow(cpfField, Priority.ALWAYS);
 
         dialog.getDialogPane().setContent(grid);
 
+        // Estilizar botões
+        Button btnOk = (Button) dialog.getDialogPane().lookupButton(salvar);
+        btnOk.getStyleClass().add("btn-accent");
+        
+        Button btnCancel = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+        btnCancel.getStyleClass().add("btn-ghost");
+
         Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isEmpty() || result.get().getButtonData() != ButtonBar.ButtonData.OK_DONE) {
+        if (result.isEmpty() || result.get() != salvar) {
             return;
         }
 
         try {
-            patient.setName(nomeField.getText().trim());
-            patient.setCPF(cpfField.getText().trim().replaceAll("[^0-9]", ""));
+            String novoNome = nomeField.getText().trim();
+            if (novoNome.isEmpty()) {
+                NavigationHelper.showError("O nome não pode estar vazio.");
+                return;
+            }
+
+            patient.setName(novoNome);
 
             if (usingDatabase) {
                 patientService.updatePatient(patient);
@@ -234,39 +341,49 @@ public class PacientesController {
 
     @FXML
     public void onNovoPaciente(ActionEvent event) {
-        
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "CadastroPaciente.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "CadastroPaciente.fxml");
     }
 
     // ===================== NAVEGAÇÃO ENTRE TELAS =====================
 
     @FXML
     public void goDashboard(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
     }
 
     @FXML
     public void goMedicos(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medicos.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
     }
 
     @FXML
     public void goPacientes(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "pacientes.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
+    }
+
+    @FXML
+    public void goGerentes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
     }
 
     @FXML
     public void goConsultas(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "consultas.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
     }
 
     @FXML
     public void goBusca(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "busca.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
     }
 
     @FXML
     public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
+    }
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 }

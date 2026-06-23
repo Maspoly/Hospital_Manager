@@ -16,14 +16,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.input.MouseEvent;
 
-import br.edu.ufersa.hospital_manager.model.entities.Consultation;
-import br.edu.ufersa.hospital_manager.model.entities.Patient;
-import br.edu.ufersa.hospital_manager.model.entities.Person;
-import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
-import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
-import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
+import br.edu.ufersa.hospital_manager.model.entities.*;
+import br.edu.ufersa.hospital_manager.model.services.*;
 
 public class PacienteConsultasController {
 
@@ -40,6 +36,8 @@ public class PacienteConsultasController {
 
     @FXML
     private TableView<Consultation> tableConsultas;
+
+    @FXML private Label lblVisualizarPerfil;
 
     @FXML
     private TableColumn<Consultation, String> colDataHora;
@@ -66,6 +64,33 @@ public class PacienteConsultasController {
         carregarPacienteLogado();
         configurarColunas();
         carregarConsultas();
+    }
+
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(lblVisualizarPerfil, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(lblVisualizarPerfil, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
     }
 
     /**

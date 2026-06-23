@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
+import br.edu.ufersa.hospital_manager.model.entities.Doctor;
+import br.edu.ufersa.hospital_manager.model.entities.Manager;
+import br.edu.ufersa.hospital_manager.model.entities.Patient;
 import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
@@ -19,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class DashboardController implements Initializable {
@@ -36,6 +40,9 @@ public class DashboardController implements Initializable {
     @FXML private Label lblUserName;
     @FXML private Label lblUserRole;
 
+    // ── Link para visualizar perfil ──────────────────────────
+    @FXML private Label lblVisualizarPerfil;
+
     // ── Botões de navegação ───────────────────────────────────
     @FXML private Button btnDashboard;
     @FXML private Button btnMedicos;
@@ -44,6 +51,7 @@ public class DashboardController implements Initializable {
     @FXML private Button btnConsultas;
     @FXML private Button btnBusca;
     @FXML private Button btnRelatorios;
+    @FXML private Button btnSair;
 
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final PatientServiceProxy patientService = new PatientServiceProxy();
@@ -58,6 +66,17 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         carregarDadosUsuario();
         carregarMetricas();
+        configurarLinkPerfil();
+    }
+
+    /**
+     * Configura o link para visualizar perfil
+     */
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
     }
 
     /**
@@ -84,7 +103,6 @@ public class DashboardController implements Initializable {
         int totalGerentes = buscarTotalGerentes();
         int consultasPendentes = buscarConsultasPendentes();
 
-        // Verifica se os Labels não são null antes de setar texto
         if (lblTotalMedicos != null) {
             lblTotalMedicos.setText(String.valueOf(totalMedicos));
         }
@@ -119,7 +137,7 @@ public class DashboardController implements Initializable {
         try {
             return managerService.listAll().size();
         } catch (SQLException exception) {
-            return 1; // Pelo menos o admin padrão
+            return 1;
         }
     }
 
@@ -181,6 +199,42 @@ public class DashboardController implements Initializable {
         setNavAtivo(btnRelatorios);
         navegarPara("/br/edu/ufersa/hospital_manager/views/relatorios.fxml");
     }
+    @FXML
+    private void onSair() {
+        setNavAtivo(btnSair);
+        navegarPara("/br/edu/ufersa/hospital_manager/views/login.fxml");
+    }
+    
+
+    /**
+     * Navega para a tela de perfil do usuário logado
+     */
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        if (usuario == null || role == null) {
+            NavigationHelper.showError("Usuário não encontrado.");
+            return;
+        }
+
+        // Navega para a tela de perfil apropriada baseada no papel
+        switch (role) {
+            case MANAGER:
+                NavigationHelper.goTo(btnDashboard, "perfil_gerente.fxml");
+                break;
+            case DOCTOR:
+                NavigationHelper.goTo(btnDashboard, "medico_editar_dados.fxml", "medico.css");
+                break;
+            case PATIENT:
+                NavigationHelper.goTo(btnDashboard, "paciente_editar_dados.fxml", "paciente.css");
+                break;
+            default:
+                NavigationHelper.showError("Perfil não encontrado.");
+                break;
+        }
+    }
 
     // ─────────────────────────────────────────────────────────
     // Utilitários de navegação
@@ -189,7 +243,7 @@ public class DashboardController implements Initializable {
     private void setNavAtivo(Button botaoAtivo) {
         Button[] todos = {
             btnDashboard, btnMedicos, btnPacientes,
-            btnGerentes, btnConsultas, btnBusca, btnRelatorios
+            btnGerentes, btnConsultas, btnBusca, btnRelatorios, btnSair
         };
         for (Button btn : todos) {
             if (btn != null) {

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane styleClass="medico-app-root" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.MedicoEditarDadosController"
+            stylesheets="@../css/medico.css">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <left>
+        <VBox styleClass="medico-sidebar" BorderPane.alignment="CENTER">
+
+            <HBox styleClass="medico-sidebar-header" spacing="9" alignment="CENTER_LEFT">
+                <StackPane styleClass="medico-sidebar-logo-badge">
+                    <Label text="⚕" styleClass="medico-sidebar-logo-glyph" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label text="Portal Médico" styleClass="medico-sidebar-brand" />
+                    <Label text="Clínica Dr. Luiz" styleClass="medico-sidebar-brand-sub" />
+                </VBox>
+            </HBox>
+
+            <HBox styleClass="medico-profile-box" spacing="10" alignment="CENTER_LEFT">
+                <StackPane>
+                    <Circle radius="17" styleClass="medico-avatar-circle" />
+                    <Label fx:id="lblIniciais" text="J" styleClass="medico-avatar-initial" />
+                </StackPane>
+                <VBox spacing="1">
+                    <Label fx:id="lblNomeMedico" text="Dr. João Lourenço" styleClass="medico-profile-name" />
+                    <Label fx:id="lblCrmMedico" text="CRM-123456" styleClass="medico-profile-crm" />
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="medico-nav-list" VBox.vgrow="ALWAYS">
+                <Button text="📄  Meus Pacientes" styleClass="medico-nav-item" onAction="#goMeusPacientes" maxWidth="Infinity" />
+                <Button text="📅  Minhas Consultas" styleClass="medico-nav-item" onAction="#goMinhasConsultas" maxWidth="Infinity" />
+                <Button text="📝  Cadastrar Prontuário" styleClass="medico-nav-item" onAction="#goCadastrarProntuario" maxWidth="Infinity" />
+                <Button text="📊  Gerar Relatórios" styleClass="medico-nav-item" onAction="#goRelatorios" maxWidth="Infinity" />
+            </VBox>
+
+            <VBox styleClass="medico-logout-box">
+                <Button text="⏻  Sair" styleClass="medico-btn-logout" onAction="#onSair" maxWidth="Infinity" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ===================== CONTENT ===================== -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0;">
+            <VBox styleClass="medico-content-area" spacing="24">
+
+                <VBox spacing="4">
+                    <Label text="Meu Perfil" styleClass="medico-page-title" />
+                    <Label text="Visualize e edite suas informações pessoais" styleClass="medico-page-subtitle" />
+                </VBox>
+
+                <VBox styleClass="medico-surface-card" spacing="0" maxWidth="700">
+                    <padding>
+                        <Insets top="28" right="28" bottom="28" left="28" />
+                    </padding>
+
+                    <!-- Dados pessoais -->
+                    <Label text="Dados Pessoais" styleClass="medico-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Nome completo *" styleClass="medico-form-label" />
+                        <TextField fx:id="fldNome" promptText="Seu nome completo" styleClass="medico-text-input" />
+                    </VBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CPF *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="medico-text-input" editable="false" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Senha -->
+                    <Label text="Alterar Senha" styleClass="medico-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Senha atual" styleClass="medico-form-label" />
+                            <PasswordField fx:id="fldSenhaAtual" promptText="Senha atual" styleClass="medico-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Nova senha" styleClass="medico-form-label" />
+                            <PasswordField fx:id="fldSenhaNova" promptText="Nova senha" styleClass="medico-text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Confirmar nova senha" styleClass="medico-form-label" />
+                            <PasswordField fx:id="fldSenhaNovaConfirmar" promptText="Confirmar nova senha" styleClass="medico-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="medico-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Rua *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldRua" promptText="Av. Principal" styleClass="medico-text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="120">
+                            <Label text="Número *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldNumero" promptText="100" styleClass="medico-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldBairro" promptText="Centro" styleClass="medico-text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="medico-text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="80">
+                            <Label text="Estado *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldEstado" promptText="RN" styleClass="medico-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Dados profissionais -->
+                    <Label text="Dados Profissionais" styleClass="medico-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CRM / Código Conselho *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldCrm" promptText="CRM 123456/RN" styleClass="medico-text-input" editable="false" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Valor da consulta (R$) *" styleClass="medico-form-label" />
+                            <TextField fx:id="fldValorConsulta" promptText="0,00" styleClass="medico-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 13px; -fx-wrap-text: true;"
+                           visible="false" managed="false" />
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="medico-btn-cancel" onAction="#onCancelar" />
+                        <Button text="💾 Salvar Alterações" styleClass="medico-btn-save" onAction="#onSalvar" />
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="16" maxWidth="700">
+                    <VBox styleClass="medico-strip, medico-strip-blue" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                        <Label text="Dica: Mantenha seus dados sempre atualizados" styleClass="medico-strip-text-blue" wrapText="true" />
+                    </VBox>
+                    <VBox styleClass="medico-strip, medico-strip-green" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                        <Label text="Importante: O CRM e CPF não podem ser alterados" styleClass="medico-strip-text-green" wrapText="true" />
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

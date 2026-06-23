@@ -893,3 +893,45 @@
     font-weight: 700;
 }
 
+/* =========================================================
+   SIDEBAR PROFILE LINK
+   ========================================================= */
+
+.sidebar-profile-link {
+    -fx-text-fill: #60a5fa;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-padding: 8 0 0 0;
+    -fx-underline: true;
+}
+
+.sidebar-profile-link:hover {
+    -fx-text-fill: #93bbfc;
+}
+
+
+/* ---------- Sair (logout) ---------- */
+.medico-logout-box {
+    -fx-padding: 16 20 18 20;
+    padding: 16 20 18 20;
+}
+
+.medico-btn-logout {
+    -fx-background-color: transparent;
+    background-color: transparent;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+    -fx-cursor: hand;
+    cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 8;
+}
+
+.medico-btn-logout:hover {
+    -fx-underline: true;
+}

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +18,8 @@
 
 <BorderPane styleClass="paciente-app-root" prefHeight="700.0" prefWidth="1100.0"
             xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="br.edu.ufersa.hospital_manager.controllers.PacienteEditarDadosController">
+            fx:controller="br.edu.ufersa.hospital_manager.controllers.PacienteEditarDadosController"
+            stylesheets="@../css/paciente.css">
 
     <!-- ===================== SIDEBAR ===================== -->
     <left>
@@ -40,14 +43,17 @@
                 <VBox spacing="1">
                     <Label fx:id="lblNomePaciente" text="Maria Santos" styleClass="paciente-profile-name" />
                     <Label fx:id="lblCpfPaciente" text="CPF: 111.222.333-44" styleClass="paciente-profile-cpf" />
+                    <!-- Link para visualizar perfil -->
+                    <Label fx:id="lblVisualizarPerfil" text="👤 Visualizar Perfil" 
+                           styleClass="sidebar-profile-link" onMouseClicked="#onVisualizarPerfil"/>
                 </VBox>
+                
             </HBox>
 
             <VBox styleClass="paciente-nav-list" VBox.vgrow="ALWAYS">
                 <Button text="📊  Dashboard" styleClass="paciente-nav-item" onAction="#goDashboard" maxWidth="Infinity" />
                 <Button text="📋  Meus Prontuários" styleClass="paciente-nav-item" onAction="#goProntuarios" maxWidth="Infinity" />
                 <Button text="📅  Minhas Consultas" styleClass="paciente-nav-item" onAction="#goConsultas" maxWidth="Infinity" />
-                <Button text="👤  Editar Dados" styleClass="paciente-nav-item-active" onAction="#goEditarDados" maxWidth="Infinity" />
             </VBox>
 
             <VBox styleClass="paciente-logout-box">
@@ -58,119 +64,99 @@
 
     <!-- ===================== CONTENT ===================== -->
     <center>
-        <VBox styleClass="paciente-content-area" spacing="24">
+        <ScrollPane fitToWidth="true" fitToHeight="true" 
+                    style="-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0;">
+            <VBox styleClass="paciente-content-area" spacing="24">
 
-            <VBox spacing="4">
-                <Label text="Editar Meus Dados" styleClass="paciente-page-title" />
-                <Label text="Atualize suas informações pessoais" styleClass="paciente-page-subtitle" />
+                <VBox spacing="4">
+                    <Label text="Editar Meus Dados" styleClass="paciente-page-title" />
+                    <Label text="Atualize suas informações pessoais" styleClass="paciente-page-subtitle" />
+                </VBox>
+
+                <VBox styleClass="paciente-surface-card" spacing="0" maxWidth="700">
+                    <padding>
+                        <Insets top="24" right="28" bottom="28" left="28" />
+                    </padding>
+
+                    <!-- Dados pessoais -->
+                    <Label text="Dados Pessoais" styleClass="paciente-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
+                        <Label text="Nome completo *" styleClass="paciente-form-label" />
+                        <TextField fx:id="fldNome" promptText="Seu nome completo" styleClass="paciente-text-input" />
+                    </VBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CPF" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="paciente-text-input" editable="false" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Senha -->
+                    <Label text="Alterar Senha" styleClass="paciente-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Senha atual" styleClass="paciente-form-label" />
+                            <PasswordField fx:id="fldSenhaAtual" promptText="Senha atual" styleClass="paciente-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Nova senha" styleClass="paciente-form-label" />
+                            <PasswordField fx:id="fldSenhaNova" promptText="Nova senha" styleClass="paciente-text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Confirmar nova senha" styleClass="paciente-form-label" />
+                            <PasswordField fx:id="fldSenhaNovaConfirmar" promptText="Confirmar nova senha" styleClass="paciente-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Endereço -->
+                    <Label text="Endereço" styleClass="paciente-panel-title" />
+                    <Separator style="-fx-padding: 10 0 18 0;" />
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Rua *" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldRua" promptText="Rua das Flores" styleClass="paciente-text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="120">
+                            <Label text="Número *" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldNumero" promptText="200" styleClass="paciente-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Bairro *" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldBairro" promptText="Centro" styleClass="paciente-text-input" />
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Cidade *" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="paciente-text-input" />
+                        </VBox>
+                        <VBox spacing="6" prefWidth="80">
+                            <Label text="Estado *" styleClass="paciente-form-label" />
+                            <TextField fx:id="fldEstado" promptText="RN" styleClass="paciente-text-input" />
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="lblErro" text=""
+                           style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-wrap-text: true;"
+                           visible="false" managed="false" />
+
+                    <HBox spacing="12" alignment="CENTER_RIGHT">
+                        <Button text="Cancelar" styleClass="paciente-btn-cancel" onAction="#onCancelar" />
+                        <Button text="💾  Salvar Alterações" styleClass="paciente-btn-save" onAction="#onSalvar" />
+                    </HBox>
+                </VBox>
+
             </VBox>
-
-            <VBox styleClass="paciente-surface-card" spacing="0" maxWidth="700">
-                <padding>
-                    <Insets top="24" right="28" bottom="28" left="28" />
-                </padding>
-
-                <!-- Dados pessoais -->
-                <Label text="Dados Pessoais" styleClass="paciente-panel-title" />
-                <Separator style="-fx-padding: 10 0 18 0;" />
-
-                <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                    <Label text="Nome completo *" styleClass="paciente-form-label" />
-                    <TextField fx:id="fldNome" promptText="Seu nome completo" styleClass="paciente-text-input" />
-                </VBox>
-
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="CPF" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldCpf" promptText="000.000.000-00" styleClass="paciente-text-input" editable="false" />
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Data de nascimento" styleClass="paciente-form-label" />
-                        <DatePicker fx:id="fldDataNascimento" promptText="dd/mm/aaaa" styleClass="paciente-date-input" maxWidth="Infinity" />
-                    </VBox>
-                </HBox>
-
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Sexo" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="fldSexo" promptText="Selecione..." styleClass="paciente-combo-input" maxWidth="Infinity" />
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Telefone" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldTelefone" promptText="(00) 90000-0000" styleClass="paciente-text-input" />
-                    </VBox>
-                </HBox>
-
-                <VBox spacing="6" style="-fx-padding: 0 0 24 0;">
-                    <Label text="E-mail" styleClass="paciente-form-label" />
-                    <TextField fx:id="fldEmail" promptText="seu@email.com" styleClass="paciente-text-input" />
-                </VBox>
-
-                <!-- Endereço -->
-                <Label text="Endereço" styleClass="paciente-panel-title" />
-                <Separator style="-fx-padding: 10 0 18 0;" />
-
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Rua *" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldRua" promptText="Rua das Flores" styleClass="paciente-text-input" />
-                    </VBox>
-                    <VBox spacing="6" prefWidth="120">
-                        <Label text="Número *" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldNumero" promptText="200" styleClass="paciente-text-input" />
-                    </VBox>
-                </HBox>
-
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Bairro *" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldBairro" promptText="Centro" styleClass="paciente-text-input" />
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Cidade *" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldCidade" promptText="Mossoró" styleClass="paciente-text-input" />
-                    </VBox>
-                    <VBox spacing="6" prefWidth="80">
-                        <Label text="Estado *" styleClass="paciente-form-label" />
-                        <TextField fx:id="fldEstado" promptText="RN" styleClass="paciente-text-input" />
-                    </VBox>
-                </HBox>
-
-                <!-- Dados clínicos -->
-                <Label text="Dados Clínicos" styleClass="paciente-panel-title" />
-                <Separator style="-fx-padding: 10 0 18 0;" />
-
-                <HBox spacing="16" style="-fx-padding: 0 0 16 0;">
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Tipo sanguíneo" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="fldTipoSanguineo" promptText="Selecione..." styleClass="paciente-combo-input" maxWidth="Infinity" />
-                    </VBox>
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label text="Convênio" styleClass="paciente-form-label" />
-                        <ComboBox fx:id="fldConvenio" promptText="Selecione..." styleClass="paciente-combo-input" maxWidth="Infinity" />
-                    </VBox>
-                </HBox>
-
-                <VBox spacing="6" style="-fx-padding: 0 0 16 0;">
-                    <Label text="Alergias" styleClass="paciente-form-label" />
-                    <TextArea fx:id="fldAlergias" promptText="Descreva alergias, se houver..." styleClass="paciente-textarea" prefRowCount="2" wrapText="true" />
-                </VBox>
-
-                <VBox spacing="6" style="-fx-padding: 0 0 32 0;">
-                    <Label text="Observações" styleClass="paciente-form-label" />
-                    <TextArea fx:id="fldObservacoes" promptText="Informações adicionais..." styleClass="paciente-textarea" prefRowCount="2" wrapText="true" />
-                </VBox>
-
-                <Label fx:id="lblErro" text=""
-                       style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-wrap-text: true;"
-                       visible="false" managed="false" />
-
-                <HBox spacing="12" alignment="CENTER_RIGHT">
-                    <Button text="Cancelar" styleClass="paciente-btn-cancel" onAction="#onCancelar" />
-                    <Button text="💾  Salvar Alterações" styleClass="paciente-btn-save" onAction="#onSalvar" />
-                </HBox>
-            </VBox>
-
-        </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>

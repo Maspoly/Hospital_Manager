@@ -11,13 +11,17 @@ import br.edu.ufersa.hospital_manager.model.entities.Address;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
+import br.edu.ufersa.hospital_manager.model.entities.Person;
 import br.edu.ufersa.hospital_manager.model.services.ConsultationServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.DoctorServiceProxy;
 import br.edu.ufersa.hospital_manager.model.services.PatientServiceProxy;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRole;
+import br.edu.ufersa.hospital_manager.model.services.ServiceRoleContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -25,6 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class BuscaController {
@@ -46,16 +51,26 @@ public class BuscaController {
     @FXML
     private VBox boxResultados;
 
+    @FXML
+    private Label lblUserName;
+
+    @FXML
+    private Label lblUserRole;
+
+    @FXML
+    private Label lblVisualizarPerfil;
+
     private final PatientServiceProxy patientService = new PatientServiceProxy();
     private final DoctorServiceProxy doctorService = new DoctorServiceProxy();
     private final ConsultationServiceProxy consultationService = new ConsultationServiceProxy();
 
-    // Dados mock para simular a busca (futuramente vêm de PatientServices/DoctorServices)
+    // Dados mock para simular a busca
     private final List<Patient> pacientesMock = new ArrayList<>();
     private final List<Doctor> medicosMock = new ArrayList<>();
 
     @FXML
     public void initialize() {
+        carregarDadosUsuario();
         cmbBuscarPor.getItems().setAll("Paciente", "Médico", "Consulta");
         cmbBuscarPor.setValue("Paciente");
 
@@ -63,8 +78,36 @@ public class BuscaController {
         cmbCriterio.valueProperty().addListener((obs, oldVal, newVal) -> atualizarTermoPlaceholder());
 
         atualizarCriterios(cmbBuscarPor.getValue());
+        configurarLinkPerfil();
 
         carregarDadosMock();
+    }
+
+    /**
+     * Preenche os dados do usuário logado na sidebar.
+     */
+    private void carregarDadosUsuario() {
+        Person usuario = ServiceRoleContext.getCurrentUser();
+        ServiceRole role = ServiceRoleContext.getCurrentRole();
+
+        String nomeUsuario = usuario != null ? usuario.getName() : "Administrador";
+        String cargoUsuario = role != null ? role.getDisplayName() : "Gerente";
+
+        lblUserName.setText(nomeUsuario);
+        lblUserRole.setText(cargoUsuario);
+    }
+
+    private void configurarLinkPerfil() {
+        if (lblVisualizarPerfil != null) {
+            lblVisualizarPerfil.setStyle("-fx-cursor: hand; -fx-text-fill: #60a5fa; -fx-underline: true;");
+            lblVisualizarPerfil.setOnMouseClicked(this::onVisualizarPerfil);
+        }
+    }
+
+    @FXML
+    private void onVisualizarPerfil(MouseEvent event) {
+        // Usa o próprio label como referência para navegação
+        NavigationHelper.goTo(lblVisualizarPerfil, "perfil_gerente.fxml");
     }
 
     private void atualizarCriterios(String buscarPor) {
@@ -471,31 +514,42 @@ public class BuscaController {
 
     @FXML
     public void goDashboard(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "Dashboard.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "Dashboard.fxml");
     }
 
     @FXML
     public void goMedicos(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "medicos.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "medicos.fxml");
     }
 
     @FXML
     public void goPacientes(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "pacientes.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "pacientes.fxml");
+    }
+
+    @FXML
+    public void goGerentes(ActionEvent event) {
+        NavigationHelper.goTo((Node) event.getSource(), "gerentes.fxml");
     }
 
     @FXML
     public void goConsultas(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "consultas.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "consultas.fxml");
     }
 
     @FXML
     public void goBusca(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "busca.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "busca.fxml");
     }
 
     @FXML
     public void goRelatorios(ActionEvent event) {
-        NavigationHelper.goTo(((javafx.scene.Node) event.getSource()), "relatorios.fxml");
+        NavigationHelper.goTo((Node) event.getSource(), "relatorios.fxml");
+    }
+
+    @FXML
+    public void onSair(ActionEvent event) {
+        ServiceRoleContext.clear();
+        NavigationHelper.goTo((Node) event.getSource(), "login.fxml");
     }
 }
