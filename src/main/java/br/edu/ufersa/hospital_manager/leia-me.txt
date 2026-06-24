@@ -1,0 +1,514 @@
+================================================================================
+                        HOSPITAL MANAGER
+                   SISTEMA DE GESTAO HOSPITALAR
+                         GUIA DO USUARIO
+================================================================================
+
+INDICE
+------
+ 1. Introducao
+ 2. Primeiros Passos
+ 3. Telas do Sistema
+ 4. Funcionalidades Gerais
+ 5. Tutorial de Uso
+ 6. Estrutura de Dados
+ 7. Seguranca
+ 8. Telas de Cadastro
+ 9. Atalhos do Teclado
+10. Perguntas Frequentes (FAQ)
+
+================================================================================
+1. INTRODUCAO
+================================================================================
+
+O Hospital Manager e um sistema de gestao para clinicas e hospitais que
+permite o gerenciamento de:
+
+  - Medicos
+  - Pacientes
+  - Gerentes
+  - Consultas
+  - Prontuarios
+  - Relatorios
+
+================================================================================
+2. PRIMEIROS PASSOS
+================================================================================
+
+2.1. CONFIGURACAO DO BANCO DE DADOS
+------------------------------------
+Antes de executar o programa, e necessario configurar o banco de dados MySQL.
+
+PASSO 1 - Execute o script SQL abaixo:
+
+  CREATE DATABASE IF NOT EXISTS hospital_manager;
+  USE hospital_manager;
+
+  -- ADDRESS
+  CREATE TABLE addresses (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      street VARCHAR(255) NOT NULL,
+      number VARCHAR(20),
+      neighborhood VARCHAR(255),
+      city VARCHAR(255),
+      state VARCHAR(100)
+  );
+
+  -- MANAGER
+  CREATE TABLE manager (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(255) NOT NULL,
+      cpf VARCHAR(11) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      address_id BIGINT,
+      FOREIGN KEY (address_id) REFERENCES addresses(id)
+  );
+
+  -- DOCTOR
+  CREATE TABLE doctor (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(255) NOT NULL,
+      cpf VARCHAR(11) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      address_id BIGINT,
+      consultation_value DECIMAL(10,2),
+      council_code VARCHAR(50),
+      FOREIGN KEY (address_id) REFERENCES addresses(id)
+  );
+
+  -- PATIENT
+  CREATE TABLE patient (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(255) NOT NULL,
+      cpf VARCHAR(11) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      address_id BIGINT,
+      FOREIGN KEY (address_id) REFERENCES addresses(id)
+  );
+
+  -- CONSULTATION
+  CREATE TABLE consultation (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      patient_id BIGINT NOT NULL,
+      doctor_id BIGINT NOT NULL,
+      date_time DATETIME NOT NULL,
+      status VARCHAR(50),
+      FOREIGN KEY (patient_id) REFERENCES patient(id),
+      FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+  );
+
+  -- MEDICAL RECORD
+  CREATE TABLE medical_records (
+      id BIGINT PRIMARY KEY AUTO_INCREMENT,
+      date DATE NOT NULL,
+      observation TEXT,
+      patient_id BIGINT NOT NULL,
+      doctor_id BIGINT NOT NULL,
+      FOREIGN KEY (patient_id) REFERENCES patient(id),
+      FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+  );
+
+  -- DADOS INICIAIS
+  INSERT INTO addresses (street, number, neighborhood, city, state)
+  VALUES ('Av. Central', '100', 'Centro', 'Mossoro', 'RN');
+
+  INSERT INTO manager (name, cpf, password, address_id)
+  VALUES ('Administrador', '00000000000',
+  '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 1);
+
+PASSO 2 - Verifique se a conexao com o banco esta configurada corretamente
+no arquivo de configuracao do projeto.
+
+================================================================================
+3. TELAS DO SISTEMA
+================================================================================
+
+3.1. TELA DE LOGIN
+-------------------
+A tela de login e a porta de entrada do sistema.
+
+Campos:
+  - CPF   : Digite o CPF do usuario (apenas numeros, sem pontuacao)
+  - Senha : Digite a senha do usuario
+
+Botoes:
+  - Entrar                  : Realiza a autenticacao
+  - Cadastrar novo paciente : Redireciona para o cadastro de paciente
+
+Credenciais de Teste:
+  CPF   : 00000000000
+  Senha : admin123
+
+NOTA: Se o CPF estiver cadastrado em mais de um tipo de usuario (ex: Medico
+e Gerente), o sistema exibira um seletor para escolher qual perfil usar.
+
+--------------------------------------------------------------------------------
+3.2. SELETOR DE PAPEIS
+-----------------------
+Quando um CPF esta cadastrado em multiplos perfis:
+
+  - Gerente  : Acesso ao painel administrativo, cadastros e relatorios
+  - Medico   : Acesso as telas e rotinas de atendimento medico
+  - Paciente : Acesso ao painel do paciente e suas informacoes
+
+--------------------------------------------------------------------------------
+3.3. DASHBOARD (GERENTE)
+-------------------------
+Exibe um resumo das atividades da clinica.
+
+Indicadores:
+  - Total de Medicos
+  - Total de Pacientes
+  - Consultas Pendentes
+  - Consultas Concluidas
+
+Navegacao: Menu lateral com acesso a todas as funcionalidades.
+
+--------------------------------------------------------------------------------
+3.4. GERENCIAMENTO DE MEDICOS
+------------------------------
+Funcionalidades:
+  - Listar    : Visualiza todos os medicos cadastrados
+  - Cadastrar : Adiciona um novo medico (+ Novo Medico)
+  - Editar    : Altera os dados de um medico existente (incluindo senha)
+  - Excluir   : Remove um medico do sistema
+
+Campos do medico:
+  - Nome completo
+  - CPF
+  - Endereco (Rua, Numero, Bairro, Cidade, Estado)
+  - CRM / Codigo do Conselho
+  - Valor da consulta
+
+--------------------------------------------------------------------------------
+3.5. GERENCIAMENTO DE PACIENTES
+---------------------------------
+Funcionalidades:
+  - Listar          : Visualiza todos os pacientes cadastrados
+  - Cadastrar       : Adiciona um novo paciente (+ Novo Paciente)
+  - Editar          : Altera os dados de um paciente existente (incluindo senha)
+  - Excluir         : Remove um paciente do sistema
+  - Ver Prontuarios : Visualiza os prontuarios do paciente
+
+Campos do paciente:
+  - Nome completo
+  - CPF
+  - Endereco (Rua, Numero, Bairro, Cidade, Estado)
+
+--------------------------------------------------------------------------------
+3.6. GERENCIAMENTO DE GERENTES
+--------------------------------
+Funcionalidades:
+  - Listar    : Visualiza todos os gerentes cadastrados
+  - Cadastrar : Adiciona um novo gerente (+ Novo Gerente)
+  - Editar    : Altera os dados de um gerente existente (incluindo senha)
+  - Excluir   : Remove um gerente do sistema
+
+Campos do gerente:
+  - Nome completo
+  - CPF
+  - Endereco (Rua, Numero, Bairro, Cidade, Estado)
+
+--------------------------------------------------------------------------------
+3.7. GERENCIAMENTO DE CONSULTAS
+---------------------------------
+Funcionalidades:
+  - Listar   : Visualiza todas as consultas agendadas
+  - Agendar  : Cria uma nova consulta
+  - Editar   : Altera os dados de uma consulta
+  - Cancelar : Cancela uma consulta
+  - Concluir : Marca uma consulta como concluida
+
+Status das Consultas:
+  SCHEDULED  ->  Agendada (padrao)
+  COMPLETED  ->  Concluida
+  CANCELED   ->  Cancelada
+
+--------------------------------------------------------------------------------
+3.8. TELA DE CADASTRO DE CONSULTA
+-----------------------------------
+Campos:
+  - Paciente : Selecione o paciente (com busca em tempo real)
+  - Medico   : Selecione o medico (com busca em tempo real)
+  - Data     : Selecione a data da consulta
+  - Hora     : Selecione o horario da consulta
+  - Status   : Status da consulta (padrao: SCHEDULED)
+
+--------------------------------------------------------------------------------
+3.9. TELA DO MEDICO
+--------------------
+Menu:
+  - Meus Pacientes      : Lista os pacientes vinculados ao medico
+  - Minhas Consultas    : Lista todas as consultas do medico
+  - Cadastrar Prontuario: Registra um prontuario para um paciente
+  - Gerar Relatorios    : Gera relatorios de atendimento
+
+3.9.1. Minhas Consultas
+  Lista todas as consultas do medico logado:
+  - Data/Hora
+  - Paciente
+  - Status
+  - Acoes (Ver detalhes, Concluir, Cancelar)
+
+3.9.2. Cadastrar Prontuario
+  Campos:
+    - Paciente selecionado  : (selecionado pela lista lateral)
+    - Data da consulta      : Data da consulta
+    - Observacoes Medicas   : Descricao detalhada da consulta
+
+  Funcionalidade de busca:
+    - Busca em tempo real por nome ou CPF
+    - Clique no paciente para seleciona-lo
+
+  DICA: Seja detalhado nas observacoes. Inclua sintomas relatados, exames
+  fisicos realizados, diagnostico, prescricoes e orientacoes ao paciente.
+
+--------------------------------------------------------------------------------
+3.10. TELA DO PACIENTE
+-----------------------
+Menu:
+  - Dashboard        : Visao geral do paciente
+  - Meus Prontuarios : Visualiza seus prontuarios
+  - Minhas Consultas : Visualiza suas consultas
+  - Editar Dados     : Altera seus dados pessoais
+  - Agendar Consulta : Solicita uma nova consulta
+
+3.10.1. Agendar Consulta
+  Campos:
+    - Medico       : Selecione o medico (com busca em tempo real)
+    - Data         : Selecione a data da consulta
+    - Hora         : Selecione o horario da consulta
+    - Observacoes  : Descreva o motivo da consulta
+
+  Funcionalidade:
+    - Lista lateral de medicos disponiveis
+    - Busca em tempo real por nome ou CRM
+    - Clique no medico para seleciona-lo
+
+  DICA: Escolha uma data com pelo menos 24 horas de antecedencia. Voce pode
+  cancelar a consulta ate 2 horas antes do horario agendado.
+
+================================================================================
+4. FUNCIONALIDADES GERAIS
+================================================================================
+
+4.1. BUSCA
+-----------
+Permite pesquisar por:
+  - Medicos  (por nome, CPF ou CRM)
+  - Pacientes (por nome ou CPF)
+
+Funcionalidades:
+  - Busca com filtro por tipo
+  - Visualizacao de detalhes
+  - Selecao de resultados
+
+--------------------------------------------------------------------------------
+4.2. RELATORIOS
+----------------
+Gera relatorios de consultas por medico em um periodo especifico.
+
+Informacoes do relatorio:
+  - Total de consultas
+  - Consultas agendadas
+  - Consultas concluidas
+  - Consultas canceladas
+
+--------------------------------------------------------------------------------
+4.3. PERFIL DO USUARIO
+-----------------------
+Permite ao usuario visualizar e editar seus proprios dados.
+
+================================================================================
+5. TUTORIAL DE USO
+================================================================================
+
+5.1. COMO AGENDAR UMA CONSULTA COMO GERENTE
+---------------------------------------------
+  1. Faca login como gerente (CPF: 00000000000 / Senha: admin123)
+  2. No menu lateral, clique em "Consultas"
+  3. Clique em "Agendar Consulta"
+  4. Selecione o Paciente (digite para buscar)
+  5. Selecione o Medico (digite para buscar)
+  6. Escolha a Data e a Hora
+  7. Selecione o Status (padrao: SCHEDULED)
+  8. Clique em "Agendar Consulta"
+
+--------------------------------------------------------------------------------
+5.2. COMO CADASTRAR UM PRONTUARIO COMO MEDICO
+----------------------------------------------
+  1. Faca login como medico (CPF: 09749723473 / Senha: 123)
+  2. No menu lateral, clique em "Cadastrar Prontuario"
+  3. Na lista lateral, busque o paciente por nome ou CPF
+  4. Clique no paciente para seleciona-lo
+  5. Selecione a Data da consulta
+  6. Digite as Observacoes Medicas
+  7. Clique em "Salvar Prontuario"
+
+--------------------------------------------------------------------------------
+5.3. COMO AGENDAR UMA CONSULTA COMO PACIENTE
+---------------------------------------------
+  1. Faca login como paciente (CPF: 09749723473 / Senha: 123)
+  2. No menu lateral, clique em "Minhas Consultas"
+  3. Clique em "Agendar Consulta"
+  4. Na lista lateral, busque o medico por nome ou CRM
+  5. Clique no medico para seleciona-lo
+  6. Escolha a Data e a Hora
+  7. Digite as Observacoes (motivo da consulta)
+  8. Clique em "Agendar Consulta"
+
+--------------------------------------------------------------------------------
+5.4. COMO CADASTRAR UM NOVO PACIENTE
+--------------------------------------
+  1. Faca login como gerente
+  2. No menu lateral, clique em "Pacientes"
+  3. Clique em "+ Novo Paciente"
+  4. Preencha todos os campos obrigatorios (*)
+  5. Clique em "Cadastrar Paciente"
+
+================================================================================
+6. ESTRUTURA DE DADOS
+================================================================================
+
+6.1. TABELAS DO BANCO DE DADOS
+--------------------------------
+  addresses      - Enderecos dos usuarios
+  manager        - Gerentes do sistema
+  doctor         - Medicos da clinica
+  patient        - Pacientes da clinica
+  consultation   - Consultas agendadas
+  medical_records- Prontuarios medicos
+
+--------------------------------------------------------------------------------
+6.2. RELACIONAMENTOS
+---------------------
+  addresses (1) --- (N) manager
+  addresses (1) --- (N) doctor
+  addresses (1) --- (N) patient
+
+  patient (1) --- (N) consultation
+  doctor  (1) --- (N) consultation
+
+  patient (1) --- (N) medical_records
+  doctor  (1) --- (N) medical_records
+
+--------------------------------------------------------------------------------
+6.3. STATUS DAS CONSULTAS
+--------------------------
+  SCHEDULED  ->  Consulta agendada
+  COMPLETED  ->  Consulta concluida
+  CANCELED   ->  Consulta cancelada
+
+================================================================================
+7. SEGURANCA
+================================================================================
+
+7.1. AUTENTICACAO
+------------------
+  - Autenticacao por CPF e senha
+  - Senhas armazenadas com hash SHA-256
+  - Senha padrao do administrador: admin123
+
+7.2. PERFIS DE ACESSO
+----------------------
+  Gerente   ->  Acesso total ao sistema
+  Medico    ->  Acesso a pacientes, consultas e prontuarios
+  Paciente  ->  Acesso apenas aos seus proprios dados
+
+================================================================================
+8. TELAS DE CADASTRO
+================================================================================
+
+8.1. CADASTRO DE PACIENTE (ACESSO PUBLICO)
+-------------------------------------------
+Acesso: Tela de Login -> "Cadastrar novo paciente"
+
+Campos obrigatorios (*):
+  - Nome completo
+  - CPF
+  - Senha (minimo 6 caracteres)
+  - Confirmar senha
+  - Rua, Numero, Bairro, Cidade, Estado
+
+Fluxo:
+  1. Preencha todos os campos
+  2. Clique em "Cadastrar"
+  3. Faca login com as credenciais criadas
+
+--------------------------------------------------------------------------------
+8.2. CADASTRO DE MEDICO (GERENTE)
+-----------------------------------
+Acesso: Tela de Medicos -> "+ Novo Medico"
+
+Campos obrigatorios (*):
+  - Nome completo
+  - CPF
+  - CRM / Codigo do Conselho
+  - Valor da consulta
+  - Endereco completo
+
+--------------------------------------------------------------------------------
+8.3. CADASTRO DE GERENTE (GERENTE)
+------------------------------------
+Acesso: Tela de Gerentes -> "+ Novo Gerente"
+
+Campos obrigatorios (*):
+  - Nome completo
+  - CPF
+  - Endereco completo
+
+================================================================================
+9. ATALHOS DO TECLADO
+================================================================================
+
+  Enter    ->  Entrar (Login)
+  Ctrl + S ->  Salvar
+  Esc      ->  Cancelar
+
+================================================================================
+10. PERGUNTAS FREQUENTES (FAQ)
+================================================================================
+
+10.1. POR QUE O PACIENTE NAO APARECE NO SELETOR DE PAPEIS?
+------------------------------------------------------------
+Verifique se:
+  - O CPF do paciente esta cadastrado na tabela "patient"
+  - A senha do paciente e a mesma que voce esta usando no login
+  - O paciente tem um endereco valido associado
+
+Para corrigir a senha do paciente:
+
+  UPDATE patient
+  SET password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
+  WHERE cpf = '09749723473';
+
+--------------------------------------------------------------------------------
+10.2. NAO CONSIGO FAZER LOGIN, O QUE FAZER?
+--------------------------------------------
+  1. Verifique se o CPF esta correto (apenas numeros)
+  2. Verifique se a senha esta correta
+  3. Verifique se o banco de dados esta rodando
+  4. Tente as credenciais padrao: CPF 00000000000 / Senha admin123
+
+--------------------------------------------------------------------------------
+10.3. COMO RESETAR A SENHA DE UM USUARIO?
+------------------------------------------
+  1. Faca login como gerente
+  2. Acesse a tela do tipo de usuario (Medicos, Pacientes ou Gerentes)
+  3. Clique em "Editar" do usuario desejado
+  4. Preencha o campo "Nova senha (opcional)" com a nova senha
+  5. Confirme a senha
+  6. Clique em "Salvar alteracoes"
+
+--------------------------------------------------------------------------------
+10.4. O QUE FAZER SE O SISTEMA ESTIVER LENTO?
+----------------------------------------------
+  1. Verifique a conexao com o banco de dados
+  2. Feche outros programas
+  3. Reinicie a aplicacao
+  4. Verifique se ha muitas consultas na tabela
+
+================================================================================
+             Hospital Manager -- Sistema de Gestao Hospitalar
+                               UFERSA
+================================================================================
