@@ -10,11 +10,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0"
-           styleClass="root-background"
-           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="br.edu.ufersa.hospital_manager.controllers.LoginController"
-           stylesheets="@../css/style.css">
+<StackPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" styleClass="root-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ufersa.hospital_manager.controllers.LoginController">
 
     <VBox alignment="CENTER" maxWidth="420.0" spacing="22.0">
 
@@ -22,14 +18,14 @@
         <VBox alignment="CENTER" spacing="8.0">
             <StackPane>
                 <Circle radius="30.0" styleClass="login-logo-circle" />
-                <Label text="⚕" styleClass="login-logo-icon" />
+                <Label styleClass="login-logo-icon" text="⚕" />
             </StackPane>
-            <Label text="Clínica Dr. Luiz" styleClass="login-title">
+            <Label styleClass="login-title" text="Clínica Dr. Luiz">
                 <font>
                     <Font name="System Bold" size="21.0" />
                 </font>
             </Label>
-            <Label text="Sistema de Gerenciamento Médico" styleClass="login-subtitle" />
+            <Label styleClass="login-subtitle" text="Sistema de Gerenciamento Médico" />
         </VBox>
 
         <!-- ===== Cartão de login ===== -->
@@ -38,28 +34,24 @@
                 <Insets bottom="28.0" left="28.0" right="28.0" top="26.0" />
             </padding>
 
-            <Label text="Acesso ao Sistema" styleClass="login-card-title" />
+            <Label styleClass="login-card-title" text="Acesso ao Sistema" />
 
             <VBox spacing="6.0">
-                <Label text="CPF" styleClass="field-label" />
+                <Label styleClass="field-label" text="CPF" />
                 <TextField fx:id="txtCpf" promptText="000.000.000-00" styleClass="text-input" />
             </VBox>
 
             <VBox spacing="6.0">
-                <Label text="Senha" styleClass="field-label" />
+                <Label styleClass="field-label" text="Senha" />
                 <PasswordField fx:id="txtSenha" promptText="••••••••" styleClass="text-input" />
             </VBox>
 
-            <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false"
-                    onAction="#onEntrarClick" styleClass="btn-primary" text="Entrar" />
+            <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false" onAction="#onEntrarClick" styleClass="btn-primary" text="Entrar" />
 
             <VBox spacing="4.0" styleClass="info-box">
                 <padding>
                     <Insets bottom="12.0" left="14.0" right="14.0" top="12.0" />
                 </padding>
-                <Label styleClass="info-title" text="Credenciais de Teste:" />
-                <Label styleClass="info-text" text="CPF:  00000000000" />
-                <Label styleClass="info-text" text="Senha:  admin123" />
                 <Label styleClass="info-text" text="Se houver mais de um perfil, você escolhe após autenticar." />
             </VBox>
         </VBox>
