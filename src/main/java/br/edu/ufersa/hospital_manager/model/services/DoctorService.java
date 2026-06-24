@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
 import br.edu.ufersa.hospital_manager.model.DAO.DoctorDAO;
+import br.edu.ufersa.hospital_manager.model.exceptions.DuplicateEntryException;
+import br.edu.ufersa.hospital_manager.model.exceptions.EntityNotFoundException;
 import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
@@ -28,11 +30,11 @@ public class DoctorService implements DoctorServiceContract {
         }
 
         if (doctorDAO.readByCPF(doctor.getCPF()) != null) {
-            throw new RuntimeException("A doctor with this CPF already exists.");
+            throw new DuplicateEntryException("CPF", doctor.getCPF());
         }
 
         if (doctorDAO.readByCouncilCode(doctor.getCouncilCode()) != null) {
-            throw new RuntimeException("A doctor with this council code already exists.");
+            throw new DuplicateEntryException("Código de Conselho", doctor.getCouncilCode());
         }
 
         doctorDAO.create(doctor);
@@ -50,7 +52,7 @@ public class DoctorService implements DoctorServiceContract {
         }
 
         if (doctorDAO.readById(doctor.getId()) == null) {
-            throw new RuntimeException("Doctor not found.");
+            throw new EntityNotFoundException("Médico", String.valueOf(doctor.getId()));
         }
 
         ArrayList<Consultation> consultations = consultationDAO.readByDoctor(doctor);
@@ -73,7 +75,7 @@ public class DoctorService implements DoctorServiceContract {
             throw new RuntimeException("Doctor cannot be null.");
         }
         if (doctorDAO.readById(doctor.getId()) == null) {
-            throw new RuntimeException("Doctor not found.");
+            throw new EntityNotFoundException("Médico", String.valueOf(doctor.getId()));
         }
         doctorDAO.update(doctor);
     }

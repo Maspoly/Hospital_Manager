@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
 import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
 import br.edu.ufersa.hospital_manager.model.DAO.PatientDAO;
+import br.edu.ufersa.hospital_manager.model.exceptions.DuplicateEntryException;
+import br.edu.ufersa.hospital_manager.model.exceptions.EntityNotFoundException;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
 
@@ -27,7 +29,7 @@ public class PatientService implements FindServices<Patient> {
             throw new RuntimeException("Patient cannot be null.");
         }
         if (patientDAO.readByCPF(patient.getCPF()) != null) {
-            throw new RuntimeException("A patient with this CPF already exists.");
+            throw new DuplicateEntryException("CPF", patient.getCPF());
         }
 
         patientDAO.create(patient);
@@ -41,7 +43,7 @@ public class PatientService implements FindServices<Patient> {
             throw new RuntimeException("Patient cannot be null.");
         }
         if (patientDAO.readById(patient.getId()) == null) {
-            throw new RuntimeException("Patient not found.");
+            throw new EntityNotFoundException("Paciente", String.valueOf(patient.getId()));
         }
         patientDAO.update(patient);
 
@@ -56,7 +58,7 @@ public class PatientService implements FindServices<Patient> {
             throw new RuntimeException("Patient cannot be null.");
         }
         if (patientDAO.readById(patient.getId()) == null) {
-            throw new RuntimeException("Patient not found.");
+            throw new EntityNotFoundException("Paciente", String.valueOf(patient.getId()));
         }
 
         consultationDAO.detachPatient(patient);
@@ -120,7 +122,7 @@ public class PatientService implements FindServices<Patient> {
             throw new RuntimeException("Patient cannot be null.");
         }
         if (patient.getId() <= 0) {
-            throw new RuntimeException("Patient not found.");
+            throw new EntityNotFoundException("Paciente", String.valueOf(patient.getId()));
         }
         return consultationService.findByPatient(patient);
     }

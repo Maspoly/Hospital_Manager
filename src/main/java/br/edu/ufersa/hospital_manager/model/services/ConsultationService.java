@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.ConsultationDAO;
+import br.edu.ufersa.hospital_manager.model.exceptions.EntityNotFoundException;
+import br.edu.ufersa.hospital_manager.model.exceptions.SchedulingConflictException;
 import br.edu.ufersa.hospital_manager.model.entities.Consultation;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
@@ -30,7 +32,7 @@ public class ConsultationService {
         }
 
         if (consultationDAO.readByDoctorAndDateTime(consultation.getDoctor(), consultation.getDateTime()) != null) {
-            throw new RuntimeException("Doctor already has a consultation at this time.");
+            throw new SchedulingConflictException(consultation.getDoctor(), consultation.getDateTime());
         }
 
         consultation.setStatus("SCHEDULED");
@@ -51,7 +53,7 @@ public class ConsultationService {
         }
         
         if (consultationDAO.readByDoctorAndDateTime(consultation.getDoctor(), consultation.getDateTime()) != null) {
-            throw new RuntimeException("Doctor already has a consultation at this time.");
+            throw new SchedulingConflictException(consultation.getDoctor(), consultation.getDateTime());
         }
 
         consultationDAO.create(consultation);
@@ -65,7 +67,7 @@ public class ConsultationService {
         }
 
         if (consultationDAO.readById(consultation.getId()) == null) {
-            throw new RuntimeException("Consultation not found.");
+            throw new EntityNotFoundException("Consulta", String.valueOf(consultation.getId()));
         }
 
         consultation.setStatus("CANCELED");
@@ -80,7 +82,7 @@ public class ConsultationService {
         }
 
         if (consultationDAO.readById(consultation.getId()) == null) {
-            throw new RuntimeException("Consultation not found.");
+            throw new EntityNotFoundException("Consulta", String.valueOf(consultation.getId()));
         }
 
         consultation.setStatus("COMPLETED");
@@ -96,7 +98,7 @@ public class ConsultationService {
         }
 
         if (consultationDAO.readById(consultation.getId()) == null) {
-            throw new RuntimeException("Consultation not found.");
+            throw new EntityNotFoundException("Consulta", String.valueOf(consultation.getId()));
         }
 
         consultationDAO.update(consultation);
@@ -110,7 +112,7 @@ public class ConsultationService {
         }
 
         if (consultationDAO.readById(consultation.getId()) == null) {
-            throw new RuntimeException("Consultation not found.");
+            throw new EntityNotFoundException("Consulta", String.valueOf(consultation.getId()));
         }
 
         consultationDAO.delete(consultation);

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.MedicalRecordDAO;
+import br.edu.ufersa.hospital_manager.model.exceptions.EntityNotFoundException;
 import br.edu.ufersa.hospital_manager.model.entities.Doctor;
 import br.edu.ufersa.hospital_manager.model.entities.MedicalRecord;
 import br.edu.ufersa.hospital_manager.model.entities.Patient;
@@ -44,7 +45,7 @@ public class MedicalRecordService implements MedicalRecordServiceContract {
             throw new RuntimeException("Medical record cannot be null.");
         }
         if (medicalRecordDAO.readById(medicalRecord.getId()) == null) {
-            throw new RuntimeException("Medical record not found.");
+            throw new EntityNotFoundException("Prontuário", String.valueOf(medicalRecord.getId()));
         }
 
         if (ServiceRoleContext.getCurrentUser() instanceof Doctor) {
@@ -63,7 +64,7 @@ public class MedicalRecordService implements MedicalRecordServiceContract {
             throw new RuntimeException("Medical record cannot be null.");
         }
         if (medicalRecordDAO.readById(medicalRecord.getId()) == null) {
-            throw new RuntimeException("Medical record not found.");
+            throw new EntityNotFoundException("Prontuário", String.valueOf(medicalRecord.getId()));
         }
 
         medicalRecordDAO.delete(medicalRecord);

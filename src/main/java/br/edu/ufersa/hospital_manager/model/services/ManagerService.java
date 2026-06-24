@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.edu.ufersa.hospital_manager.model.DAO.ManagerDAO;
+import br.edu.ufersa.hospital_manager.model.exceptions.DuplicateEntryException;
+import br.edu.ufersa.hospital_manager.model.exceptions.EntityNotFoundException;
 import br.edu.ufersa.hospital_manager.model.entities.Manager;
 
 public class ManagerService implements ManagerServiceContract {
@@ -24,7 +26,7 @@ public class ManagerService implements ManagerServiceContract {
         }
 
         if (managerDAO.readByCPF(manager.getCPF()) != null) {
-            throw new RuntimeException("A manager with this CPF already exists.");
+            throw new DuplicateEntryException("CPF", manager.getCPF());
         }
 
         managerDAO.create(manager);
@@ -38,7 +40,7 @@ public class ManagerService implements ManagerServiceContract {
         }
 
         if (managerDAO.readById(manager.getId()) == null) {
-            throw new RuntimeException("Manager not found.");
+            throw new EntityNotFoundException("Gerente", String.valueOf(manager.getId()));
         }
 
         managerDAO.delete(manager);
@@ -52,7 +54,7 @@ public class ManagerService implements ManagerServiceContract {
         }
 
         if (managerDAO.readById(manager.getId()) == null) {
-            throw new RuntimeException("Manager not found.");
+            throw new EntityNotFoundException("Gerente", String.valueOf(manager.getId()));
         }
 
         managerDAO.update(manager);
